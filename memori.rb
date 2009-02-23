@@ -20,5 +20,25 @@ post '/sets/' do
 end
 
 get '/sets/' do
-
+  author_id = params[:author_id]
+  resp = db.view('db/user-sets', {:key => author_id})
+  JSON.dump resp
 end
+
+get '/sets/:key' do
+  resp = db.get params[:key]
+  JSON.dump resp
+end
+
+put '/sets/:key' do
+  json = JSON.parse(params[:json])
+  resp = db.save_doc(json)
+  JSON.dump resp
+end
+
+delete '/sets/:key' do
+  json = JSON.parse(params[:json])
+  resp = db.delete_doc(json)
+  JSON.dump resp  
+end
+

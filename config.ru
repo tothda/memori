@@ -8,5 +8,6 @@ set :run, false
 set :environment, :production
 
 use Rack::Static, :urls => ["/static"]
+use Rack::MethodOverride
 
 run Sinatra::Application.new

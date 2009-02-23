@@ -221,7 +221,7 @@ function yuiTest() {
                 } else {
                     var that = this;
                     transport.GET("/sets/", function(resp){
-                        Y.each(resp.data, function(s) {
+                        Y.each(resp.data.rows, function(s) {
                             var set = Set.fromObj(s);
                             set.set('user', that);
                             that.sets.push(set);
@@ -315,7 +315,7 @@ function yuiTest() {
                     this.set('time', new Date());
                     // hozzáadjuk 0-ás bucket-hez
                     var s = this.get('set');
-                    s.bucket_stat[0]++;
+//                    s.bucket_stat[0]++;
                 }
             },
             newObj: function(){
@@ -450,6 +450,9 @@ function yuiTest() {
                 var guids = {};
                 o.title = this.get('title');
                 o.description = this.get('description');
+                o._rev = this._rev;
+                o._id = this.get('id');
+                o.type = "set";
                 o.cards = [];
                 Y.each(this.cards, function(c){
                     if (c.shouldSave()) {
@@ -497,7 +500,7 @@ function yuiTest() {
                     status("Lecke törlése...");
                     transport.DELETE("/sets/"+that.id(), function(){
                         doIt();
-                    });
+                    }, {_id:that.id(), _rev: that._rev});
                 }
             }
         }, { // static methods
@@ -513,7 +516,9 @@ function yuiTest() {
                             card = Card.fromObj(c);
                             card.set('set', set);
                             set.cards.push(card);
+                            set.bucket_stat[card.get('bucket')]++;
                         });
+                        set._rev = resp.data._rev;
                         set.loaded = true;
                         status("lecke letöltve");
                         callback.call(context, set);
@@ -522,11 +527,11 @@ function yuiTest() {
             },
             fromObj: function(o) {
                 var s = new Set({
-                    title: o.title,
-                    description: o.description,
+                    title: o.value.title,
+                    description: o.value.description,
                     id: o.id
                 });
-                s.bucket_stat = o.bucket_stat;
+                s.bucket_stat = [0,0,0,0,0];
                 return s;
             }
         });

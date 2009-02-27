@@ -1,0 +1,143 @@
+        // Set model
+        function Set() {
+            Set.superclass.constructor.apply(this, arguments);
+        }
+
+        Y.mix(Set, {
+            NAME: "set",
+            ATTRS: {
+                id: {},
+                title: { value: ''},
+                description: { value: ''},
+                user: {},
+                loaded: { value: false }
+            },
+            CACHE: {}
+        });
+
+        Y.extend(Set, Y.Base, {
+            initializer: function(){
+                this.cards = [];
+                var cf = ['description', 'title'];
+                Y.each(cf, function(f){
+                    this.on(f+'Change', function(){
+                        this.dirty = true;
+                    }, this);
+                }, this);
+                Set.CACHE[this.id()] = this;
+                this.after('idChange', function(){
+                    Set.CACHE[this.id()] = this;
+                });
+            },
+            newObj: function(){
+                return typeof this.get('id') === "undefined";
+            },
+            id: function(){
+                return this.newObj() ? (this.guid ? this.guid : (this.guid = Y.guid(this.NAME))) : this.get('id');
+            },
+            getCards: function(){
+                var ret = [];
+                for (var i=0;i<this.cards.length;i++){
+                    if (!this.cards[i].deleted) {
+                        ret.push(this.cards[i]);
+                    }
+                }
+                return ret;
+            },
+            createCard: function(){
+                var c = new Card({
+                    set: this
+                });
+                this.cards.push(c);
+                this.dirty = true;
+                return c;
+            },
+            toObj: function(){
+                var o = {};
+                var guids = {};
+                o.title = this.get('title');
+                o.description = this.get('description');
+                o._rev = this._rev;
+                o._id = this.get('id');
+                o.type = "set";
+                o.cards = [];
+                Y.each(this.cards, function(c){
+                    if (c.shouldSave()) {
+                        var cc = c.toObj();
+                        guids[c.id()] = c;
+                        o.cards.push(cc);
+                    }
+                }, this);
+                return [o, guids];
+            },
+            save: function(){
+                if (!this.dirty) {
+                    return;
+                }
+                status("lecke mentése...");
+                var key = this.get('id');
+                var method = key ? 'PUT' : 'POST';
+                var url = "/sets/" + (key ? key : "");
+                var tmpArr = this.toObj();
+                var o = tmpArr[0];
+                var guidHash = tmpArr[1];
+                var that = this;
+                transport[method](url, function(resp) {
+                    // Y.each(resp.data.cards, function(id,guid){
+                    //     var card = guidHash[guid];
+                    //     card.set('id', id);
+                    // });
+                    if (!key) {
+                        that.set('id', resp.data.id);
+                    }
+                    that.dirty = false;
+                    status("lecke mentése sikeresen befejeződött");
+                }, o);
+            },
+            destroy: function(callback, context){
+                var that = this;
+                var doIt = function(){
+                    delete Set.CACHE[that.id()];
+                    that.get('user').removeSet(that);
+                    callback.call(context);
+                };
+                if (this.newObj()) {
+                    doIt();
+                } else {
+                    status("Lecke törlése...");
+                    transport.DELETE("/sets/"+that.id(), function(){
+                        doIt();
+                    }, {_id:that.id(), _rev: that._rev});
+                }
+            }
+        }, { // static methods
+            getSet: function(id, callback, context){
+                var set = Set.CACHE[id];
+                if (set.loaded) {
+                    callback.call(context, Set.CACHE[id]);
+                } else {
+                    status("lecke letöltése...");
+                    transport.GET("/sets/" + id, function(resp){
+                        var card;
+                        Y.each(resp.data.cards, function(c){
+                            card = Card.fromObj(c);
+                            card.set('set', set);
+                            set.cards.push(card);
+                        });
+                        set._rev = resp.data._rev;
+                        set.loaded = true;
+                        status("lecke letöltve");
+                        callback.call(context, set);
+                    });
+                }
+            },
+            fromObj: function(o) {
+                var s = new Set({
+                    title: o.value.title,
+                    description: o.value.description,
+                    id: o.id
+                });
+                s.bucket_stat = o.value.bucket_stat;
+                return s;
+            }
+        });

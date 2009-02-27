@@ -2,11 +2,27 @@
 require 'rubygems'
 require 'sinatra'
 require 'couchrest'
+require 'sprockets'
+# require 'ruby-debug'
+
+module Memori
+  class << self
+    def root
+      File.dirname(__FILE__)
+    end
+  end
+end
+
+require 'ruby/sprocket_app'
 
 db = CouchRest.database!("http://127.0.0.1:5984/memori")
 
 get '/' do
   "Hello világ!"
+end
+
+get '/javascripts/sprocket.js' do
+  SprocketsApplication.source
 end
 
 post '/users' do

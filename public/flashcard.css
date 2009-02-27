@@ -293,6 +293,11 @@ body {
     display: none;
 }
 
+#fc-practice .front {
+    background-color: #D8E4FA;
+    border: 3px solid #F6F8FB;
+}
+
 /* FriendsWidget */
 .yui-friends-hidden {
     display: none;

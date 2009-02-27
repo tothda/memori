@@ -1015,9 +1015,12 @@ function yuiTest() {
                 this.infoNode.set('innerHTML', this.strategy.curPos() + ' / ' + this.strategy.length());
             },
             toggle: function(){
-                var txt = this.front ? this.card.get('flip') : this.card.get('front');
+                var newSide = !this.front ? 'flip' : 'front';
+                var oldSide = this.front ? 'flip' : 'front';
+                var txt = this.card.get(newSide);
                 this.front = !this.front;
                 this.cardNode.set('innerHTML', txt);
+                this.cardNode.replaceClass(oldSide, newSide);
             },
             disableButtons: function(){
                 this.previousButton.set('disabled', this.strategy.isFirst() ? true : false);

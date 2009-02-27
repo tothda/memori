@@ -516,7 +516,6 @@ function yuiTest() {
                             card = Card.fromObj(c);
                             card.set('set', set);
                             set.cards.push(card);
-                            set.bucket_stat[card.get('bucket')]++;
                         });
                         set._rev = resp.data._rev;
                         set.loaded = true;
@@ -531,7 +530,7 @@ function yuiTest() {
                     description: o.value.description,
                     id: o.id
                 });
-                s.bucket_stat = [0,0,0,0,0];
+                s.bucket_stat = o.value.bucket_stat;
                 return s;
             }
         });

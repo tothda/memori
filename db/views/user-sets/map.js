@@ -1,5 +1,14 @@
 function(doc) {
     if (doc.type == "set") {
-        emit(doc.opensocial_owner_id, {title: doc.title, description: doc.description});
+        var obj = {}
+        obj.title = doc.title;
+        obj.description = doc.description;
+        obj.bucket_stat = [0,0,0,0,0];
+        if (doc.cards) {
+            for (var i = 0; i < doc.cards.length; i++) {
+                obj.bucket_stat[doc.cards[i].bucket]++;
+            }
+        }
+        emit(doc.opensocial_owner_id, obj);
     }
 }

@@ -30,6 +30,13 @@ function ShuffledPracticeStrategy(sets){
 
 Y.extend(ShuffledPracticeStrategy, LinearPracticeStrategy, {
     sort: function(){
+        var expiredCards = [];
+        Y.each(this.cards, function(c){
+            if (c.expired()) {
+                expiredCards.push(c);
+            }
+        });
+        this.cards = expiredCards;
         shuffle(this.cards);
     }
 });
@@ -38,6 +45,5 @@ shuffle = function(o){ //v1.0
     for(var j, x, i = o.length; i; j = parseInt(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
     return o;
 };
-
 
 var DEFAULT_STRATEGY = ShuffledPracticeStrategy;

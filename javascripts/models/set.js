@@ -140,6 +140,7 @@ Y.extend(Set, Y.Base, {
             id: o.id
         });
         s.bucket_stat = o.value.bucket_stat;
+        s.created_at = o.value.created_at;
         return s;
     }
 });

@@ -28,7 +28,7 @@ Y.mix(Card, {
 
 Y.extend(Card, Y.Base, {
     initializer: function() {
-        if (this.newObj()) {
+        if (!this.get('time')) {
             // ha ez egy új kártya, akkor az aktuális dátum lesz az utolsó gyakorlás dátuma
             this.set('time', new Date());
             // hozzáadjuk 0-ás bucket-hez

@@ -178,6 +178,11 @@
                     Y.on('key', function(e){
                         fitToContent(t);
                     }, t, 'down');
+                    
+                    // ha visszakapja a fókuszt (pl átmegy a user egy másik tab-ra, majd vissza), akkor álljunk vissza az utolsó pozícióra
+                    Y.on('focus', function(){
+                        me.editor.positionOn(item);
+                    }, t);
 
                     return {
                         positionOn: function(listElem){

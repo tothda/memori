@@ -154,6 +154,10 @@
                     };
                     // TAB handler
                     Y.on('key', function(e){
+                        // ha CTRL+TAB-ot nyomtak, akkor ne ugorjunk, mert csak tab-ot akar váltani a user
+                        if (e.ctrlKey) {
+                            return;
+                        }
                         var i = e.shiftKey ? item.prev : item.next;
                         // ha sima TAB-ot nyomnak az utolsó kártyán, akkor kell egy új sor
                         if (!i.node && !e.shiftKey) {

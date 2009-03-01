@@ -37,7 +37,7 @@ end
 
 get '/sets/' do
   author_id = params[:author_id]
-  resp = db.view('db/user-sets', {:key => author_id})
+  resp = db.view('db/user-sets', {:endkey => [author_id], :startkey => [author_id, "9999"], :descending => "true"})
   JSON.dump resp
 end
 

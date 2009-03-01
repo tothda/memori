@@ -18,6 +18,7 @@
         Y.extend(Set, Y.Base, {
             initializer: function(){
                 this.cards = [];
+                this.bucket_stat = [0,0,0,0,0];
                 var cf = ['description', 'title'];
                 Y.each(cf, function(f){
                     this.on(f+'Change', function(){
@@ -60,6 +61,7 @@
                 o._rev = this._rev;
                 o._id = this.get('id');
                 o.type = "set";
+                o.created_at = this.created_at;
                 o.cards = [];
                 Y.each(this.cards, function(c){
                     if (c.shouldSave()) {

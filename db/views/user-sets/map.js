@@ -1,6 +1,6 @@
 function(doc) {
     if (doc.type == "set") {
-        var obj = {}
+        var obj = {};
         obj.title = doc.title;
         obj.description = doc.description;
         obj.bucket_stat = [0,0,0,0,0];
@@ -9,6 +9,6 @@ function(doc) {
                 obj.bucket_stat[doc.cards[i].bucket]++;
             }
         }
-        emit(doc.opensocial_owner_id, obj);
+        emit([doc.opensocial_owner_id, doc.created_at], obj);
     }
 }

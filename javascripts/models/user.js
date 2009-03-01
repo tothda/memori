@@ -17,7 +17,7 @@
             },
             createSet: function() {
                 var s = new Set({});
-                s.bucket_stat = [0,0,0,0,0];
+                s.created_at = new Date();
                 s.loaded = true;
                 s.dirty = true;
                 this.sets.push(s);

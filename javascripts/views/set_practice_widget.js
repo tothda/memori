@@ -57,6 +57,7 @@
                         break;
                     case this.dunnoButton:
                         this.card.dunno();
+                        this.renderNextCard();
                         break;
                     }
                 }, this);

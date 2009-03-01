@@ -21,22 +21,18 @@
                 var cb = this.get('contentBox');
                 this.infoNode = N.create('<div class='+this.getClassName('info')+'></div>');
                 this.cardNode = N.create('<div class='+this.getClassName('card')+'></div>');
-                this.nextButton = N.create('<button>Következő</button>');
-                this.previousButton = N.create('<button>Előző</button>');
-                this.flipButton = N.create('<button>Másik oldal</button>');
-                this.knowButton = N.create('<button>Tudom</button>');
-                this.dunnoButton = N.create('<button>Nem tudom</button>');
+                this.nextButton = N.create('<button class='+this.getClassName('next')+'>></button>');
+                this.previousButton = N.create('<button class='+this.getClassName('next')+'><</button>');
+                this.knowButton = N.create('<a class='+this.getClassName('know')+' href="javascript:void(0)">Tudom</a>');
+                this.dunnoButton = N.create('<a class='+this.getClassName('dunno')+' href="javascript:void(0)">Nem tudom</a>');
                 cb.appendChild(this.infoNode);
+                cb.appendChild(this.previousButton);
                 cb.appendChild(this.cardNode);
-                var buttons = N.create('<div class='+this.getClassName('nav')+'></div>');
-                this. answerButtons = N.create('<div class='+this.getClassName('answer')+'></div>');
-                buttons.appendChild(this.previousButton);
-                buttons.appendChild(this.flipButton);
-                buttons.appendChild(this.nextButton);
-                this.answerButtons.appendChild(this.dunnoButton);
-                this.answerButtons.appendChild(this.knowButton);
+                cb.appendChild(this.nextButton);
+                var buttons = N.create('<div class='+this.getClassName('func')+'></div>');
+                buttons.appendChild(this.dunnoButton);
+                buttons.appendChild(this.knowButton);
                 cb.appendChild(buttons);
-                cb.appendChild(this.answerButtons);
             },
             syncUI: function(){
 
@@ -46,7 +42,7 @@
                 bb.on('click', function(e){
                     var t = e.target;
                     switch (t) {
-                    case this.flipButton:
+                    case this.cardNode:
                         this.toggle();
                         break;
                     case this.previousButton:
@@ -92,7 +88,7 @@
             },
             renderCard: function(){
                 this.card = this.strategy.cur();
-                this.front = false;
+                this.front = true;
                 this.toggle();
                 this.disableButtons();
                 this.renderInfo();
@@ -112,9 +108,11 @@
                 this.previousButton.set('disabled', this.strategy.isFirst() ? true : false);
                 this.nextButton.set('disabled', this.strategy.isLast() ? true : false);
                 if (!this.card.expired()) {
-                    this.answerButtons.setStyle('display', 'none');
+                    this.knowButton.setStyle('display', 'none');
+                    this.dunnoButton.setStyle('display', 'none');
                 } else {
-                    this.answerButtons.setStyle('display', '');
+                    this.knowButton.setStyle('display', '');
+                    this.dunnoButton.setStyle('display', '');
                 }
             }
         });

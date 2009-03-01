@@ -1,5 +1,6 @@
 body {
-    font-size: 14px;
+    font-size: 12px;
+    font-family: sans-serif;
 }
 
 .clear {
@@ -78,8 +79,9 @@ body {
 
 .yui-setlist .yui-setlist-head {
     float: left;
-    width: 400px;
+    width: 420px;
     padding-left: 10px;
+    padding-right: 10px;
 }
 
 .yui-setlist .yui-setlist-head h3 a {
@@ -122,12 +124,12 @@ body {
 
 .yui-setlist .yui-setlist-stat {
     float: left;
-    width: 100px;
+    width: 80px;
 }
 
 .yui-setlist .yui-setlist-stat .bucket {
     float: left;
-    width: 10px;
+    width: 14px;
     height: 40px;
 }
 
@@ -262,31 +264,67 @@ body {
     text-align:center;
 }
 
+.yui-practice-prev {
+    float: left;
+}
+
+.yui-practice-next {
+    float: left;
+    margin: 60px 40px 0 40px;
+    height: 55px;
+    width: 25px;
+}
+
 .yui-practice-card {
+    float: left;
     font-size: 24px;
     border: 3px solid #D8E4FA;
     height: 130px;
-    margin: 0 100px 10px 100px;
+    width: 378px;
     padding-top: 40px;
     text-align: center;
     color: ThreeDDarkShadow;
     background-color: #F6F8FB;
+    cursor: pointer;
 }
 
-.yui-practice-nav {
+.yui-practice-know, .yui-practice-dunno {
+    float: left;
+    width: 80px;
+    -moz-border-radius: 5px;
+    color: white;
+    display: block;
+    padding: 5px;
+    text-decoration: none;
     text-align: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
 
-.yui-practice-nav button {
-    margin: 10px 10px 30px 10px;
+.yui-practice-func {
+    clear: both;
 }
 
-.yui-practice-answer {
-    text-align: center;
+.yui-practice-know {
+    background-color: lightgreen;
 }
 
-.yui-practice-answer button {
-    margin: 10px 10px 30px 10px;
+.yui-practice-know:hover {
+    background-color: green;
+}
+
+.yui-practice-dunno {
+    background-color: pink;
+    margin-left: 200px;
+    margin-right: 20px;
+}
+
+.yui-practice-dunno:hover {
+    background-color: red;
+}
+
+.yui-practice-flip {
+    float: left;
 }
 
 .yui-practice-hidden {

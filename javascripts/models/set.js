@@ -96,6 +96,8 @@ Y.extend(Set, Y.Base, {
             if (!key) {
                 that.set('id', resp.data.id);
             }
+            // elmentjük a set új mvcc revision-jét
+            that._rev = resp.data.rev;
             that.dirty = false;
             status("lecke mentése sikeresen befejeződött");
         }, o);

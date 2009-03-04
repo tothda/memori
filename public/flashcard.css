@@ -150,19 +150,19 @@ body {
 }
 
 .yui-setlist .yui-setlist-stat .bucket .bucket_1 {
-    background-color: green;
+    background-color: #43B215;
 }
 
 .yui-setlist .yui-setlist-stat .bucket .bucket_2 {
-    background-color: yellow;
+    background-color: #0A740A;
 }
 
 .yui-setlist .yui-setlist-stat .bucket .bucket_3 {
-    background-color: green;
+    background-color: #1B4F16;
 }
 
 .yui-setlist .yui-setlist-stat .bucket .bucket_4 {
-    background-color: brown;
+    background-color: #0A400B;
 }
 
 .editor {

@@ -29,7 +29,7 @@ end
 
 put '/users' do
   r = db.view('db/user-by-iwiw-id', {:key => params[:iwiw_id]})
-  if r["total_rows"] != 0
+  if r["rows"].length != 0
     o = {"id" => r["rows"][0]["id"]}
   else
     user = {

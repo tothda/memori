@@ -165,6 +165,9 @@ body {
     background-color: #0A400B;
 }
 
+.yui-setlist .yui-setlist-stat .expired {
+    background-color: lightgray;
+}
 .editor {
     overflow: hidden;
     border: none;

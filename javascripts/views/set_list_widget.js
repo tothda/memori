@@ -43,14 +43,20 @@ Y.extend(SetListWidget, Y.Widget, {
         var stat = set.bucket_stat;
         var sum = stat.sum;
         for (var i=0; i<5; i++) {
-            var h = Math.round(barHeight * stat.count(i) / sum);
+            var height = Math.round(barHeight * (stat.count(i) - stat.expired(i)) / sum);
+            var expiredHeight = Math.round(barHeight * stat.expired(i) / sum);
             var bucket = N.create('<div class="bucket"></div');
+            var expiredBar = N.create('<div class="bar expired"></div>');
             var bar = N.create('<div class="bar bucket_'+i+'"></div>');
             bar.setStyles({
-                height: h+'px',
-                marginTop: (barHeight-h) +'px'
+                height: height+'px'
+            });
+            expiredBar.setStyles({
+                height: expiredHeight+'px',
+                marginTop: (barHeight-height-expiredHeight) +'px'
             });
             var count = N.create('<div class="count">'+stat.count(i)+'</div>');
+            bucket.appendChild(expiredBar);
             bucket.appendChild(bar);
             bucket.appendChild(count);
             div.appendChild(bucket);

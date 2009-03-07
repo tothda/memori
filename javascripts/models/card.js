@@ -77,24 +77,13 @@ Y.extend(Card, Y.Base, {
         this.deleted = true;
         this.get('set').dirty = true;
     },
-    know: function() {
-        var b = this.get('bucket');
-        var newBucket = Math.min(b + 1, 4);
-        this.update(newBucket, true);
-    },
-    dunno: function() {
-        this.update(0,false);
-    },
-    update: function(newBucket,result){
-        var s = this.get('set');
-        var oldBucket = this.get('bucket');
-        s.bucket_stat[oldBucket]--;
-        s.bucket_stat[newBucket]++;
+    practice: function(result){
+        var set = this.get('set');
+        var newBucket = set.bucket_stat.practice(this, result);
         this.set('time', new Date());
         this.set('bucket', newBucket);
         this.set('result', result);
         this.get('set').dirty = true;
-
     }
 }, {
     fromObj: function(o){

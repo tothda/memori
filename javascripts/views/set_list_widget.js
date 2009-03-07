@@ -40,17 +40,17 @@ Y.extend(SetListWidget, Y.Widget, {
     },
     renderStat: function(div, set) {
         var barHeight = 30;
-        var s = set.bucket_stat;
-        var sum = s[0]+s[1]+s[2]+s[3]+s[4];
+        var stat = set.bucket_stat;
+        var sum = stat.sum;
         for (var i=0; i<5; i++) {
-            var h = Math.round(barHeight * s[i] / sum);
+            var h = Math.round(barHeight * stat.count(i) / sum);
             var bucket = N.create('<div class="bucket"></div');
             var bar = N.create('<div class="bar bucket_'+i+'"></div>');
             bar.setStyles({
                 height: h+'px',
                 marginTop: (barHeight-h) +'px'
             });
-            var count = N.create('<div class="count">'+set.bucket_stat[i]+'</div>');
+            var count = N.create('<div class="count">'+stat.count(i)+'</div>');
             bucket.appendChild(bar);
             bucket.appendChild(count);
             div.appendChild(bucket);

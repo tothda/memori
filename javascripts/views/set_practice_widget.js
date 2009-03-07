@@ -52,11 +52,11 @@ Y.extend(SetPracticeWidget, Y.Widget, {
                 this.renderNextCard();
                 break;
             case this.knowButton:
-                this.card.know();
+                this.card.practice(true);
                 this.renderNextCard();
                 break;
             case this.dunnoButton:
-                this.card.dunno();
+                this.card.practice(false);
                 this.renderNextCard();
                 break;
             }

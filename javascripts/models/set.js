@@ -1,4 +1,7 @@
 // Set model
+
+//= require "bucket_stat"
+
 function Set() {
     Set.superclass.constructor.apply(this, arguments);
 }
@@ -18,7 +21,7 @@ Y.mix(Set, {
 Y.extend(Set, Y.Base, {
     initializer: function(){
         this.cards = [];
-        this.bucket_stat = [0,0,0,0,0];
+        this.bucket_stat = new BucketStat(this);
         var cf = ['description', 'title'];
         Y.each(cf, function(f){
             this.on(f+'Change', function(){
@@ -135,7 +138,6 @@ Y.extend(Set, Y.Base, {
         }
     },
     fromObj: function(o) {
-        console.log(o);
         var s = new Set({
             title: o.value.title,
             description: o.value.description,
@@ -148,7 +150,7 @@ Y.extend(Set, Y.Base, {
         });
         s._rev = o.value._rev;
         s.loaded = true;
-        s.bucket_stat = [0,0,0,0,0];
+        s.bucket_stat.calc();
         s.created_at = o.value.created_at;
         return s;
     }

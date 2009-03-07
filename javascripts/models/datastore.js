@@ -7,22 +7,6 @@ var ds = (function() {
         setCache = {};
 
     var fetchPersons = function(callback) {
-        var req = opensocial.newDataRequest();
-        req.add(req.newFetchPersonRequest(opensocial.IdSpec.PersonId.VIEWER), 'viewer');
-        req.add(req.newFetchPersonRequest(opensocial.IdSpec.PersonId.OWNER), 'owner');
-        req.send(function(resp) {
-            var extractUser = function(type, resp) {
-                var d = resp.get(type).getData();
-                var u = new User({
-                    id: d.getId(),
-                    name: d.getDisplayName()
-                });
-                return u;
-            };
-            owner = extractUser('owner',resp);
-            viewer = extractUser('viewer',resp);
-            callback();
-        });
     };
 
     var setFromCache = function(key){

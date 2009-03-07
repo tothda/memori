@@ -1,25 +1,15 @@
 // User model
 function User() {
-    User.superclass.constructor.apply(this, arguments);
+    this.sets = Y.Array([]);
 }
 
-Y.mix(User, {
-    NAME: "user",
-    ATTRS: {
-        name: {},
-        id: {}
-    }
-});
-
-Y.extend(User, Y.Base,{
-    initializer: function(){
-        this.sets = Y.Array([]);
-    },
+Y.mix(User.prototype, {
     createSet: function() {
         var s = new Set({});
         s.created_at = new Date();
         s.loaded = true;
         s.dirty = true;
+        s.set('user', this);
         this.sets.push(s);
         return s;
     },
@@ -36,7 +26,7 @@ Y.extend(User, Y.Base,{
                 });
                 that.loaded = true;
                 callback.call(context, that.sets);
-            }, {'author_id': that.get('id')});
+            }, {'user_id': that.id});
         }
     },
     save: function(){
@@ -50,8 +40,36 @@ Y.extend(User, Y.Base,{
             this.sets.splice(idx,1);
         }
     }
-}, {
+});
+
+Y.mix(User, {
     CACHE: {},
+    fetchIwiwUsers: function(callback, context){
+        var req = opensocial.newDataRequest();
+        req.add(req.newFetchPersonRequest(opensocial.IdSpec.PersonId.VIEWER), 'viewer');
+        req.add(req.newFetchPersonRequest(opensocial.IdSpec.PersonId.OWNER), 'owner');
+        req.send(function(resp) {
+            var extractUser = function(type, resp) {
+                var d = resp.get(type).getData();
+                var u = new User();
+                u.iwiw_id = d.getId();
+                u.name = d.getDisplayName();
+                return u;
+            };
+            User.owner = extractUser('owner',resp);
+            User.viewer = extractUser('viewer',resp);
+            callback.call(context);
+        });
+    },
+    login: function(user,callback,context) {
+        transport.PUT("/users", function(resp){
+            user.id = resp.data.id;
+            callback.call(context, user);
+        }, {
+            iwiw_id: user.iwiw_id,
+            name: user.name
+        });
+    },
     getUser: function(id){
         return User.CACHE[id];
     },
@@ -75,12 +93,11 @@ Y.extend(User, Y.Base,{
                 User.friendsById = {};
                 var friends = resp.get('friends').getData();
                 friends.each(function(f){
-                    var u = new User({
-                        id: f.getId(),
-                        name: f.getDisplayName()
-                    });
+                    var u = new User();
+                    u.iwiw_id = f.getId();
+                    u.name = f.getDisplayName();
                     User.friends.push(u);
-                    User.CACHE[u.get('id')] = u;
+                    User.CACHE[u.iwiw_id] = u;
                 });
                 callback.call(context, User.friends);
             });

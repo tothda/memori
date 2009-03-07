@@ -3,41 +3,65 @@ require 'rubygems'
 require 'sinatra'
 require 'couchrest'
 require 'sprockets'
-# require 'ruby-debug'
+require 'ruby-debug'
+
+set :app_file, __FILE__
 
 module Memori
   class << self
     def root
       File.dirname(__FILE__)
     end
+
+    def version
+      [0,1]
+    end
   end
 end
 
 require 'ruby/sprocket_app'
 
-db = CouchRest.database!("http://127.0.0.1:5984/memori")
+db = CouchRest.database!("http://couch.dbx.hu:5984/memori")
 
 get '/' do
-  "Hello világ!"
+  "Memori - version: #{Memori.version.join(".")}"
+end
+
+put '/users' do
+  r = db.view('db/user-by-iwiw-id', {:key => params[:iwiw_id]})
+  if r["total_rows"] != 0
+    o = {"id" => r["rows"][0]["id"]}
+  else
+    user = {
+      :name => params[:name],
+      :iwiw_id => params[:iwiw_id],
+      :type => "user"
+    }
+    r = db.save_doc(user)
+    o = {"id" => r["id"]}
+  end
+  JSON.dump o
 end
 
 get '/javascripts/sprocket.js' do
   SprocketsApplication.source
 end
 
-post '/users' do
-  puts params[:test]
+get '/users' do
+  options.class.to_s
 end
 
 post '/sets/' do
   json = JSON.parse(params[:json])
+  debugger
+  json.delete("_method")
   resp = db.save_doc(json)
   JSON.dump resp
 end
 
 get '/sets/' do
-  author_id = params[:author_id]
-  resp = db.view('db/user-sets', {:endkey => [author_id], :startkey => [author_id, "9999"], :descending => "true"})
+  user_id = params[:user_id]
+  resp = db.view('db/sets-by-user-and-date', {:endkey => [user_id], :startkey => [user_id, "9999"], :descending => "true"})
   JSON.dump resp
 end
 
@@ -48,6 +72,7 @@ end
 
 put '/sets/:key' do
   json = JSON.parse(params[:json])
+  json.delete("_method")
   resp = db.save_doc(json)
   JSON.dump resp
 end

@@ -176,8 +176,11 @@ function yuiTest() {
             contentBox: '#fc-friends'
         });
         status('felhasználó keresése');
-        ds.getOwner(onOwnerLoaded);
-
+        User.fetchIwiwUsers(function(){
+            User.login(User.owner, function(){
+                controller.fire('allSets', User.owner.id);
+            });
+        });
     });
 
 }

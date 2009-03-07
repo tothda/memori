@@ -60,6 +60,7 @@ Y.extend(Set, Y.Base, {
         o.description = this.get('description');
         o._rev = this._rev;
         o._id = this.get('id');
+        o.user_id = this.get('user').id;
         o.type = "set";
         o.created_at = this.created_at;
         o.cards = [];
@@ -134,12 +135,20 @@ Y.extend(Set, Y.Base, {
         }
     },
     fromObj: function(o) {
+        console.log(o);
         var s = new Set({
             title: o.value.title,
             description: o.value.description,
             id: o.id
         });
-        s.bucket_stat = o.value.bucket_stat;
+        Y.each(o.value.cards, function(c){
+            card = Card.fromObj(c);
+            card.set('set', s);
+            s.cards.push(card);
+        });
+        s._rev = o.value._rev;
+        s.loaded = true;
+        s.bucket_stat = [0,0,0,0,0];
         s.created_at = o.value.created_at;
         return s;
     }

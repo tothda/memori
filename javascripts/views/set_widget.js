@@ -129,7 +129,6 @@ Y.extend(SetWidget, Y.Widget, {
                     if ( maxHeight )
                         adjustedHeight = Math.min(maxHeight, adjustedHeight);
                     if ( adjustedHeight > node.get('clientHeight')) {
-                        Y.log('adjustedHeight: '+adjustedHeight);
                         node.setStyle('height',adjustedHeight + "px");
                         item.node.setStyle('height',adjustedHeight + "px");
                     }
@@ -146,7 +145,6 @@ Y.extend(SetWidget, Y.Widget, {
                 } else {
                     // akkor hozunk létre kártyát, ha az adott item-hez még nincs, és az editor-ba be lett írva valami
                     if (val) {
-                        Y.log("create card");
                         item.card = item.set.createCard();
                         item.pair.card = item.card;
                         item.card.set(item.side, val);

@@ -53,7 +53,6 @@ end
 
 post '/sets/' do
   json = JSON.parse(params[:json])
-  debugger
   json.delete("_method")
   resp = db.save_doc(json)
   JSON.dump resp

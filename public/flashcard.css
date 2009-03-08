@@ -171,6 +171,7 @@ body {
 .editor {
     overflow: hidden;
     border: none;
+    font-size: 16px;
 }
 
 #card-editor {
@@ -241,7 +242,7 @@ body {
 }
 
 .trash {
-    background-image:url('/static/images/trash.gif');
+    background-image:url('/images/trash.gif');
     background-repeat: no-repeat;
     background-position:center center;
     display:block;

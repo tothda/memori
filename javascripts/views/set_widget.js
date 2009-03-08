@@ -56,7 +56,6 @@ Y.extend(SetWidget, Y.Widget, {
         cb.appendChild(this.deleteNode);
     },
     _renderCards: function(){
-        this.cardsTable;
         this.cardsTable.set('innerHTML', '');
         var cards = this.get('set').getCards();
         this.start = {};
@@ -65,7 +64,10 @@ Y.extend(SetWidget, Y.Widget, {
         Y.each(cards, function(c){
             prev = this._renderCard(prev,c);
         }, this);
-        prev = this._renderCard(prev);
+        var emptyCardNo = Math.max(0, 3 - cards.length); // legalább 3 hely látható legyen mindig
+        for (var i = emptyCardNo; i > 0; i--) {
+            prev = this._renderCard(prev);   
+        }        
         prev.next = this.end;
         this.end.prev = prev;
     },
@@ -74,7 +76,7 @@ Y.extend(SetWidget, Y.Widget, {
         var tr = N.create('<tr></tr>');
         var set = this.get('set');
         var renderSide = function(side,prev){
-            var txt = card ? card.get(side) : '';
+            var txt = card ? card.get(side) : '&nbsp;';
             var listElem = {
                 node: N.create('<td class="'+side+'">'+txt+'</td>'),
                 card: card,
@@ -192,8 +194,8 @@ Y.extend(SetWidget, Y.Widget, {
                 positionOn: function(listElem){
                     item = listElem;
                     var n = listElem.node;
-                    var height = n.getComputedStyle("height").replace(/px/,'');
-                    var width = n.getComputedStyle("width").replace(/px/,'');
+                    var height = parseInt(n.getComputedStyle("height").replace(/px/,'')) + 6;
+                    var width = parseInt(n.getComputedStyle("width").replace(/px/,'')) + 27;
                     //var width = n.get('offsetWidth');
                     //var height = n.get('offsetHeight');
                     var left = n.get('offsetLeft');

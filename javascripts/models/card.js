@@ -65,12 +65,6 @@ Y.extend(Card, Y.Base, {
         c.bucket = this.get('bucket');
         c.time = this.get('time');
         c.result = this.get('result');
-        c.deleted = this.deleted;
-        if (!this.newObj()) {
-            c.id = this.id();
-        } else {
-            c.guid = this.id();
-        }
         return c;
     },
     destroy: function(){

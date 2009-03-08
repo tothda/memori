@@ -58,7 +58,6 @@ Y.extend(Set, Y.Base, {
     },
     toObj: function(){
         var o = {};
-        var guids = {};
         o.title = this.get('title');
         o.description = this.get('description');
         o._rev = this._rev;
@@ -68,13 +67,12 @@ Y.extend(Set, Y.Base, {
         o.created_at = this.created_at;
         o.cards = [];
         Y.each(this.cards, function(c){
-            if (c.shouldSave()) {
+            if (!c.deleted) {
                 var cc = c.toObj();
-                guids[c.id()] = c;
                 o.cards.push(cc);
             }
         }, this);
-        return [o, guids];
+        return o;
     },
     save: function(){
         if (!this.dirty) {
@@ -84,15 +82,9 @@ Y.extend(Set, Y.Base, {
         var key = this.get('id');
         var method = key ? 'PUT' : 'POST';
         var url = "/sets/" + (key ? key : "");
-        var tmpArr = this.toObj();
-        var o = tmpArr[0];
-        var guidHash = tmpArr[1];
+        var o = this.toObj();
         var that = this;
         transport[method](url, function(resp) {
-            // Y.each(resp.data.cards, function(id,guid){
-            //     var card = guidHash[guid];
-            //     card.set('id', id);
-            // });
             if (!key) {
                 that.set('id', resp.data.id);
             }

@@ -53,6 +53,7 @@ Y.extend(Set, Y.Base, {
             set: this
         });
         this.cards.push(c);
+        this.bucket_stat.createCard();
         this.dirty = true;
         return c;
     },

@@ -5,6 +5,7 @@ function BucketStat(set){
     this.card_count = [0,0,0,0,0];
     this.card_expired = [0,0,0,0,0];
     this.sum = 0;
+    this.expired_count = 0;
 }
 
 Y.mix(BucketStat.prototype, {
@@ -16,6 +17,7 @@ Y.mix(BucketStat.prototype, {
             me.sum++;
             if (c.expired()) {
                 me.card_expired[b]++;
+                me.expired_count++;
             }
         });
     },
@@ -36,7 +38,17 @@ Y.mix(BucketStat.prototype, {
         this.card_count[newBucket]++;
         if (card.expired()){
             this.card_expired[oldBucket]--;
+            this.expired_count[oldBucket]--;
         }
         return newBucket;
+    },
+    /**
+     * új kártya adódott a leckéhez
+     **/
+    createCard: function() {
+        this.sum++;
+        this.expired_count++;
+        this.card_count[0]++;
+        this.card_expired[0]++;
     }
 });

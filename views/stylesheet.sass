@@ -1,0 +1,63 @@
+!brown1 = #a37102
+!brown2 = #c59d49
+!blue1 = #6ba2de
+
+#test-wrapper
+  :width 750px
+  :height 600px
+  :margin 50px 200px
+  :border 3px solid gray
+  :padding 3px
+
+#memori-content
+  :font
+    :size 12px
+    :family "Verdana"
+
+  #nav-area
+    :margin-top 100px
+    :width 150px
+    :float left
+    #nav
+      :margin-left 10px
+      :background-color = !brown2
+      :-moz-border-radius-topleft 10px
+      :-moz-border-radius-bottomleft 10px
+
+      ul
+        :padding-top 20px
+        li
+          :margin-bottom 10px
+          a
+            :text-transform uppercase
+            :display block
+            :padding 5px 5px 5px 15px
+            :margin-left 10px
+            :background-color = !brown1
+            :-moz-border-radius-topleft 5px
+            :-moz-border-radius-bottomleft 5px
+            :color white
+            :font-size 11px
+            :text-decoration none
+        li.active a
+          :background-color = !blue1
+          :margin 0
+          :-moz-border-radius none
+
+  #board-area
+    :width 600px
+    :float left
+    #board
+      :height 500px 
+      :margin 10px 10px 10px 0
+      :background-color = !brown2
+      :border 6px solid
+      :border-color = !brown1
+      :-moz-border-radius 10px
+      #status-bar
+        :height 30px
+        :background-color = !brown1
+
+
+
+    

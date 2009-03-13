@@ -27,6 +27,11 @@ get '/' do
   "Memori - version: #{Memori.version.join(".")}"
 end
 
+get '/memori.css' do
+  content_type 'text/css', :charset => 'utf-8'
+  sass :stylesheet  
+end
+
 put '/users' do
   r = db.view('db/user-by-iwiw-id', {:key => params[:iwiw_id]})
   if r["rows"].length != 0

@@ -5,7 +5,7 @@
 #test-wrapper
   :width 750px
   :height 600px
-  :margin 50px 200px
+  :margin 50px auto
   :border 3px solid gray
   :padding 3px
 
@@ -13,17 +13,18 @@
   :font
     :size 12px
     :family "Verdana"
+  :padding 10px
 
   #board-wrapper
     :position relative
-    :margin-left 150px
-    :width 600px
-    :float left
+    :width 590px
+    :float right
 
     #navigation-wrapper
       :position absolute
       :top 100px
       :width 140px
+      :max-width 140px
       :left -140px
       :background-color = !brown2
       :-moz-border-radius-topleft 10px
@@ -32,13 +33,15 @@
       ul#navigation
         :margin-left -15px
         :width 170px
+        :height 130px
         :padding 18px 0
-        :background url(/images/aktivmenu.png) no-repeat
+
+        :back\ground-color transparent
         li
-          :margin-bottom 10px
+          :padding-bottom 10px
           a
             :text-transform uppercase
-            :display block
+            :display inline-block
             :padding 5px 5px 5px 15px
             :margin-left 25px
             :margin-right 15px
@@ -48,16 +51,23 @@
             :color white
             :font-size 11px
             :text-decoration none
+        li a
+          :display block
         li.active a
+          :background-color = !blue1
+        li.active > a
           :background none
         li.last
-          :margin-bottom 0
+          :padding-bottom 0
+
       ul#navigation.position-1
         :background-position 11px 14px
-        
+
+    #navigation-wrapper > ul#navigation
+      :background url(/images/aktivmenu.png) no-repeat
+       
     #board
       :height 500px 
-      :margin 10px 10px 10px 0
       :background-color = !brown2
       :border 6px solid
       :border-color = !brown1

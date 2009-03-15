@@ -61,7 +61,6 @@ function yuiTest() {
         //= require "views/set_list_widget"
         //= require "views/set_list"
         //= require "views/set_practice_widget"
-        //= require "views/sidebar_widget.js"
         //= require "views/statusbar_widget.js"
         //= require "views/friends_widget.js"
 
@@ -82,6 +81,8 @@ function yuiTest() {
             });
         });
 
+        //= require "views/sidebar"
+
         controller.publish('allSets');
         controller.subscribe('allSets', function(userId){
             Y.log('allSets '+userId, 'info', 'fc-pubsub');
@@ -101,13 +102,13 @@ function yuiTest() {
 
         controller.publish('newSet');
         controller.subscribe('newSet', function(){
-            setListWidget.hide();
-            setPracticeWidget.hide();
-            friendsWidget.hide();
-            var s = User.owner.createSet();
-            setWidget.set('set',s);
-            setWidget.render();
-            setWidget.show();
+            // setListWidget.hide();
+            // setPracticeWidget.hide();
+            // friendsWidget.hide();
+            // var s = User.owner.createSet();
+            // setWidget.set('set',s);
+            // setWidget.render();
+            // setWidget.show();
         });
 
         controller.publish('save');
@@ -132,15 +133,15 @@ function yuiTest() {
 
         controller.publish('friends');
         controller.subscribe('friends', function(){
-            Y.log('friends', 'info', 'fc-pubsub');
-            User.getFriends(function(friends){
-                friendsWidget.set('friends', friends);
-                setWidget.hide();
-                setListWidget.hide();
-                setPracticeWidget.hide();
-                friendsWidget.render();
-                friendsWidget.show();
-            });
+            // Y.log('friends', 'info', 'fc-pubsub');
+            // User.getFriends(function(friends){
+            //     friendsWidget.set('friends', friends);
+            //     setWidget.hide();
+            //     setListWidget.hide();
+            //     setPracticeWidget.hide();
+            //     friendsWidget.render();
+            //     friendsWidget.show();
+            // });
         });
 
         var onOwnerLoaded = function(owner) {
@@ -148,11 +149,6 @@ function yuiTest() {
             User.owner = owner;
             controller.fire('allSets', User.owner.get('id'));
         };
-
-        var sideBarWidget = new SideBarWidget({
-            contentBox: '#fc-nav'
-        });
-        //sideBarWidget.render();
 
         var status = function(msg){
             statusBarWidget.fire('status:print', msg);

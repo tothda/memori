@@ -49,6 +49,14 @@ function yuiTest() {
         if (iwiw) {
             gadgets.window.adjustHeight(542);
         }
+        
+        Y.mix(Y.DOM, {
+            html: function(node, htmlString){
+                node.innerHTML = htmlString;
+            }
+        });
+
+        Y.Node.addDOMMethods(['html']);
 
         //= require "utils/transport"
         //= require "models/datastore"
@@ -82,6 +90,7 @@ function yuiTest() {
         });
 
         //= require "views/sidebar"
+        //= require "views/set"
 
         controller.publish('allSets');
         controller.subscribe('allSets', function(userId){

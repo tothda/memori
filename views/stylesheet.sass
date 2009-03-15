@@ -2,6 +2,7 @@
 
 !brown1 = #a37102
 !brown2 = #c59d49
+!brown10 = #F3F0EA
 !blue1 = #6ba2de
 !txt_main = #414142
 !txt_light = #6F6F6F
@@ -184,3 +185,47 @@
       #status-bar
         :height = !status_bar_height
         :background-color = !brown1
+
+// SetView
+#board-content
+  #cards-table-wrapper
+    :position relative
+    :margin 20px 0 0 23px
+    :padding-bottom 20px
+  #cards-table
+    :width 530px
+    :background-color white
+    :-moz-border-radius 10px
+    :padding 20px
+    :border-collapse separate
+    tr
+      :height 20px
+      td.flip, td.front
+        :width 45%
+        :border-bottom 2px solid
+        :border-color = !brown2
+        :padding 3px 6px 3px 21px
+      td.flip
+        :border-right 1px solid
+        :border-color = !brown2
+      td.front
+        :border-left 1px solid
+        :border-color = !brown2        
+      td.trash
+        :width 10%
+        :padding-left 15px
+        a
+          :background url('/images/trash.gif') no-repeat
+          :width 10px
+          :display block
+          :text-decoration none
+    tr.last
+      td
+        :border-bottom none
+
+#card-editor
+  :position absolute
+  :top -2000px
+  :background-color = !brown10
+  :padding 3px 6px 3px 21px
+  :border none

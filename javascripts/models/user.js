@@ -61,14 +61,23 @@ Y.mix(User, {
             callback.call(context);
         });
     },
-    login: function(user,callback,context) {
-        transport.PUT("/users", function(resp){
-            user.id = resp.data.id;
-            callback.call(context, user);
-        }, {
-            iwiw_id: user.iwiw_id,
-            name: user.name
-        });
+    login: function(callback, context) {
+        if (iwiw) {
+            User.fetchIwiwUsers(function(){
+                transport.PUT("/users", function(resp){
+                    User.owner.id = resp.data.id;
+                    callback.call(context);
+                }, {
+                    iwiw_id: User.owner.iwiw_id,
+                    name: User.owner.name
+                });                
+            });
+        } else {
+            User.owner = new User();
+            User.owner.name = "Tóth Dávid";
+            User.owner.id = "a35541a54b9a2bccf1f53cc0a68bc2de";
+            callback.call(context);
+        }
     },
     getUser: function(id){
         return User.CACHE[id];

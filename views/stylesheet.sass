@@ -1,6 +1,20 @@
+// colors
+
 !brown1 = #a37102
 !brown2 = #c59d49
 !blue1 = #6ba2de
+!txt_main = #414142
+!txt_light = #6F6F6F
+
+// dimensions
+
+!board_height = 500px
+!menu_bar_height = 30px
+!status_bar_height = 15px
+!board_content_height = !board_height - !menu_bar_height - !status_bar_height
+
+.clear
+  :clear both
 
 #test-wrapper
   :width 750px
@@ -14,6 +28,7 @@
     :size 12px
     :family "Verdana"
   :padding 10px
+  :color = !txt_main
 
   #board-wrapper
     :position relative
@@ -67,15 +82,100 @@
       :background url(/images/aktivmenu.png) no-repeat
        
     #board
-      :height 500px 
+      :height = !board_height
       :background-color = !brown2
       :border 6px solid
       :border-color = !brown1
       :-moz-border-radius 10px
-      #status-bar
-        :height 30px
+      #menu-bar
+        :height = !menu_bar_height
         :background-color = !brown1
 
 
 
+      #board-content
+        :height = !board_content_height
+        :overflow auto
+        ul#set-list
+          li
+            :background-color white
+            :border-bottom 1px solid
+            :border-color = !brown1
+            :padding 5px
+            .star        
+              :width 22px
+              :height 20px
+              :float left
+            .star.star-full
+              :background url('/images/star_full.gif') no-repeat
+            .star.star-empty
+              :background url('/images/star_empty.gif') no-repeat
+            .descr
+              :width 340px
+              :float left
+              :overflow hidden
+              .title
+                :font
+                  :size 12px
+                  :weight bold
+              .description
+                :font
+                  :size 11px
+                  :style italic
+                  :color = !txt_light
+            .stat
+              :width 75px
+              :float left
+              :padding 3px 10px 0 20px
+              .bucket
+                :float left
+                :width 14px
+                :height 45px
+                .count
+                  :font-size 10px
+                  :color gray
+                  :border-top 1px solid
+                  :text-align center
+                  :width 14px
+                .bar
+                  :margin 0 1px
+                  :width 12px
+                .bucket_0
+                  :background-color red
+                .bucket_1
+                  :background-color blue
+                .bucket_2
+                  :background-color blue
+                .bucket_3
+                  :background-color blue
+                .bucket_4
+                  :background-color blue
+                .expired
+                  :background-color lightgray
+            .func
+              :float left
+              :width 78px
+              .func-button
+                :padding 15px 5px 5px 5px
+                .func-left, .func-right
+                  :padding 2px
+                  :color white
+                  :float left
+                  :width 30px
+                  :line-height 1.2
+                  :text-align center
+                  .count
+                    :font
+                      :size 14px
+                .func-left
+                  :background-color = !brown1
+                  :-moz-border-radius-topleft 5px
+                  :-moz-border-radius-bottomleft 5px                
+                .func-right
+                  :background-color = !blue1
+                  :-moz-border-radius-topright 5px
+                  :-moz-border-radius-bottomright 5px                
     
+      #status-bar
+        :height = !status_bar_height
+        :background-color = !brown1

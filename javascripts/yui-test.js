@@ -59,6 +59,7 @@ function yuiTest() {
 
         //= require "views/set_widget"
         //= require "views/set_list_widget"
+        //= require "views/set_list"
         //= require "views/set_practice_widget"
         //= require "views/sidebar_widget.js"
         //= require "views/statusbar_widget.js"
@@ -86,13 +87,15 @@ function yuiTest() {
             Y.log('allSets '+userId, 'info', 'fc-pubsub');
             var u = User.getUser(userId) || User.owner;
             u.getSets(function(sets){
-                setListWidget.set('sets', sets);
+                //setListWidget.set('sets', sets);
                 setWidget.hide();
                 setPracticeWidget.hide();
                 friendsWidget.hide();
-                setListWidget.render();
-                setListWidget.renderUI();
-                setListWidget.show();
+                //setListWidget.render();
+                //setListWidget.renderUI();
+                //setListWidget.show();
+                setList.setSets(sets);
+                setList.render();
             });
         });
 
@@ -149,7 +152,7 @@ function yuiTest() {
         var sideBarWidget = new SideBarWidget({
             contentBox: '#fc-nav'
         });
-        sideBarWidget.render();
+        //sideBarWidget.render();
 
         var status = function(msg){
             statusBarWidget.fire('status:print', msg);
@@ -158,11 +161,13 @@ function yuiTest() {
         var statusBarWidget = new StatusBarWidget({
             contentBox: '#fc-status'
         });
-        statusBarWidget.render();
+        //statusBarWidget.render();
 
         var setListWidget = new SetListWidget({
             contentBox: "#fc-main"
         });
+
+        var setList = new SetListView();
 
         var setWidget = new SetWidget({
             contentBox: '#fc-set'
@@ -176,10 +181,15 @@ function yuiTest() {
             contentBox: '#fc-friends'
         });
         status('felhasználó keresése');
-        User.fetchIwiwUsers(function(){
-            User.login(User.owner, function(){
-                controller.fire('allSets', User.owner.id);
-            });
+
+        var div = function(cls) {
+            return N.create('<div class="'+cls+'"></div>');
+        };
+
+        var board = Y.get('#board-content');
+
+        User.login(function(){
+            controller.fire('allSets', User.owner.id);
         });
     });
 

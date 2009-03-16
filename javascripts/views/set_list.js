@@ -15,14 +15,19 @@ Y.mix(SetListView.prototype, {
         var me = this;
         this.listN = N.create('<ul id="set-list"></ul>');
         board.html('');
-        Y.each(this.sets, function(set){
-            me.renderSet(set);
-        });
+        for (var i=0,l=me.sets.length; i<l; i++){
+            var cls = (i == 0) ? 'first' : (i == l-1 ? 'last' : '');
+            var set = me.sets[i];
+            me.renderSet(set,cls);
+        }
         var bc = Y.get('#board-content');
         bc.appendChild(this.listN);
     },
-    renderSet: function(set){
+    renderSet: function(set, cls){
         var item = N.create('<li></li>');
+        if (cls) {
+            item.addClass(cls);
+        }
         var star = div('star');
         var descr = div('descr');
         var stat = div('stat');

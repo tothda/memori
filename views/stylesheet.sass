@@ -103,6 +103,7 @@
         :height = !board_content_height
         :overflow auto
         ul#set-list
+          :padding 20px
           li
             :background-color white
             :border-bottom 1px solid
@@ -117,12 +118,12 @@
             .star.star-empty
               :background url('/images/star_empty.gif') no-repeat
             .descr
-              :width 340px
+              :width 300px
               :float left
               :overflow hidden
               .title
                 :font
-                  :size 14px
+                  :size 13px
                   :weight bold
                 a
                   :color = !txt_main
@@ -186,6 +187,12 @@
                   :background-color = !blue1
                   :-moz-border-radius-topright 5px
                   :-moz-border-radius-bottomright 5px                
+          li.first
+            :-moz-border-radius-topleft 10px
+            :-moz-border-radius-topright 10px
+          li.last
+            :-moz-border-radius-bottomleft 10px
+            :-moz-border-radius-bottomright 10px            
     
       #status-bar
         :height = !status_bar_height

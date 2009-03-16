@@ -15,6 +15,7 @@ Y.mix(SetListView.prototype, {
         var me = this;
         this.listN = N.create('<ul id="set-list"></ul>');
         board.html('');
+        menuBar.html('');
         for (var i=0,l=me.sets.length; i<l; i++){
             var cls = (i == 0) ? 'first' : (i == l-1 ? 'last' : '');
             var set = me.sets[i];

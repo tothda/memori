@@ -122,8 +122,13 @@
               :overflow hidden
               .title
                 :font
-                  :size 12px
+                  :size 14px
                   :weight bold
+                a
+                  :color = !txt_main
+                  :text-decoration none
+                  &:hover
+                    :text-decoration underline
               .description
                 :font
                   :size 11px
@@ -190,18 +195,19 @@
 #board-content
   #cards-table-wrapper
     :position relative
-    :margin 20px 0 0 23px
+    :margin 20px
     :padding-bottom 20px
   #cards-table
-    :width 530px
     :background-color white
     :-moz-border-radius 10px
     :padding 20px
     :border-collapse separate
+    :font
+      :size 15px
     tr
       :height 20px
       td.flip, td.front
-        :width 45%
+        :width 48%
         :border-bottom 2px solid
         :border-color = !brown2
         :padding 3px 6px 3px 21px
@@ -229,3 +235,28 @@
   :background-color = !brown10
   :padding 3px 6px 3px 21px
   :border none
+  :font
+    :size 14px
+
+#set-header
+  :background-color white
+  :-moz-border-radius 10px
+  :margin 20px
+  :padding 20px
+
+  #set-title, #set-description
+    :display block
+    :padding 3px
+    :margin 0 auto
+    :width 460px
+    :border 1px solid
+    :border-color = !brown2
+
+  #set-title
+    :margin-bottom 10px
+    :font-size 16px
+  #set-description
+    :font-size 14px
+
+.written
+  :font-family "Comic Sans MS", "Times New Roman", serif

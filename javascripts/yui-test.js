@@ -78,15 +78,15 @@ function yuiTest() {
         Y.augment(controller, Y.Event.Target);
         controller.publish('showSet');
         controller.subscribe('showSet', function(id){
-            Y.log('showSet '+id, 'info', 'fc-pubsub');
-            Set.getSet(id, function(set){
-                setWidget.set('set', set);
-                setListWidget.hide();
-                friendsWidget.hide();
-                setPracticeWidget.hide();
-                setWidget.render();
-                setWidget.show();
-            });
+            // Y.log('showSet '+id, 'info', 'fc-pubsub');
+            // Set.getSet(id, function(set){
+            //     setWidget.set('set', set);
+            //     setListWidget.hide();
+            //     friendsWidget.hide();
+            //     setPracticeWidget.hide();
+            //     setWidget.render();
+            //     setWidget.show();
+            // });
         });
 
         //= require "views/sidebar"
@@ -97,15 +97,7 @@ function yuiTest() {
             Y.log('allSets '+userId, 'info', 'fc-pubsub');
             var u = User.getUser(userId) || User.owner;
             u.getSets(function(sets){
-                //setListWidget.set('sets', sets);
-                setWidget.hide();
-                setPracticeWidget.hide();
-                friendsWidget.hide();
-                //setListWidget.render();
-                //setListWidget.renderUI();
-                //setListWidget.show();
-                setList.setSets(sets);
-                setList.render();
+                setList.setSets(sets).render();
             });
         });
 
@@ -191,6 +183,7 @@ function yuiTest() {
             return N.create('<div class="'+cls+'"></div>');
         };
 
+        var menuBar = Y.get('#menu-bar');
         var board = Y.get('#board-content');
 
         User.login(function(){

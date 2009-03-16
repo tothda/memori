@@ -8,15 +8,60 @@ Y.mix(setView, {
             me.set = User.owner.createSet();
             me.render();
         });
+        controller.subscribe('showSet', function(id) {
+            Set.getSet(id, function(set){
+                me.set = set;
+                me.render();
+            });
+        });
     },
     render: function() {
         var me = this;
+        menuBar.html('');
+        menuBar.appendChild(me.renderMenu());
         board.html('');
+        board.appendChild(me.renderSetHeader());
         board.appendChild(me.renderCardsTable());
+    },
+    renderMenu: function() {
+        var me = this;
+        var node = N.create('<div></div>');
+        var saveButton = N.create('<button>Mentés</button>');
+        var deleteButton = N.create('<button>Törlés</button>');
+        var practiceButton = N.create('<button>Gyakorlás</button>');
+        node.on('click', function(e){
+            switch (e.target) {
+            case saveButton:
+                me.set.save();
+            }
+        });
+        node.appendChild(saveButton);
+        node.appendChild(deleteButton);
+        node.appendChild(practiceButton);
+        return node;
+    },
+    renderSetHeader: function() {
+        var me = this;
+        var node = N.create('<div id="set-header" class="written"></div>');
+        this.titleNode = N.create('<input type="text class="written"" id="set-title" />').set('value', me.set.get('title'));
+        this.descriptionNode = N.create('<textarea id="set-description"></textarea>').set('value', me.set.get('description'));;
+        node.appendChild(this.titleNode);
+        node.appendChild(this.descriptionNode);
+        Y.on('change', function(e){
+            switch (e.target) {
+            case me.titleNode:
+                me.set.set('title', me.titleNode.get('value'));
+                break;
+            case me.descriptionNode:
+                me.set.set('description', me.descriptionNode.get('value'));
+                break;
+            }
+        }, node);
+        return node;
     },
     renderCardsTable: function(){
         var me = this;
-        me.table = N.create('<table id="cards-table"></table>');
+        me.table = N.create('<table id="cards-table" class="written"></table>');
         me.lastRow = N.create('<tr class="last"><td class="flip"></td><td class="front"></td><td class="trash"></td></tr>');
         me.table.appendChild(me.lastRow);
         this.start = {};
@@ -80,7 +125,7 @@ Y.mix(setView, {
     initEditor: function(){
         var me = this;
         me.editor = (function(){
-            var t = N.create('<textarea id="card-editor" class="editor"></textarea>');
+            var t = N.create('<textarea id="card-editor" class="editor written"></textarea>');
             var item;
             var blurHandler, tabHandler;
 

@@ -1,6 +1,4 @@
-function SetListView() {
-    this.listN = N.create('<ul id="set-list"></ul>');
-}
+function SetListView() {}
 
 // static methods
 Y.mix(SetListView, {
@@ -15,11 +13,11 @@ Y.mix(SetListView.prototype, {
     },
     render: function(){
         var me = this;
-        for (var i = 0; i < 4; i++) {
-            Y.each(this.sets, function(set){
-                me.renderSet(set);
-            });
-        }
+        this.listN = N.create('<ul id="set-list"></ul>');
+        board.html('');
+        Y.each(this.sets, function(set){
+            me.renderSet(set);
+        });
         var bc = Y.get('#board-content');
         bc.appendChild(this.listN);
     },
@@ -46,11 +44,15 @@ Y.mix(SetListView.prototype, {
         return node;
     },
     renderDescription: function(set){
-        var title = set.get('title');
+        var title = set.get('title') || 'Cím nélküli lecke';
         var description = set.get('description');
         var node = div('descr');
-        node.appendChild(div('title').set('innerHTML',title));
+        var titleNode = div('title').set('innerHTML','<a href="#">'+title+'</a>');
+        node.appendChild(titleNode);
         node.appendChild(div('description').set('innerHTML',description));
+        titleNode.on('click', function(){
+            controller.fire('showSet', set.id());
+        });
         return node;
     },
     renderFunc: function(set) {

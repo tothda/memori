@@ -66,8 +66,8 @@ Y.extend(SetWidget, Y.Widget, {
         }, this);
         var emptyCardNo = Math.max(0, 3 - cards.length); // legalább 3 hely látható legyen mindig
         for (var i = emptyCardNo; i > 0; i--) {
-            prev = this._renderCard(prev);   
-        }        
+            prev = this._renderCard(prev);
+        }
         prev.next = this.end;
         this.end.prev = prev;
     },
@@ -228,7 +228,15 @@ Y.extend(SetWidget, Y.Widget, {
             this.get('set').set('description', this.descriptionNode.get('value'));
             break;
         }
-    },
+        switch (e.target) {
+        case this.titleNode:
+            this.get('set').set('title', this.titleNode.get('value'));
+            break;
+        case this.descriptionNode:
+            this.get('set').set('description', this.descriptionNode.get('value'));
+            break;
+        }
+o    },
     _bindHighlightHandlers: function(){
         function doIt(node) {
             node.on('focus', function(e) { e.target.addClass('focus');});

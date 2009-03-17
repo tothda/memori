@@ -13,7 +13,7 @@
                 return ret.join('&');
             };
 
-            var iwiwRequest = function(path, method, callback, params) {
+            var iwiwRequest = function(method, path, callback, params) {
                 var transportParams ={};
                 transportParams[gadgets.io.RequestParameters.METHOD] = method;
 
@@ -36,7 +36,7 @@
                 gadgets.io.makeRequest(url,callback,transportParams);
             };
 
-            var normalRequest = function(path, method, callback, params){
+            var normalRequest = function(method, path, callback, params){
                 params = params || {};
                 params['opensocial_owner_id'] = 'sandbox.iwiw.hu:Xm9W017W9Vg';
 
@@ -65,20 +65,28 @@
                 });
             };
 
-            var makeRequest = iwiw ? iwiwRequest : normalRequest;
+            var makeRequest = function(method, path, callback, params, statusMsg){
+                var request = iwiw ? iwiwRequest : normalRequest;
+                statusBar.working(statusMsg);
+                var patchedCallback = function(){
+                    statusBar.finished();
+                    callback.apply(null, arguments);
+                };
+                request(method, path, patchedCallback, params);
+            };
 
             return {
-                GET: function(path, callback, params) {
-                    makeRequest(path, "GET", callback, params);
+                GET: function(path, callback, params, statusMsg) {
+                    makeRequest('GET', path, callback, params, statusMsg);
                 },
-                POST: function(path, callback, params) {
-                    makeRequest(path, "POST", callback, params);
+                POST: function(path, callback, params, statusMsg) {
+                    makeRequest('POST', path, callback, params, statusMsg);
                 },
-                PUT: function(path, callback, params) {
-                    makeRequest(path, "PUT", callback, params);
+                PUT: function(path, callback, params, statusMsg) {
+                    makeRequest('PUT', path, callback, params, statusMsg);
                 },
-                DELETE: function(path, callback, params) {
-                    makeRequest(path, "DELETE", callback, params);
+                DELETE: function(path, callback, params, statusMsg) {
+                    makeRequest('DELETE', path,callback, params, statusMsg);
                 }
             };
         }());

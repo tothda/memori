@@ -2,6 +2,7 @@
 
 !brown1 = #a37102
 !brown2 = #c59d49
+!brown3 = #FFD784
 !brown10 = #F3F0EA
 !blue1 = #6ba2de
 !txt_main = #414142
@@ -11,7 +12,7 @@
 
 !board_height = 500px
 !menu_bar_height = 30px
-!status_bar_height = 15px
+!status_bar_height = 17px
 !board_content_height = !board_height - !menu_bar_height - !status_bar_height
 
 .clear
@@ -194,9 +195,16 @@
             :-moz-border-radius-bottomleft 10px
             :-moz-border-radius-bottomright 10px            
     
-      #status-bar
-        :height = !status_bar_height
-        :background-color = !brown1
+#status-bar
+  :height = !status_bar_height
+  :background-color = !brown1
+  :color = !brown3
+  :font-size 11px
+  :padding 3px 0 0 28px
+#status-bar.working
+  :background-image url(/images/ajax-loader.gif)
+  :background-repeat no-repeat
+  :background-position 3px 3px
 
 // SetView
 #board-content

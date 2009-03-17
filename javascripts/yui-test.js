@@ -146,19 +146,9 @@ function yuiTest() {
         });
 
         var onOwnerLoaded = function(owner) {
-            status('felhasználók betöltve');
             User.owner = owner;
             controller.fire('allSets', User.owner.get('id'));
         };
-
-        var status = function(msg){
-            statusBarWidget.fire('status:print', msg);
-        };
-
-        var statusBarWidget = new StatusBarWidget({
-            contentBox: '#fc-status'
-        });
-        //statusBarWidget.render();
 
         var setListWidget = new SetListWidget({
             contentBox: "#fc-main"
@@ -177,7 +167,6 @@ function yuiTest() {
         var friendsWidget = new FriendsWidget({
             contentBox: '#fc-friends'
         });
-        status('felhasználó keresése');
 
         var div = function(cls) {
             return N.create('<div class="'+cls+'"></div>');

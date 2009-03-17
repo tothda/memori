@@ -78,7 +78,6 @@ Y.extend(Set, Y.Base, {
         if (!this.dirty) {
             return;
         }
-        status("lecke mentése...");
         var key = this.get('id');
         var method = key ? 'PUT' : 'POST';
         var url = "/sets/" + (key ? key : "");
@@ -91,8 +90,7 @@ Y.extend(Set, Y.Base, {
             // elmentjük a set új mvcc revision-jét
             that._rev = resp.data.rev;
             that.dirty = false;
-            status("lecke mentése sikeresen befejeződött");
-        }, o);
+        }, o, 'lecke mentése');
     },
     destroy: function(callback, context){
         var that = this;
@@ -104,7 +102,6 @@ Y.extend(Set, Y.Base, {
         if (this.newObj()) {
             doIt();
         } else {
-            status("Lecke törlése...");
             transport.DELETE("/sets/"+that.id(), function(){
                 doIt();
             }, {_id:that.id(), _rev: that._rev});
@@ -116,7 +113,6 @@ Y.extend(Set, Y.Base, {
         if (set.loaded) {
             callback.call(context, Set.CACHE[id]);
         } else {
-            status("lecke letöltése...");
             transport.GET("/sets/" + id, function(resp){
                 var card;
                 Y.each(resp.data.cards, function(c){
@@ -126,7 +122,6 @@ Y.extend(Set, Y.Base, {
                 });
                 set._rev = resp.data._rev;
                 set.loaded = true;
-                status("lecke letöltve");
                 callback.call(context, set);
             });
         }

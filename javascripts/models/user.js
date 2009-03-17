@@ -26,7 +26,7 @@ Y.mix(User.prototype, {
                 });
                 that.loaded = true;
                 callback.call(context, that.sets);
-            }, {'user_id': that.id});
+            }, {'user_id': that.id}, 'leckék letöltése');
         }
     },
     save: function(){
@@ -70,7 +70,7 @@ Y.mix(User, {
                 }, {
                     iwiw_id: User.owner.iwiw_id,
                     name: User.owner.name
-                });                
+                });
             });
         } else {
             User.owner = new User();

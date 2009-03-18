@@ -46,7 +46,8 @@
       :background-color = !brown2
       :-moz-border-radius-topleft 10px
       :-moz-border-radius-bottomleft 10px
-
+      :-webkit-border-top-left-radius 10px
+      :-webkit-border-bottom-left-radius 10px
       ul#navigation
         :margin-left -15px
         :width 170px
@@ -63,6 +64,8 @@
             :background-color = !brown1
             :-moz-border-radius-topleft 5px
             :-moz-border-radius-bottomleft 5px
+            :-webkit-border-top-left-radius 5px
+            :-webkit-border-bottom-left-radius 5px
             :color white
             :font-size 11px
             :text-decoration none
@@ -94,6 +97,7 @@
       :border 6px solid
       :border-color = !brown1
       :-moz-border-radius 10px
+      :-webkit-border-radius 10px
       #menu-bar
         :height = !menu_bar_height
         :background-color = !brown1
@@ -184,23 +188,32 @@
                   :background-color = !brown1
                   :-moz-border-radius-topleft 5px
                   :-moz-border-radius-bottomleft 5px                
+                  :-webkit-border-top-left-radius 5px
+                  :-webkit-border-bottom-left-radius 5px
                 .func-right
                   :background-color = !blue1
                   :-moz-border-radius-topright 5px
                   :-moz-border-radius-bottomright 5px                
+                  :-webkit-border-top-right-radius 5px
+                  :-webkit-border-bottom-right-radius 5px
           li.first
             :-moz-border-radius-topleft 10px
             :-moz-border-radius-topright 10px
+            :-webkit-border-top-left-radius 10px
+            :-webkit-border-top-right-radius 10px
+
           li.last
             :-moz-border-radius-bottomleft 10px
             :-moz-border-radius-bottomright 10px            
+            :-webkit-border-bottom-left-radius 10px
+            :-webkit-border-bottom-right-radius 10px
     
 #status-bar
   :height = !status_bar_height
   :background-color = !brown1
   :color = !brown3
   :font-size 11px
-  :padding 3px 0 0 28px
+  :padding 3px 0 0 28p
 #status-bar.working
   :background-image url(/images/ajax-loader.gif)
   :background-repeat no-repeat
@@ -215,6 +228,7 @@
   #cards-table
     :background-color white
     :-moz-border-radius 10px
+    :-webkit-border-radius 10px
     :padding 20px
     :border-collapse separate
     :font
@@ -257,6 +271,7 @@
 #set-header
   :background-color white
   :-moz-border-radius 10px
+  :-webkit-border-radius 10px
   :margin 20px
   :padding 20px
 

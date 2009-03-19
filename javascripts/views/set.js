@@ -18,14 +18,15 @@ Y.mix(setView, {
     render: function() {
         var me = this;
         menuBar.html('');
-        menuBar.appendChild(me.renderMenu());
+        menuBar.appendChild(me.renderStatusBar());
         board.html('');
         board.appendChild(me.renderSetHeader());
         board.appendChild(me.renderCardsTable());
     },
-    renderMenu: function() {
+    renderStatusBar: function() {
         var me = this;
         var node = N.create('<div></div>');
+        var backToSetList = N.create('<a href="#">« vissza a leckékhez</a>');
         var saveButton = N.create('<button>Mentés</button>');
         var deleteButton = N.create('<button>Törlés</button>');
         var practiceButton = N.create('<button>Gyakorlás</button>');
@@ -33,8 +34,14 @@ Y.mix(setView, {
             switch (e.target) {
             case saveButton:
                 me.set.save();
+                break;
+            case backToSetList:
+                me.set.save();
+                controller.fire('allSets');
+                break;
             }
         });
+        node.appendChild(backToSetList);
         node.appendChild(saveButton);
         node.appendChild(deleteButton);
         node.appendChild(practiceButton);

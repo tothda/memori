@@ -14,6 +14,9 @@
 !menu_bar_height = 30px
 !status_bar_height = 17px
 !board_content_height = !board_height - !menu_bar_height - !status_bar_height
+!board_wrapper = 590px
+!board_border_width = 6px
+!board_width = !board_wrapper - 2 * !board_border_width
 
 .clear
   :clear both
@@ -34,7 +37,7 @@
 
   #board-wrapper
     :position relative
-    :width 590px
+    :width = !board_wrapper
     :float right
 
     #navigation-wrapper
@@ -94,7 +97,8 @@
     #board
       :height = !board_height
       :background-color = !brown2
-      :border 6px solid
+      :border-style solid
+      :border-width = !board_border_width
       :border-color = !brown1
       :-moz-border-radius 10px
       :-webkit-border-radius 10px
@@ -176,9 +180,10 @@
                   :background-color lightgray
             .func
               :float left
-              :width 78px
+              :width 68px
+              :padding 15px 5px 5px 5px
               .func-button
-                :padding 15px 5px 5px 5px
+                :cursor pointer
                 .func-left, .func-right
                   :padding 2px
                   :color white
@@ -297,3 +302,43 @@
 
 .written
   :font-family "Comic Sans MS", "Times New Roman", serif
+
+// practice
+
+!card_width = 350px
+!nav_width = (!board_width - !card_width) / 2
+!card_padding = 20px
+!card_line_height = 180px - 2 * !card_padding
+
+#practice-wrapper
+  :padding-top 40px
+  #prev-button-wrapper, #next-button-wrapper
+    :width = !nav_width
+    :float left
+    :height = !card_line_height
+  #prev-button, #next-button
+    :background-position center center
+    :background-color = !brown1
+    :background-repeat no-repeat
+    :height 72px
+    :margin 50px 34px 0 34px
+    :-moz-border-radius 10px
+    :-webkit-border-radius 10px
+    :cursor pointer
+  #prev-button
+    :background-image url(/images/gomb_bal.png)
+  #next-button
+    :background-image url(/images/gomb_jobb.png)
+  #card-wrapper
+    :width = !card_width
+    :float left
+    #card
+      :background white
+      :-moz-border-radius 10px
+      :-webkit-border-radius 10px
+      :height = !card_line_height
+      :padding = !card_padding
+      :font-size 22px
+      :text-align center
+      :cursor pointer
+    

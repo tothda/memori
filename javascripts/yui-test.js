@@ -49,14 +49,22 @@ function yuiTest() {
         if (iwiw) {
             gadgets.window.adjustHeight(542);
         }
-        
+
         Y.mix(Y.DOM, {
             html: function(node, htmlString){
                 node.innerHTML = htmlString;
+            },
+            appendChildren: function(node, children){
+                for (var i = 0; i < children.length; i++){
+                    node.appendChild(Y.Node.getDOMNode(children[i]));
+                }
             }
         });
 
-        Y.Node.addDOMMethods(['html']);
+        Y.Node.addDOMMethods(['html', 'appendChildren']);
+
+        var controller = {};
+        Y.augment(controller, Y.Event.Target);
 
         //= require "utils/transport"
         //= require "models/datastore"
@@ -66,16 +74,13 @@ function yuiTest() {
         //= require "models/strategies"
 
         //= require "views/set_widget"
-        //= require "views/set_list_widget"
         //= require "views/set_list"
-        //= require "views/set_practice_widget"
+        //= require "views/set_practice"
         //= require "views/statusbar_widget.js"
         //= require "views/friends_widget.js"
 
         // bootstrap
         // controller
-        var controller = {};
-        Y.augment(controller, Y.Event.Target);
         controller.publish('showSet');
         controller.subscribe('showSet', function(id){
             // Y.log('showSet '+id, 'info', 'fc-pubsub');
@@ -119,18 +124,18 @@ function yuiTest() {
         });
 
         controller.publish('practice');
-        controller.subscribe('practice', function(id){
-            Y.log('practice: '+id, 'info', 'fc-pubsub');
-            Set.getSet(id, function(set){
-                setPracticeWidget.set('sets', [set]);
-                setWidget.hide();
-                setListWidget.hide();
-                friendsWidget.hide();
-                setPracticeWidget.render();
-                setPracticeWidget.show();
-                setPracticeWidget.renderCard();
-            });
-        });
+        // controller.subscribe('practice', function(id){
+        //     Y.log('practice: '+id, 'info', 'fc-pubsub');
+        //     Set.getSet(id, function(set){
+        //         setPracticeWidget.set('sets', [set]);
+        //         setWidget.hide();
+        //         setListWidget.hide();
+        //         friendsWidget.hide();
+        //         setPracticeWidget.render();
+        //         setPracticeWidget.show();
+        //         setPracticeWidget.renderCard();
+        //     });
+        // });
 
         controller.publish('friends');
         controller.subscribe('friends', function(){
@@ -150,10 +155,6 @@ function yuiTest() {
             controller.fire('allSets', User.owner.get('id'));
         };
 
-        var setListWidget = new SetListWidget({
-            contentBox: "#fc-main"
-        });
-
         var setList = new SetListView();
 
         var setWidget = new SetWidget({
@@ -168,8 +169,12 @@ function yuiTest() {
             contentBox: '#fc-friends'
         });
 
-        var div = function(cls) {
-            return N.create('<div class="'+cls+'"></div>');
+        var div = function(id,cls) {
+            var str = '<div' +
+                (id ? ' id="' + id + '"': '') +
+                (cls ? ' class="'+cls+'"': '') +
+                '></div>';
+            return N.create(str);
         };
 
         var menuBar = Y.get('#menu-bar');

@@ -29,10 +29,10 @@ Y.mix(SetListView.prototype, {
         if (cls) {
             item.addClass(cls);
         }
-        var star = div('star');
-        var descr = div('descr');
-        var stat = div('stat');
-        var func = div('func');
+        var star = div('','star');
+        var descr = div('','descr');
+        var stat = div('','stat');
+        var func = div('','func');
         star.set('innerHTML', 'star');
         this.renderStat(stat, set);
         func.set('innerHTML', 'func');
@@ -40,38 +40,41 @@ Y.mix(SetListView.prototype, {
         item.appendChild(this.renderDescription(set));
         item.appendChild(stat);
         item.appendChild(this.renderFunc(set));
-        item.appendChild(div('clear'));
+        item.appendChild(div('','clear'));
         this.listN.appendChild(item);
     },
     renderStar: function() {
         var rnd = Math.floor(Math.random() * 2);
         var cls = (rnd == 0) ? 'star star-empty' : 'star star-full';
-        var node = div(cls).set('innerHTML', '&nbsp;');
+        var node = div('',cls).set('innerHTML', '&nbsp;');
         return node;
     },
     renderDescription: function(set){
         var title = set.get('title') || 'Cím nélküli lecke';
         var description = set.get('description');
-        var node = div('descr');
-        var titleNode = div('title').set('innerHTML','<a href="#">'+title+'</a>');
+        var node = div('','descr');
+        var titleNode = div('','title').set('innerHTML','<a href="#">'+title+'</a>');
         node.appendChild(titleNode);
-        node.appendChild(div('description').set('innerHTML',description));
+        node.appendChild(div('','description').set('innerHTML',description));
         titleNode.on('click', function(){
             controller.fire('showSet', set.id());
         });
         return node;
     },
     renderFunc: function(set) {
-        var node = div('func');
-        var func_button = div('func-button');
-        var left = div('func-left');
-        var right = div('func-right');
-        left.appendChild(div('count').set('innerHTML', '66'));
-        right.appendChild(div('count').set('innerHTML', '33'));
+        var node = div('','func');
+        var func_button = div('','func-button');
+        var left = div('','func-left');
+        var right = div('','func-right');
+        left.appendChild(div('','count').set('innerHTML', '66'));
+        right.appendChild(div('','count').set('innerHTML', '33'));
         func_button.appendChild(left);
         func_button.appendChild(right);
-        func_button.appendChild(div('clear'));
+        func_button.appendChild(div('','clear'));
         node.appendChild(func_button);
+        func_button.on('click', function(){
+            controller.fire('practice', set.id());
+        });
         return node;
     },
     renderStat: function(elem, set) {
@@ -97,7 +100,7 @@ Y.mix(SetListView.prototype, {
             bucket.appendChild(count);
             elem.appendChild(bucket);
         }
-        elem.appendChild(div('clear'));
+        elem.appendChild(div('','clear'));
     }
 });
 

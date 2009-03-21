@@ -50,5 +50,12 @@ Y.mix(BucketStat.prototype, {
         this.expired_count++;
         this.card_count[0]++;
         this.card_expired[0]++;
-    }
+    },
+    maxBucketCount: function(){
+        var max = 0;
+        for (var i=0; i<this.card_count.length; i++){
+            max = this.card_count[i] <= max ? max : this.card_count[i];
+        }
+        return max;
+    }    
 });

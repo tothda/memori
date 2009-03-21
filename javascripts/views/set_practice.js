@@ -67,6 +67,7 @@ Y.mix(practiceView, {
         return this.side < 0 ? this.card.get('front') : this.card.get('flip');
     },
     show: function(){
+        console.log(this.strategy);
         this.updateButtons();
         this.cardDiv.html(this.cardText());
     },

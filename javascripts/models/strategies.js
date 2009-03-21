@@ -6,12 +6,12 @@ function LinearPracticeStrategy(sets){
             me.cards.push(c);
         });
     });
-    me.length = me.cards.length;
     if (me.length < 1) {
         throw 'no cards!';
     }
     me.idx = -1;
     me.sort();
+    me.length = me.cards.length;
 }
 
 Y.mix(LinearPracticeStrategy.prototype, {

@@ -62,16 +62,13 @@ Y.mix(SetListView.prototype, {
         return node;
     },
     renderFunc: function(set) {
-        var node = div('','func');
-        var func_button = div('','func-button');
-        var left = div('','func-left');
-        var right = div('','func-right');
-        left.appendChild(div('','count').set('innerHTML', '66'));
-        right.appendChild(div('','count').set('innerHTML', '33'));
-        func_button.appendChild(left);
-        func_button.appendChild(right);
-        func_button.appendChild(div('','clear'));
-        node.appendChild(func_button);
+        if (set.bucket_stat.sum == 0) {
+            return div('','func').html('&nbsp;');
+        }
+        var func_button;
+        var node = div('','func').a(
+            func_button = div('','func-button button').html('gyakorlás')
+        );
         func_button.on('click', function(){
             controller.fire('practice', set.id());
         });
@@ -85,22 +82,23 @@ Y.mix(SetListView.prototype, {
             elem.html('&nbsp;');
             return;
         }
+        var maxBucketCount = stat.maxBucketCount();
         for (var i=0; i<5; i++) {
-            var height = Math.round(barHeight * (stat.count(i) - stat.expired(i)) / sum);
-            var expiredHeight = Math.round(barHeight * stat.expired(i) / sum);
+            var height = Math.round(barHeight * (stat.count(i) - stat.expired(i)) / maxBucketCount);
+            var expiredHeight = Math.round(barHeight * stat.expired(i) / maxBucketCount);
             var bucket = N.create('<div class="bucket"></div');
             var expiredBar = N.create('<div class="bar expired">&nbsp;</div>');
             var bar = N.create('<div class="bar bucket_'+i+'">&nbsp;</div>');
             bar.setStyles({
-                height: height+'px'
-            });
-            expiredBar.setStyles({
-                height: expiredHeight+'px',
+                height: height+'px',
                 marginTop: (barHeight-height-expiredHeight) +'px'
             });
+            expiredBar.setStyles({
+                height: expiredHeight+'px'
+            });
             var count = N.create('<div class="count">'+stat.count(i)+'</div>');
-            bucket.appendChild(expiredBar);
             bucket.appendChild(bar);
+            bucket.appendChild(expiredBar);
             bucket.appendChild(count);
             elem.appendChild(bucket);
         }

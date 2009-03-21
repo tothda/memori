@@ -10,6 +10,14 @@
 !dunno_color = red
 !know_color = green
 
+!bucket_color_diff = #202020
+!bucket_color_4 = #3A2502
+!bucket_color_3 = !bucket_color_4 + !bucket_color_diff
+!bucket_color_2 = !bucket_color_3 + !bucket_color_diff
+!bucket_color_1 = !bucket_color_2 + !bucket_color_diff
+!bucket_color_0 = #FF7878
+!bucket_color_expired = !bucket_color_0
+
 // dimensions
 
 !board_height = 500px
@@ -169,45 +177,26 @@
                   :margin 0 1px
                   :width 12px
                 .bucket_0
-                  :background-color red
+                  :background-color = !bucket_color_0
                 .bucket_1
-                  :background-color blue
+                  :background-color = !bucket_color_1
                 .bucket_2
-                  :background-color blue
+                  :background-color = !bucket_color_2
                 .bucket_3
-                  :background-color blue
+                  :background-color = !bucket_color_3
                 .bucket_4
-                  :background-color blue
+                  :background-color = !bucket_color_4
                 .expired
-                  :background-color lightgray
+                  :background-color = !bucket_color_expired
             .func
               :float left
               :width 68px
               :padding 15px 5px 5px 5px
               .func-button
-                :cursor pointer
-                .func-left, .func-right
-                  :padding 2px
-                  :color white
-                  :float left
-                  :width 30px
-                  :line-height 1.2
-                  :text-align center
-                  .count
-                    :font
-                      :size 14px
-                .func-left
-                  :background-color = !brown1
-                  :-moz-border-radius-topleft 5px
-                  :-moz-border-radius-bottomleft 5px                
-                  :-webkit-border-top-left-radius 5px
-                  :-webkit-border-bottom-left-radius 5px
-                .func-right
-                  :background-color = !blue1
-                  :-moz-border-radius-topright 5px
-                  :-moz-border-radius-bottomright 5px                
-                  :-webkit-border-top-right-radius 5px
-                  :-webkit-border-bottom-right-radius 5px
+                :color white
+                :background-color = !blue1
+                :font-size 11px
+                :padding 3px
           li.first
             :-moz-border-radius-topleft 10px
             :-moz-border-radius-topright 10px
@@ -356,7 +345,6 @@
         :height 50px
         :float left
       #dunno-button, #know-button
-        :text-align center
         :padding 5px
         :margin 15px
         :color white
@@ -369,6 +357,7 @@
   :cursor pointer
   :-moz-border-radius 5px
   :-webkit-border-radius 5px
+  :text-align center
 
 .round5
   :-moz-border-radius 5px

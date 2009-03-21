@@ -81,6 +81,10 @@ Y.mix(SetListView.prototype, {
         var barHeight = 30;
         var stat = set.bucket_stat;
         var sum = stat.sum;
+        if (sum == 0) {
+            elem.html('&nbsp;');
+            return;
+        }
         for (var i=0; i<5; i++) {
             var height = Math.round(barHeight * (stat.count(i) - stat.expired(i)) / sum);
             var expiredHeight = Math.round(barHeight * stat.expired(i) / sum);

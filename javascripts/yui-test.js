@@ -54,14 +54,17 @@ function yuiTest() {
             html: function(node, htmlString){
                 node.innerHTML = htmlString;
             },
-            appendChildren: function(node, children){
+            a: function(node){
+                var children = Y.Array(arguments);
+                children.shift();
                 for (var i = 0; i < children.length; i++){
                     node.appendChild(Y.Node.getDOMNode(children[i]));
                 }
+                return node;
             }
         });
 
-        Y.Node.addDOMMethods(['html', 'appendChildren']);
+        Y.Node.addDOMMethods(['html', 'a']);
 
         var controller = {};
         Y.augment(controller, Y.Event.Target);

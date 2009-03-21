@@ -1,4 +1,4 @@
-var practiceView = {}
+var practiceView = {};
 
 Y.mix(practiceView, {
     init: function(){
@@ -18,39 +18,33 @@ Y.mix(practiceView, {
         board.html('');
         me.box = div('practice-wrapper');
         me.box.appendChild(me.renderCardAndNav());
+        me.box.appendChild(me.renderKnowDunno());
+        me.nextCard().show();
+        me.bindEventHandlers();
         board.appendChild(me.box);
     },
     renderCardAndNav: function(){
         var me = this;
         var node = div('card-line');
-        var prevDivWrapper = div('prev-button-wrapper');
-        me.prevButton = div('prev-button').html('&nbsp;');
-        prevDivWrapper.appendChild(me.prevButton);
-        var nextDivWrapper = div('next-button-wrapper');
-        me.nextButton = div('next-button').html('&nbsp');
-        nextDivWrapper.appendChild(me.nextButton);
-
-        me.prevButton.on('click', function(){
-            me.prevCard().show();
-        });
-
-        me.nextButton.on('click', function(){
-            me.nextCard().show();
-        });
-
-        var cardDiv = div('card-wrapper');
-        cardDiv.appendChild(me.renderCard());
-
-        node.appendChildren([prevDivWrapper, cardDiv, nextDivWrapper]);
+        node.a(
+            div('card-with-nav').a(
+                div('prev-button-wrapper').a(
+                    (me.prevButton = div('prev-button').html('&nbsp;'))
+                ),
+                div('card-wrapper').a(
+                    me.renderCard()
+                ),
+                div('next-button-wrapper').a(
+                    me.nextButton = div('next-button').html('&nbsp;')
+                ),
+                div('', 'clear')
+            )
+        );
         return node;
     },
     renderCard: function(){
         var me = this;
         me.cardDiv = div('card', 'written');
-        me.nextCard().show();
-        me.cardDiv.on('click', function(){
-            me.flip().show();
-        });
         return me.cardDiv;
     },
     nextCard: function(){
@@ -67,8 +61,10 @@ Y.mix(practiceView, {
         this.side = this.side * -1;
         return this;
     },
+    // -1 : magyar - front
+    //  1 : idegen - flip
     cardText: function(){
-        return this.side > 0 ? this.card.get('front') : this.card.get('flip');
+        return this.side < 0 ? this.card.get('front') : this.card.get('flip');
     },
     show: function(){
         this.updateButtons();
@@ -77,6 +73,57 @@ Y.mix(practiceView, {
     updateButtons: function(){
         this.prevButton.setStyle('display', this.strategy.first() ? 'none' : '');
         this.nextButton.setStyle('display', this.strategy.last() ? 'none' : '');
+        if (this.card.expired()) {
+            this.resultDiv.setStyle('display', '');
+        } else {
+            this.resultDiv.setStyle('display', 'none');            
+        }
+    },
+    renderKnowDunno: function(){
+        var node = div('result-line').a(
+            this.resultDiv = div('result-wrapper').a(
+                div('dunno-button-wrapper').a(
+                    this.dunnoButton = div('dunno-button','button').html('Nem tudom')
+                ),
+                div('know-button-wrapper').a(
+                    this.knowButton = div('know-button','button').html('Tudom')
+                ),
+                div('', 'clear')
+            )
+        );
+        return node;
+    },
+    bindEventHandlers: function(){
+        this.keyHandle = Y.on('key', this.eventHandler, window.document, 'down:37,38,39,40', this);
+        this.box.on('click', this.eventHandler, this);
+    },
+    eventHandler: function(e){
+        var t = e.target,
+            c = e.charCode;
+        // prev, left
+        if ((t == this.prevButton || c == 37) && !this.strategy.first()) { 
+            this.prevCard().show();
+        }
+        // next, right
+        if ((t == this.nextButton || c == 39) && !this.strategy.last()) {
+            this.nextCard().show();
+        }
+        // flip, up, down
+        if (t == this.cardDiv || c == 38 || c == 40) {
+            this.flip().show();
+        }
+        // know
+        if (t == this.knowButton) {
+            this.card.practice(true);
+            this.nextCard().show();
+        }
+        // dunno
+        if (t == this.dunnoButton) {
+            this.card.practice(false);
+            this.nextCard().show();
+        }
+
+        e.preventDefault();
     }
 });
 

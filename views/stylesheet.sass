@@ -7,6 +7,8 @@
 !blue1 = #6ba2de
 !txt_main = #414142
 !txt_light = #6F6F6F
+!dunno_color = red
+!know_color = green
 
 // dimensions
 
@@ -312,8 +314,11 @@
 
 #practice-wrapper
   :padding-top 40px
+  #card-with-nav
+    :width 500px
+    :margin 0 auto
   #prev-button-wrapper, #next-button-wrapper
-    :width = !nav_width
+    :width 70px
     :float left
     :height = !card_line_height
   #prev-button, #next-button
@@ -321,16 +326,17 @@
     :background-color = !brown1
     :background-repeat no-repeat
     :height 72px
-    :margin 50px 34px 0 34px
     :-moz-border-radius 10px
     :-webkit-border-radius 10px
     :cursor pointer
   #prev-button
+    :margin 50px 25px 0 0
     :background-image url(/images/gomb_bal.png)
   #next-button
+    :margin 50px 0 0 25px
     :background-image url(/images/gomb_jobb.png)
   #card-wrapper
-    :width = !card_width
+    :width = 72%
     :float left
     #card
       :background white
@@ -341,4 +347,29 @@
       :font-size 22px
       :text-align center
       :cursor pointer
-    
+  #result-line
+    #result-wrapper
+      :width 300px
+      :margin 0 auto
+      #dunno-button-wrapper, #know-button-wrapper
+        :width = 150px
+        :height 50px
+        :float left
+      #dunno-button, #know-button
+        :text-align center
+        :padding 5px
+        :margin 15px
+        :color white
+      #dunno-button
+        :background-color = !dunno_color
+      #know-button
+        :background-color = !know_color
+
+.button
+  :cursor pointer
+  :-moz-border-radius 5px
+  :-webkit-border-radius 5px
+
+.round5
+  :-moz-border-radius 5px
+  :-webkit-border-radius 5px

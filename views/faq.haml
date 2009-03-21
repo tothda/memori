@@ -1,0 +1,47 @@
+.question
+  Mire jó a memori?
+
+.answer
+  A memori egy nyelvtanulást támogató alkalmazás, melynek segítségével szókincsünket fejleszthetjük és tarthatjuk karban. Szavakból, kifejezésekből leckéket állíthatunk össze, amelyeket a program eltárol, majd gyakorlásnál visszakérdez ügyelve arra, hogy a már jobban megtanult szavakat ritkábban, a kevésbé ismerteket sűrűbben gyakoroljuk.
+
+.question
+  Mitől lesz a memori hatékonyabb, mintha szótárfüzetből gyakorolnám a szavakat?
+
+.answer
+  A memori leckék gyakorlása során az úgynevezett Leitner módszerrel választja ki, hogy mely szavakat kell gyakorolnunk. A módszer lényege, hogy a szavakat, melyekre könnyebben emlékezünk ritkábban, amelykre nehezebben, azokat sűrűbben kérdezi. Képzeljük el, hogy minden szót amit megszeretnénk tanulni felírunk egy kis cetlire. Az egyik felére magyarul a másikra idegen nyelven. A kártyákat öt dobozban tároljuk, az első dobozban lévő szavakat fogjuk legsűrűbben, az ötödikben lévőket legritkábban gyakorolni.
+
+  %ul
+    %li
+      Minden új cetli az első dobozba kerül.
+    %li
+      Ha gyakorlás során egy cetlire emlékeztünk, akkor eggyel nagyobb számú dobozba kerül. Kivéve akik már eleve az ötösben voltak, ők ott is maradnak.
+    %li
+      Ha gyakorlás során nem emlékeztünk egy cetlire, akkor visszakerül az első dobozba.
+    %li
+      Egy cetli sikeres gyakorlás után bizonyos ideig védettséget élvez, azaz a program nem választja ki gyakorlásra, amíg ez a védettség le nem jár. A védettségi idő annál nagyobb, minél nagyobb számú dobozban van a cetli.
+      %ul
+        %li
+          Az első dobozra ez az idő nulla, ezeket a cetliket a program mindíg kérdezi, hisz ezek vagy újak, vagy az utolsó gyakorlásnál nem tudtuk őket.
+        %li
+          Második dobozba kerülő szavakra a védettség 1 nap.
+        %li
+          Harmadik dobozba kerülőkre 3 nap.
+        %li
+          Negyedik dobozba kerülőkre egy hét.
+        %li
+          Ötödik dobozba kerülőkre egy hónap.
+
+.question
+  Csak azokat a szavakat gyakorolhatom, amelyeknek lejárt a védettsége?
+
+.answer
+  Szavak gyakorlására három mód közül választhatunk: ismétlés sorrendben, ismétlés véletlenszerűen, gyakorlás. Ismétlés sorrendben esetén, az adott lecke szavait kérdezi abban a sorrendben, ahogy felvittük őket. Ismétlés véletlenszerűen esetén szintén egy lecke szavait kapjuk, de előtte a program összekeveri őket. Gyakorlás során csak a lejárt szavak kerülnek terítékre.
+
+.question
+  Gyakorlás
+
+.question
+  Mi az a kártya?
+
+.question
+  Nyelvtanuláson kívül másra is jó ez?

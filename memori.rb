@@ -32,6 +32,14 @@ get '/memori.css' do
   sass :stylesheet  
 end
 
+get '/faq' do
+  haml :faq
+end
+
+get '/faq.html' do
+  haml :faq
+end
+
 put '/users' do
   r = db.view('db/user-by-iwiw-id', {:key => params[:iwiw_id]})
   if r["rows"].length != 0

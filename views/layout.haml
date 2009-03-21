@@ -1,0 +1,27 @@
+!!!
+
+%html
+  %head
+    %meta{:content => 'text/html; charset=UTF-8', :"http-equiv" => 'Content-Type'}
+    %style
+      :plain
+        body {
+             background-color: lightgray;
+             font-family: Verdana, sans-serif
+        }
+        #wrapper {
+             background-color: white;             
+             width: 458px;
+             margin: 40px auto;
+             padding: 20px;
+             font-size: 11px;
+             color: #333;
+        }
+        .question {
+             font-size: 16px;
+             font-weight: bold;
+             padding: 10px 0;
+        }
+  %body
+    #wrapper
+      = yield

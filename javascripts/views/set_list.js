@@ -1,15 +1,17 @@
-function SetListView() {}
-
-// static methods
-Y.mix(SetListView, {
-
-});
+var setList = {};
 
 // instance methods
-Y.mix(SetListView.prototype, {
-    setSets: function(sets){
-        this.sets = sets;
-        return this;
+Y.mix(setList, {
+    init: function(){
+        var me = this;
+        controller.subscribe('allSets', function(userId){            
+            var u = User.getUser(userId) || User.owner;
+            u.getSets(function(sets){
+                me.sets = sets;
+                me.render();
+            });
+        });
+
     },
     render: function(){
         var me = this;
@@ -106,3 +108,4 @@ Y.mix(SetListView.prototype, {
     }
 });
 
+setList.init();

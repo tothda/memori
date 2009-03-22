@@ -50,49 +50,35 @@ function yuiTest() {
             gadgets.window.adjustHeight(542);
         }
 
-        Y.mix(Y.DOM, {
-            html: function(node, htmlString){
-                node.innerHTML = htmlString;
-            },
-            app: function(node){
-                var children = Y.Array(arguments);
-                children.shift();
-                Y.Array.each(children, function(child){
-                    var childNode = Y.Lang.isString(child) ? document.createTextNode(child) : Y.Node.getDOMNode(child);
-                    node.appendChild(childNode);
-                });
-                return node;
-            },
-            clear: function(node){
-                node.innerHTML = '';
-                return node;
-            },
-            hide: function(node){
-                Y.DOM.setStyle(node, 'display', 'none');
-                return node;
-            },
-            show: function(node){
-                Y.DOM.setStyle(node, 'display', '');
-                return node;
-            },
-            id: function(node,id){
-                node.setAttribute('id',id);
-                return node;
-            },
-            cls: function(node, cls){
-                node.setAttribute('class',cls);
-            },
-            attr: function(node, attrName, attrValue){
-                node.setAttribute(attrName,attrValue);
-            }
-        });
+        //= require "utils/transport"
+        //= require "utils/dom_helpers"
 
-        Y.Node.addDOMMethods(['html', 'app', 'clear', 'hide', 'show','id','cls','attr']);
+        var memoriContent = Y.get('#memori-content');
+        memoriContent.app(
+            div().id('board-wrapper').app(
+                div().id('navigation-wrapper').app(
+                    ul().id('navigation').cls('position-0').app(
+                        li(a('leckéim').attr('href','#').attr('rel','allSets')).id('nav-lessons').cls('active'),
+                        li(a('új lekce').attr('href','#').attr('rel','newSet')).id('nav-new-lession'),
+                        li(a('ismerőseim').attr('href','#').attr('rel','friends')).id('nav-friends'),
+                        li(a('segítség').attr('href','#').attr('rel','help')).id('nav-help')
+                    )
+                ),
+                div().id('board').app(
+                    this.menuBar = div().id('menu-bar').html('&nbsp;'),
+                    this.infoBar = div().id('info-bar'),
+                    this.board = div().id('board-content'),
+                    this.sbNode = div().id('status-bar').html('&nbsp;')
+                )
+            )
+        );
 
         var controller = {};
         Y.augment(controller, Y.Event.Target);
+        controller.publish('showSet');
+        controller.publish('newSet');
+        controller.publish('allSets');
 
-        //= require "utils/transport"
         //= require "models/datastore"
         //= require "models/user"
         //= require "models/card"
@@ -105,23 +91,8 @@ function yuiTest() {
         //= require "views/statusbar_widget.js"
         //= require "views/friends_widget.js"
 
-        // bootstrap
-        // controller
-        controller.publish('showSet');
-        controller.publish('newSet');
-        controller.publish('allSets');
-
         //= require "views/sidebar"
         //= require "views/set"
-
-
-        controller.subscribe('allSets', function(userId){
-            Y.log('allSets '+userId, 'info', 'fc-pubsub');
-            var u = User.getUser(userId) || User.owner;
-            u.getSets(function(sets){
-                setList.setSets(sets).render();
-            });
-        });
 
         controller.publish('save');
         controller.subscribe('save', function(){
@@ -146,23 +117,6 @@ function yuiTest() {
             User.owner = owner;
             controller.fire('allSets', User.owner.get('id'));
         };
-
-        var createTagHelper = function(tagName){
-            this[tagName] = function(){
-                var children = Y.Array(arguments);
-                var node = N.create('<'+tagName+'></'+tagName+'>');
-                node.app.apply(node, children);
-                return node;
-            }
-        }
-
-        Y.each(['div','span','table','tr','td','a','button','h1','h2','h3','strong'], function(tag){
-            createTagHelper(tag);
-        });
-
-        var setList = new SetListView();
-        var menuBar = Y.get('#menu-bar');
-        var board = Y.get('#board-content');
 
         User.login(function(){
             controller.fire('allSets', User.owner.id);

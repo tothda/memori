@@ -7,7 +7,10 @@ Y.mix(practiceView, {
             Set.getSet(id, function(set){
                 console.log(set);
                 me.set = set;
-                me.strategy = new DEFAULT_STRATEGY([me.set]);
+                me.strategy = new ExpiredPracticeStrategy([me.set]);
+                if (me.strategy.length == 0) {
+                    me.strategy = new ShuffledPracticeStrategy([me.set]);
+                }
                 me.render();
             });
         });
@@ -90,18 +93,18 @@ Y.mix(practiceView, {
             this.practiceSummary.app(
                 h3('A gyakorlás végére értél.'),
                 table(
-                    tr(td('tudtál:').cls('mar-right'),td(strong(this.know +' db').cls('know'), ' kártyát')),
-                    tr(td('nem tudtál:').cls('mar-right'),td(strong(this.dunno + ' db').cls('dunno'), ' kártyát'))
+                    tr(td('tudtál:').cls('right-pad'),td(strong(this.know +' db').cls('know'), ' kártyát')),
+                    tr(td('nem tudtál:').cls('right-pad'),td(strong(this.dunno + ' db').cls('dunno'), ' kártyát'))
                 ),
                 n == 0 ?
-                    div(strong('Ügyes voltál,'), ' nem maradt aktív kártya').cls('top-pad bottom-pad') :                
-                    div('Újrakezded a gyakorlást az aktívan maradt ',strong(n+' db '),'kártyával?').cls('top-pad bottom-pad'),
+                    div(strong('Ügyes voltál,'), ' nem maradt aktív kártya.').cls('top-pad bottom-pad') :                
+                    div('Folytatod a gyakorlást az aktívan maradt ',strong(n+' db '),'kártyával?').cls('top-pad bottom-pad'),
                 n == 0 ?
                     div(
                         back = a('vissza a leckékhez').attr('href','#').cls('nav-link dark')
                     ):
                     div(
-                        restart = button('Igen').cls('right-mar'),
+                        restart = button('Folytatom').cls('right-mar'),
                         back = a('nem, vissza a leckékhez').attr('href','#').cls('nav-link dark')
                     )
             ).show();

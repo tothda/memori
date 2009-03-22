@@ -54,17 +54,40 @@ function yuiTest() {
             html: function(node, htmlString){
                 node.innerHTML = htmlString;
             },
-            a: function(node){
+            app: function(node){
                 var children = Y.Array(arguments);
                 children.shift();
-                for (var i = 0; i < children.length; i++){
-                    node.appendChild(Y.Node.getDOMNode(children[i]));
-                }
+                Y.Array.each(children, function(child){
+                    var childNode = Y.Lang.isString(child) ? document.createTextNode(child) : Y.Node.getDOMNode(child);
+                    node.appendChild(childNode);
+                });
                 return node;
+            },
+            clear: function(node){
+                node.innerHTML = '';
+                return node;
+            },
+            hide: function(node){
+                Y.DOM.setStyle(node, 'display', 'none');
+                return node;
+            },
+            show: function(node){
+                Y.DOM.setStyle(node, 'display', '');
+                return node;
+            },
+            id: function(node,id){
+                node.setAttribute('id',id);
+                return node;
+            },
+            cls: function(node, cls){
+                node.setAttribute('class',cls);
+            },
+            attr: function(node, attrName, attrValue){
+                node.setAttribute(attrName,attrValue);
             }
         });
 
-        Y.Node.addDOMMethods(['html', 'a']);
+        Y.Node.addDOMMethods(['html', 'app', 'clear', 'hide', 'show','id','cls','attr']);
 
         var controller = {};
         Y.augment(controller, Y.Event.Target);
@@ -85,22 +108,13 @@ function yuiTest() {
         // bootstrap
         // controller
         controller.publish('showSet');
-        controller.subscribe('showSet', function(id){
-            // Y.log('showSet '+id, 'info', 'fc-pubsub');
-            // Set.getSet(id, function(set){
-            //     setWidget.set('set', set);
-            //     setListWidget.hide();
-            //     friendsWidget.hide();
-            //     setPracticeWidget.hide();
-            //     setWidget.render();
-            //     setWidget.show();
-            // });
-        });
+        controller.publish('newSet');
+        controller.publish('allSets');
 
         //= require "views/sidebar"
         //= require "views/set"
 
-        controller.publish('allSets');
+
         controller.subscribe('allSets', function(userId){
             Y.log('allSets '+userId, 'info', 'fc-pubsub');
             var u = User.getUser(userId) || User.owner;
@@ -109,36 +123,11 @@ function yuiTest() {
             });
         });
 
-        controller.publish('newSet');
-        controller.subscribe('newSet', function(){
-            // setListWidget.hide();
-            // setPracticeWidget.hide();
-            // friendsWidget.hide();
-            // var s = User.owner.createSet();
-            // setWidget.set('set',s);
-            // setWidget.render();
-            // setWidget.show();
-        });
-
         controller.publish('save');
         controller.subscribe('save', function(){
             Y.log('save', 'info', 'fc-pubsub');
             User.owner.save();
         });
-
-        controller.publish('practice');
-        // controller.subscribe('practice', function(id){
-        //     Y.log('practice: '+id, 'info', 'fc-pubsub');
-        //     Set.getSet(id, function(set){
-        //         setPracticeWidget.set('sets', [set]);
-        //         setWidget.hide();
-        //         setListWidget.hide();
-        //         friendsWidget.hide();
-        //         setPracticeWidget.render();
-        //         setPracticeWidget.show();
-        //         setPracticeWidget.renderCard();
-        //     });
-        // });
 
         controller.publish('friends');
         controller.subscribe('friends', function(){
@@ -158,28 +147,20 @@ function yuiTest() {
             controller.fire('allSets', User.owner.get('id'));
         };
 
+        var createTagHelper = function(tagName){
+            this[tagName] = function(){
+                var children = Y.Array(arguments);
+                var node = N.create('<'+tagName+'></'+tagName+'>');
+                node.app.apply(node, children);
+                return node;
+            }
+        }
+
+        Y.each(['div','span','table','tr','td','a','button','h1','h2','h3','strong'], function(tag){
+            createTagHelper(tag);
+        });
+
         var setList = new SetListView();
-
-        var setWidget = new SetWidget({
-            contentBox: '#fc-set'
-        });
-
-        var setPracticeWidget = new SetPracticeWidget({
-            contentBox: '#fc-practice'
-        });
-
-        var friendsWidget = new FriendsWidget({
-            contentBox: '#fc-friends'
-        });
-
-        var div = function(id,cls) {
-            var str = '<div' +
-                (id ? ' id="' + id + '"': '') +
-                (cls ? ' class="'+cls+'"': '') +
-                '></div>';
-            return N.create(str);
-        };
-
         var menuBar = Y.get('#menu-bar');
         var board = Y.get('#board-content');
 

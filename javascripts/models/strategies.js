@@ -16,13 +16,6 @@ function LinearPracticeStrategy(sets){
 
 Y.mix(LinearPracticeStrategy.prototype, {
     sort: function(){},
-    // cur: function(){ return this.cards[this.idx];},
-    // curPos: function() {return this.idx + 1;},
-    // next: function() {this.idx < this.cards.length - 1 && this.idx++;},
-    // prev: function() {0 < this.idx && this.idx--;},
-    // length: function() {return this.cards.length;},
-    // isFirst: function() {return this.idx == 0;},
-    // isLast: function() {return this.idx == this.cards.length-1;}
     next: function(){
         return this.idx + 1 < this.length ? this.cards[++this.idx] : false;
     },
@@ -37,6 +30,15 @@ Y.mix(LinearPracticeStrategy.prototype, {
     },
     last: function(){
         return this.idx == this.length - 1;
+    },
+    expiredCount: function() {
+        var n = 0;
+        for (var i=0,l=this.cards.length; i<l; i++){
+            if (this.cards[i].expired()){
+                n++;
+            }
+        }
+        return n;
     }
 });
 
@@ -45,6 +47,16 @@ function ShuffledPracticeStrategy(sets){
 }
 
 Y.extend(ShuffledPracticeStrategy, LinearPracticeStrategy, {
+    sort: function(){
+        shuffle(this.cards);
+    }
+});
+
+function ExpiredPracticeStrategy(sets){
+    ExpiredPracticeStrategy.superclass.constructor.apply(this, arguments);
+}
+
+Y.extend(ExpiredPracticeStrategy, LinearPracticeStrategy, {
     sort: function(){
         var expiredCards = [];
         Y.each(this.cards, function(c){
@@ -62,4 +74,4 @@ shuffle = function(o){ //v1.0
     return o;
 };
 
-var DEFAULT_STRATEGY = ShuffledPracticeStrategy;
+var DEFAULT_STRATEGY = ExpiredPracticeStrategy;

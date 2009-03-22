@@ -15,37 +15,44 @@ Y.mix(practiceView, {
     render: function(){
         var me = this;
         menuBar.html('');
-        board.html('');
-        me.box = div('practice-wrapper');
-        me.box.appendChild(me.renderCardAndNav());
-        me.box.appendChild(me.renderKnowDunno());
+        board.html('').app(
+            me.box = div().id('practice-wrapper').app(
+                me.renderCardAndNav(),
+                me.renderKnowDunno()
+            )
+        );
+        menuBar.app(me.renderStatusBar());
         me.nextCard().show();
         me.bindEventHandlers();
-        board.appendChild(me.box);
+        me.know = 0;
+        me.dunno = 0;
     },
     renderCardAndNav: function(){
         var me = this;
-        var node = div('card-line');
-        node.a(
-            div('card-with-nav').a(
-                div('prev-button-wrapper').a(
-                    (me.prevButton = div('prev-button').html('&nbsp;'))
+        var node = div().id('card-line');
+        node.app(
+            div().id('card-with-nav').app(
+                div().id('prev-button-wrapper').app(
+                    me.prevButton = div().id('prev-button').html('&nbsp;')
                 ),
-                div('card-wrapper').a(
+                div().id('card-wrapper').app(
                     me.renderCard()
                 ),
-                div('next-button-wrapper').a(
-                    me.nextButton = div('next-button').html('&nbsp;')
+                div().id('next-button-wrapper').app(
+                    me.nextButton = div().id('next-button').html('&nbsp;')
                 ),
-                div('', 'clear')
+                div().cls('clear')
             )
         );
         return node;
     },
     renderCard: function(){
-        var me = this;
-        me.cardDiv = div('card', 'written');
-        return me.cardDiv;
+        this.cardDiv = div().id('card').app(
+            this.cardTxt = div().id('card-text').cls('written'),
+            this.cardInfo = div().id('card-info'),
+            this.practiceSummary = div().id('practice-summary').cls('written').hide()
+        );
+        return this.cardDiv;
     },
     nextCard: function(){
         this.side = -1;
@@ -67,9 +74,52 @@ Y.mix(practiceView, {
         return this.side < 0 ? this.card.get('front') : this.card.get('flip');
     },
     show: function(){
-        console.log(this.strategy);
-        this.updateButtons();
-        this.cardDiv.html(this.cardText());
+        if (this.card) {
+            this.updateButtons();
+            this.cardTxt.html(this.cardText());
+            var b = this.card.get('bucket') + 1;
+            var t = this.card.get('time');
+            var the = b == 1 || b == 5 ? 'az ' : 'app ';
+            this.cardInfo.html(b + '. dobozban, elmúlt gyakorlás:' + t);
+        } else { // ha a lecke végére értünk
+            var restart,
+                back,
+                me = this,
+                n = this.strategy.expiredCount();
+
+            this.practiceSummary.app(
+                h3('A gyakorlás végére értél.'),
+                table(
+                    tr(td('tudtál:').cls('mar-right'),td(strong(this.know +' db').cls('know'), ' kártyát')),
+                    tr(td('nem tudtál:').cls('mar-right'),td(strong(this.dunno + ' db').cls('dunno'), ' kártyát'))
+                ),
+                n == 0 ?
+                    div(strong('Ügyes voltál,'), ' nem maradt aktív kártya').cls('top-pad bottom-pad') :                
+                    div('Újrakezded a gyakorlást az aktívan maradt ',strong(n+' db '),'kártyával?').cls('top-pad bottom-pad'),
+                n == 0 ?
+                    div(
+                        back = a('vissza a leckékhez').attr('href','#').cls('nav-link dark')
+                    ):
+                    div(
+                        restart = button('Igen').cls('right-mar'),
+                        back = a('nem, vissza a leckékhez').attr('href','#').cls('nav-link dark')
+                    )
+            ).show();
+            if (restart) {
+                restart.on('click', function(){
+                    controller.fire('practice', me.set.id());
+                });
+            }
+            back.on('click', function(){
+                controller.fire('allSets');
+            });
+            this.cardTxt.hide();
+            this.cardInfo.hide();
+            this.prevButton.hide();
+            this.nextButton.hide();
+            this.dunnoButton.hide();
+            this.knowButton.hide();
+        }
     },
     updateButtons: function(){
         this.prevButton.setStyle('display', this.strategy.first() ? 'none' : '');
@@ -77,21 +127,47 @@ Y.mix(practiceView, {
         if (this.card.expired()) {
             this.resultDiv.setStyle('display', '');
         } else {
-            this.resultDiv.setStyle('display', 'none');            
+            this.resultDiv.setStyle('display', 'none');
         }
     },
     renderKnowDunno: function(){
-        var node = div('result-line').a(
-            this.resultDiv = div('result-wrapper').a(
-                div('dunno-button-wrapper').a(
-                    this.dunnoButton = div('dunno-button','button').html('Nem tudom')
+        var node = div().id('result-line').app(
+            this.resultDiv = div().id('result-wrapper').app(
+                div().id('dunno-button-wrapper').app(
+                    this.dunnoButton = div().id('dunno-button').cls('button').html('Nem tudom')
                 ),
-                div('know-button-wrapper').a(
-                    this.knowButton = div('know-button','button').html('Tudom')
+                div().id('know-button-wrapper').app(
+                    this.knowButton = div().id('know-button').cls('button').html('Tudom')
                 ),
-                div('', 'clear')
+                div().cls('clear')
             )
         );
+        return node;
+    },
+    renderStatusBar: function() {
+        var me = this,
+            back, save;
+
+        var node = div().app(
+            back = N.create('<a href="#">« vissza a leckékhez</a>'),
+            save = N.create('<button>Mentés</button>'),
+            N.create('<select></select>').app(
+                N.create('<option>ismétlés sorban</option>'),
+                N.create('<option>ismétlés keverve</option>'),
+                N.create('<option>gyakorlás</option>')
+            )
+        );
+        node.on('click', function(e){
+            switch (e.target) {
+            case back:
+                me.set.save();
+                controller.fire('allSets');
+                break;
+            case save:
+                me.set.save();
+                break;
+            }
+        });
         return node;
     },
     bindEventHandlers: function(){
@@ -102,7 +178,7 @@ Y.mix(practiceView, {
         var t = e.target,
             c = e.charCode;
         // prev, left
-        if ((t == this.prevButton || c == 37) && !this.strategy.first()) { 
+        if ((t == this.prevButton || c == 37) && !this.strategy.first()) {
             this.prevCard().show();
         }
         // next, right
@@ -110,16 +186,18 @@ Y.mix(practiceView, {
             this.nextCard().show();
         }
         // flip, up, down
-        if (t == this.cardDiv || c == 38 || c == 40) {
+        if (t == this.cardTxt || c == 38 || c == 40) {
             this.flip().show();
         }
         // know
         if (t == this.knowButton) {
+            this.know++;
             this.card.practice(true);
             this.nextCard().show();
         }
         // dunno
         if (t == this.dunnoButton) {
+            this.dunno++;
             this.card.practice(false);
             this.nextCard().show();
         }
@@ -129,123 +207,3 @@ Y.mix(practiceView, {
 });
 
 practiceView.init();
-
-// SetPracticeWidget
-function SetPracticeWidget(){
-    SetPracticeWidget.superclass.constructor.apply(this, arguments);
-}
-
-Y.mix(SetPracticeWidget, {
-    NAME:"practice",
-    ATTRS: {
-        sets: {value:[]}
-    }
-});
-
-Y.extend(SetPracticeWidget, Y.Widget, {
-    initializer: function(){
-        var me = this;
-        this.after('setsChange', function(){
-            me.strategy = new DEFAULT_STRATEGY(this.get('sets'));
-        });
-    },
-    renderUI: function(){
-        var cb = this.get('contentBox');
-        this.infoNode = N.create('<div class='+this.getClassName('info')+'></div>');
-        this.cardNode = N.create('<div class='+this.getClassName('card')+'></div>');
-        this.nextButton = N.create('<button class='+this.getClassName('next')+'>></button>');
-        this.previousButton = N.create('<button class='+this.getClassName('next')+'><</button>');
-        this.knowButton = N.create('<a class='+this.getClassName('know')+' href="javascript:void(0)">Tudom</a>');
-        this.dunnoButton = N.create('<a class='+this.getClassName('dunno')+' href="javascript:void(0)">Nem tudom</a>');
-        cb.appendChild(this.infoNode);
-        cb.appendChild(this.previousButton);
-        cb.appendChild(this.cardNode);
-        cb.appendChild(this.nextButton);
-        var buttons = N.create('<div class='+this.getClassName('func')+'></div>');
-        buttons.appendChild(this.dunnoButton);
-        buttons.appendChild(this.knowButton);
-        cb.appendChild(buttons);
-    },
-    syncUI: function(){
-
-    },
-    bindUI: function() {
-        var bb = this.get('boundingBox');
-        bb.on('click', function(e){
-            var t = e.target;
-            switch (t) {
-            case this.cardNode:
-                this.toggle();
-                break;
-            case this.previousButton:
-                this.renderPrevCard();
-                break;
-            case this.nextButton:
-                this.renderNextCard();
-                break;
-            case this.knowButton:
-                this.card.practice(true);
-                this.renderNextCard();
-                break;
-            case this.dunnoButton:
-                this.card.practice(false);
-                this.renderNextCard();
-                break;
-            }
-        }, this);
-        Y.on('key', function(e){
-            switch(e.charCode){
-            case 37:
-                this.renderPrevCard();
-                break;
-            case 39:
-                this.renderNextCard();
-                break;
-            case 38:
-                this.toggle();
-                break;
-            case 40:
-                this.toggle();
-                break;
-            }
-            e.preventDefault();
-        }, window.document, 'down:37,38,39,40', this);
-    },
-    renderNextCard: function(){
-        this.strategy.next();
-        this.renderCard();
-    },
-    renderPrevCard: function(){
-        this.strategy.prev();
-        this.renderCard();
-    },
-    renderCard: function(){
-        this.card = this.strategy.cur();
-        this.front = true;
-        this.toggle();
-        this.disableButtons();
-        this.renderInfo();
-    },
-    renderInfo: function() {
-        this.infoNode.set('innerHTML', this.strategy.curPos() + ' / ' + this.strategy.length());
-    },
-    toggle: function(){
-        var newSide = !this.front ? 'flip' : 'front';
-        var oldSide = this.front ? 'flip' : 'front';
-        var txt = this.card.get(newSide);
-        this.front = !this.front;
-        this.cardNode.set('innerHTML', txt);
-        this.cardNode.replaceClass(oldSide, newSide);
-    },
-    disableButtons: function(){
-        this.previousButton.set('disabled', this.strategy.isFirst() ? true : false);
-        this.nextButton.set('disabled', this.strategy.isLast() ? true : false);
-        if (!this.card.expired()) {
-            this.knowButton.setStyle('display', 'none');
-            this.dunnoButton.setStyle('display', 'none');
-        } else {
-            this.knowButton.setStyle('display', '');
-            this.dunnoButton.setStyle('display', '');
-        }
-    }
-});

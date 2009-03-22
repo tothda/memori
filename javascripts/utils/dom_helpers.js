@@ -46,7 +46,7 @@ var createTagHelper = function(tagName){
     };
 };
 
-Y.each(['div','span','table','tr','td','a','button','h1','h2','h3','strong','ul','li'], function(tag){
+Y.each(['div','span','table','tr','td','a','button','h1','h2','h3','strong','ul','li','select','option'], function(tag){
     createTagHelper(tag);
 });
 

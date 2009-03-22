@@ -10,11 +10,11 @@
 !dunno_color = red
 !know_color = green
 
-!bucket_color_diff = #202020
+!color_diff = #202020
 !bucket_color_4 = #3A2502
-!bucket_color_3 = !bucket_color_4 + !bucket_color_diff
-!bucket_color_2 = !bucket_color_3 + !bucket_color_diff
-!bucket_color_1 = !bucket_color_2 + !bucket_color_diff
+!bucket_color_3 = !bucket_color_4 + !color_diff
+!bucket_color_2 = !bucket_color_3 + !color_diff
+!bucket_color_1 = !bucket_color_2 + !color_diff
 !bucket_color_0 = #FF7878
 !bucket_color_expired = !bucket_color_0
 
@@ -66,9 +66,8 @@ a.light
 
 #test-wrapper
   :width 750px
-  :height 600px
+  :max-height 600px
   :margin 50px auto
-  :border 3px solid gray
   :padding 3px
 
 #memori-content
@@ -148,17 +147,16 @@ a.light
       #menu-bar
         :height = !menu_bar_height
         :background-color = !brown1
-
+        :font-size 11px
+        :color = !brown3
         a
-          :font-size 11px
           :padding 0 5px
           :color = !brown3
 
-
-
-      #board-content
+      #board-scroll
         :height = !board_content_height
-        :overflow auto
+        :overflow auto        
+      #board-content
         ul#set-list
           :padding 20px
           li
@@ -209,18 +207,8 @@ a.light
                 .bar
                   :margin 0 1px
                   :width 12px
-                .bucket_0
-                  :background-color = !bucket_color_0
-                .bucket_1
-                  :background-color = !bucket_color_1
-                .bucket_2
-                  :background-color = !bucket_color_2
-                .bucket_3
-                  :background-color = !bucket_color_3
-                .bucket_4
-                  :background-color = !bucket_color_4
-                .expired
-                  :background-color = !bucket_color_expired
+                  .expired
+                    :background-color = !bucket_color_expired
             .func
               :float left
               :width 68px
@@ -241,6 +229,18 @@ a.light
             :-moz-border-radius-bottomright 10px
             :-webkit-border-bottom-left-radius 10px
             :-webkit-border-bottom-right-radius 10px
+
+.bucket_0
+  :background-color = !bucket_color_0
+.bucket_1
+  :background-color = !bucket_color_1
+.bucket_2
+  :background-color = !bucket_color_2
+.bucket_3
+  :background-color = !bucket_color_3
+.bucket_4
+  :background-color = !bucket_color_4
+
 
 #status-bar
   :height = !status_bar_height
@@ -329,12 +329,29 @@ a.light
 
 // practice
 
-!card_width = 350px
-!nav_width = (!board_width - !card_width) / 2
-!card_padding = 20px
-!card_line_height = 180px
-!card_info_height = 20px
-#practice-wrapper
+#info-bar
+  #practice-info
+    :color = #333
+    :background-color #ab883f
+    :padding 10px
+    :margin 20px 20px 0 20px
+    :-moz-border-radius 10px
+    :-webkit-border-radius 10px
+    .info-text
+      :float left
+      :padding-left 20px
+      .title        
+        :font-size 14px
+        :font-weight bold
+      .practice-type
+        :font-size 11px
+        :padding-top 5px
+    .counter
+      :float right
+      :padding 8px 20px 0 0
+      :font-size 16px
+    
+#practice-wrapper  
   :padding-top 40px
   #card-with-nav
     :width 500px
@@ -342,7 +359,7 @@ a.light
   #prev-button-wrapper, #next-button-wrapper
     :width 70px
     :float left
-    :height = !card_line_height
+    :height = 180px
   #prev-button, #next-button
     :background-position center center
     :background-color = !brown1
@@ -367,8 +384,8 @@ a.light
       :font-size 22px
       #card-text
         :text-align center
-        :padding = !card_padding
-        :height = !card_line_height - !card_info_height - 2 * !card_padding
+        :padding 40px 20px 0 20px
+        :height = 120px
         :cursor pointer
       #practice-summary
         :padding 20px
@@ -383,10 +400,17 @@ a.light
           td
             :text-align right
       #card-info
-        :height = !card_info_height
+        :height 20px
         :font-size 10px
         :padding 5px 0 0 10px
         :color = !brown2
+        :position relative
+        #box-number
+          :position absolute
+          :padding 3px
+          :color white
+          :top -148px
+          :left 0px
   #result-line
     #result-wrapper
       :width 300px

@@ -5,28 +5,30 @@ Y.mix(practiceView, {
         var me = this;
         controller.subscribe('practice', function(id){
             Set.getSet(id, function(set){
-                console.log(set);
                 me.set = set;
                 me.strategy = new ExpiredPracticeStrategy([me.set]);
                 if (me.strategy.length == 0) {
                     me.strategy = new ShuffledPracticeStrategy([me.set]);
                 }
                 me.render();
+                me.bindEventHandlers();
             });
         });
     },
     render: function(){
         var me = this;
-        menuBar.html('');
-        board.html('').app(
+        menuBar.clear();
+        ibNode.clear();
+        board.clear()
+        menuBar.app(me.renderStatusBar());
+        ibNode.app(me.renderInfoBar());
+        board.app(
             me.box = div().id('practice-wrapper').app(
                 me.renderCardAndNav(),
                 me.renderKnowDunno()
             )
         );
-        menuBar.app(me.renderStatusBar());
         me.nextCard().show();
-        me.bindEventHandlers();
         me.know = 0;
         me.dunno = 0;
     },
@@ -83,7 +85,10 @@ Y.mix(practiceView, {
             var b = this.card.get('bucket') + 1;
             var t = this.card.get('time');
             var the = b == 1 || b == 5 ? 'az ' : 'app ';
-            this.cardInfo.html(b + '. dobozban, elmúlt gyakorlás:' + t);
+            this.cardInfo.clear().app(
+                span(b + '. dobozból').id('box-number').cls('bucket_'+(b-1)),
+                span('Legutóbb ' + DateHelper.time_ago_in_words(this.card.get('time')) + ' gyakoroltad.')
+            );
         } else { // ha a lecke végére értünk
             var restart,
                 back,
@@ -97,7 +102,7 @@ Y.mix(practiceView, {
                     tr(td('nem tudtál:').cls('right-pad'),td(strong(this.dunno + ' db').cls('dunno'), ' kártyát'))
                 ),
                 n == 0 ?
-                    div(strong('Ügyes voltál,'), ' nem maradt aktív kártya.').cls('top-pad bottom-pad') :                
+                    div(strong('Ügyes voltál,'), ' nem maradt aktív kártya.').cls('top-pad bottom-pad') :
                     div('Folytatod a gyakorlást az aktívan maradt ',strong(n+' db '),'kártyával?').cls('top-pad bottom-pad'),
                 n == 0 ?
                     div(
@@ -127,10 +132,20 @@ Y.mix(practiceView, {
     updateButtons: function(){
         this.prevButton.setStyle('display', this.strategy.first() ? 'none' : '');
         this.nextButton.setStyle('display', this.strategy.last() ? 'none' : '');
-        if (this.card.expired()) {
-            this.resultDiv.setStyle('display', '');
+        this.actCardNo.html(this.strategy.pos()+'');
+        if (this.strategyIndex() == 2) {
+            this.knowButton.show();
+            this.dunnoButton.show();
+            this.prevButton.hide();
+            this.nextButton.hide();
         } else {
-            this.resultDiv.setStyle('display', 'none');
+            this.knowButton.hide();
+            this.dunnoButton.hide();
+            if (this.card.expired()) {
+                this.resultDiv.setStyle('display', '');
+            } else {
+                this.resultDiv.setStyle('display', 'none');
+            }
         }
     },
     renderKnowDunno: function(){
@@ -147,19 +162,54 @@ Y.mix(practiceView, {
         );
         return node;
     },
+    strategyIndex: function() {
+        var me = this,
+            n;
+        switch (me.strategy.constructor) {
+        case LinearPracticeStrategy:
+            n = 0;
+            break;
+        case ShuffledPracticeStrategy:
+            n = 1;
+            break;
+        case ExpiredPracticeStrategy:
+            n = 2;
+            break;
+        }
+        return n;
+    },
     renderStatusBar: function() {
         var me = this,
-            back, save;
+            back, save,
+            node, sel;
 
-        var node = div().app(
-            back = N.create('<a href="#">« vissza a leckékhez</a>'),
-            save = N.create('<button>Mentés</button>'),
-            N.create('<select></select>').app(
-                N.create('<option>ismétlés sorban</option>'),
-                N.create('<option>ismétlés keverve</option>'),
-                N.create('<option>gyakorlás</option>')
-            )
+        node = div().app(
+            back = a('« vissza a leckékhez').attr('href','#'),
+            save = button('Mentés').cls('left-mar'),
+            span('amit gyakorolni szeretnék:').cls('left-mar'),
+            sel = select(
+                option('minden kártyát sorban').attr('value','1'),
+                option('minden kártyát keverve').attr('value','2'),
+                option('csak az aktív kártyákat').attr('value','3')
+            ).cls('left-mar')
         );
+
+        sel.set('selectedIndex', me.strategyIndex());
+
+        sel.on('change', function(){
+            switch (sel.get('value')) {
+            case '1':
+                me.strategy = new LinearPracticeStrategy([me.set]);
+                break;
+            case '2':
+                me.strategy = new ShuffledPracticeStrategy([me.set]);
+                break;
+            case '3':
+                me.strategy = new ExpiredPracticeStrategy([me.set]);
+                break;
+            }
+            me.render();
+        });
         node.on('click', function(e){
             switch (e.target) {
             case back:
@@ -173,6 +223,31 @@ Y.mix(practiceView, {
         });
         return node;
     },
+    renderInfoBar: function(){
+        var me = this;
+        var formatStrategy = function() {
+            switch (me.strategy.constructor) {
+            case LinearPracticeStrategy:
+                return 'összes kártya gyakorlása sorrendben';
+            case ShuffledPracticeStrategy:
+                return 'összes kártya gyakorlása véletlenszerű sorrendben';
+            case ExpiredPracticeStrategy:
+                return 'aktív kártyák gyakorlása';
+            }
+        }
+        return div().id('practice-info').app(
+            div().cls('info-text').app(
+                div(this.set.get('title')).cls('title'),
+                div(formatStrategy()).cls('practice-type')
+            ),
+            span(
+                this.actCardNo = span('1'),
+                ' / ',
+                this.sumCardNo = span(this.strategy.length+'')
+            ).cls('counter'),
+            div().cls('clear')
+        );
+    },
     bindEventHandlers: function(){
         this.keyHandle = Y.on('key', this.eventHandler, window.document, 'down:37,38,39,40', this);
         this.box.on('click', this.eventHandler, this);
@@ -180,6 +255,7 @@ Y.mix(practiceView, {
     eventHandler: function(e){
         var t = e.target,
             c = e.charCode;
+
         // prev, left
         if ((t == this.prevButton || c == 37) && !this.strategy.first()) {
             this.prevCard().show();

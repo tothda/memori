@@ -15,6 +15,7 @@
 
             var iwiwRequest = function(method, path, callback, params) {
                 var transportParams ={};
+                var jsonParams = {};
                 transportParams[gadgets.io.RequestParameters.METHOD] = method;
 
                 if (method == 'GET' && params) {
@@ -23,10 +24,10 @@
                 if (method != 'GET') {
                     params = params || {};
                     if (method != 'POST') {
-                        params['_method'] = method;
+                        jsonParams['_method'] = method;
                     }
-                    params['json'] = Y.JSON.stringify(params);
-                    var post_data = gadgets.io.encodeValues(params);
+                    jsonParams['json'] = Y.JSON.stringify(params);
+                    var post_data = gadgets.io.encodeValues(jsonParams);
                     transportParams[gadgets.io.RequestParameters.POST_DATA] = post_data;
                 }
                 transportParams[gadgets.io.RequestParameters.AUTHORIZATION] = gadgets.io.AuthorizationType.SIGNED;

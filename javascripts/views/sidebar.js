@@ -17,7 +17,7 @@ Y.mix(sideBar, {
             var t = e.target;
             var event = t.getAttribute('rel');
             controller.fire(event);
-            e.preventDefault();            
+            e.preventDefault();
         });
 
         var subscribeEvent = function(eventName, itemNo) {

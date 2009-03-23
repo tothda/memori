@@ -17,7 +17,7 @@ Y.mix(practiceView, {
                 me.renderKnowDunno()
             )
         );
-        me.start();        
+        me.start();
         me.bindEventHandlers();
     },
     start: function(){
@@ -225,7 +225,7 @@ Y.mix(practiceView, {
             case ExpiredPracticeStrategy:
                 return 'aktív kártyák gyakorlása';
             }
-        }
+        };
         return div().id('practice-info').app(
             div().cls('info-text').app(
                 div(this.set.get('title')).cls('title'),

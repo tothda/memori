@@ -19,18 +19,24 @@ Y.mix(practiceView, {
         var me = this;
         menuBar.clear();
         ibNode.clear();
-        board.clear()
-        menuBar.app(me.renderStatusBar());
-        ibNode.app(me.renderInfoBar());
+        board.clear();
+        menuBar.app(me.renderMenuBar());
         board.app(
             me.box = div().id('practice-wrapper').app(
                 me.renderCardAndNav(),
                 me.renderKnowDunno()
             )
         );
-        me.nextCard().show();
-        me.know = 0;
-        me.dunno = 0;
+        me.start();
+    },
+    start: function(){
+        ibNode.clear().app(this.renderInfoBar());
+        this.practiceSummary.clear().hide();
+        this.cardTxt.show();
+        this.cardInfo.show();
+        this.nextCard().show();
+        this.know = 0;
+        this.dunno = 0;
     },
     renderCardAndNav: function(){
         var me = this;
@@ -125,27 +131,21 @@ Y.mix(practiceView, {
             this.cardInfo.hide();
             this.prevButton.hide();
             this.nextButton.hide();
-            this.dunnoButton.hide();
-            this.knowButton.hide();
+            this.resultDiv.hide();
         }
     },
     updateButtons: function(){
         this.prevButton.setStyle('display', this.strategy.first() ? 'none' : '');
         this.nextButton.setStyle('display', this.strategy.last() ? 'none' : '');
         this.actCardNo.html(this.strategy.pos()+'');
-        if (this.strategyIndex() == 2) {
-            this.knowButton.show();
-            this.dunnoButton.show();
+        if (this.strategyIndex() == 0) {
+            this.resultDiv.show();
             this.prevButton.hide();
             this.nextButton.hide();
         } else {
-            this.knowButton.hide();
-            this.dunnoButton.hide();
-            if (this.card.expired()) {
-                this.resultDiv.setStyle('display', '');
-            } else {
-                this.resultDiv.setStyle('display', 'none');
-            }
+            this.resultDiv.hide();
+            this.prevButton.show();
+            this.nextButton.show();
         }
     },
     renderKnowDunno: function(){
@@ -167,18 +167,18 @@ Y.mix(practiceView, {
             n;
         switch (me.strategy.constructor) {
         case LinearPracticeStrategy:
-            n = 0;
-            break;
-        case ShuffledPracticeStrategy:
             n = 1;
             break;
-        case ExpiredPracticeStrategy:
+        case ShuffledPracticeStrategy:
             n = 2;
+            break;
+        case ExpiredPracticeStrategy:
+            n = 0;
             break;
         }
         return n;
     },
-    renderStatusBar: function() {
+    renderMenuBar: function() {
         var me = this,
             back, save,
             node, sel;
@@ -188,9 +188,9 @@ Y.mix(practiceView, {
             save = button('Mentés').cls('left-mar'),
             span('amit gyakorolni szeretnék:').cls('left-mar'),
             sel = select(
+                option('csak az aktív kártyákat').attr('value','0'),
                 option('minden kártyát sorban').attr('value','1'),
-                option('minden kártyát keverve').attr('value','2'),
-                option('csak az aktív kártyákat').attr('value','3')
+                option('minden kártyát keverve').attr('value','2')
             ).cls('left-mar')
         );
 
@@ -198,17 +198,17 @@ Y.mix(practiceView, {
 
         sel.on('change', function(){
             switch (sel.get('value')) {
+            case '0':
+                me.strategy = new ExpiredPracticeStrategy([me.set]);
+                break;
             case '1':
                 me.strategy = new LinearPracticeStrategy([me.set]);
                 break;
             case '2':
                 me.strategy = new ShuffledPracticeStrategy([me.set]);
                 break;
-            case '3':
-                me.strategy = new ExpiredPracticeStrategy([me.set]);
-                break;
             }
-            me.render();
+            me.start();
         });
         node.on('click', function(e){
             switch (e.target) {
@@ -255,7 +255,7 @@ Y.mix(practiceView, {
     eventHandler: function(e){
         var t = e.target,
             c = e.charCode;
-
+        console.log(t,c);
         // prev, left
         if ((t == this.prevButton || c == 37) && !this.strategy.first()) {
             this.prevCard().show();

@@ -10,7 +10,6 @@ Y.mix(sideBar, {
             navNode.query('#nav-friends'),
             navNode.query('#nav-help')
         ];
-        console.log(me.items);
         // kezdetben a leckéim az aktív
         me.actualItem = 0;
         // menüpontra kattintáskor a megfelelő esemény keletkezzen

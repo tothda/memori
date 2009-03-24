@@ -106,11 +106,9 @@ function yuiTest() {
             )
         );
 
+
         var controller = {};
         Y.augment(controller, Y.Event.Target);
-        controller.publish('showSet');
-        controller.publish('newSet');
-        controller.publish('allSets');
 
         //= require "models/datastore"
         //= require "models/user"
@@ -126,25 +124,7 @@ function yuiTest() {
 
         //= require "views/sidebar"
         //= require "views/set"
-
-        controller.publish('save');
-        controller.subscribe('save', function(){
-            Y.log('save', 'info', 'fc-pubsub');
-            User.owner.save();
-        });
-
-        controller.publish('friends');
-        controller.subscribe('friends', function(){
-            // Y.log('friends', 'info', 'fc-pubsub');
-            // User.getFriends(function(friends){
-            //     friendsWidget.set('friends', friends);
-            //     setWidget.hide();
-            //     setListWidget.hide();
-            //     setPracticeWidget.hide();
-            //     friendsWidget.render();
-            //     friendsWidget.show();
-            // });
-        });
+        //= require "controller"
 
         var onOwnerLoaded = function(owner) {
             User.owner = owner;

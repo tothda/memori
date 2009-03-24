@@ -1,18 +1,7 @@
-var setList = {};
+var setListView = {};
 
 // instance methods
-Y.mix(setList, {
-    init: function(){
-        var me = this;
-        controller.subscribe('allSets', function(userId){            
-            var u = User.getUser(userId) || User.owner;
-            u.getSets(function(sets){
-                me.sets = sets;
-                me.render();
-            });
-        });
-
-    },
+Y.mix(setListView, {
     render: function(){
         var me = this;
         this.listN = N.create('<ul id="set-list"></ul>');
@@ -107,5 +96,3 @@ Y.mix(setList, {
         elem.appendChild(div().cls('clear'));
     }
 });
-
-setList.init();

@@ -1,22 +1,12 @@
 var practiceView = {};
 
 Y.mix(practiceView, {
-    init: function(){
-        var me = this;
-        controller.subscribe('practice', function(id){
-            Set.getSet(id, function(set){
-                me.set = set;
-                me.strategy = new ExpiredPracticeStrategy([me.set]);
-                if (me.strategy.length == 0) {
-                    me.strategy = new ShuffledPracticeStrategy([me.set]);
-                }
-                me.render();
-                me.bindEventHandlers();
-            });
-        });
-    },
     render: function(){
         var me = this;
+        me.strategy = new ExpiredPracticeStrategy([me.set]);
+        if (me.strategy.length == 0) {
+            me.strategy = new ShuffledPracticeStrategy([me.set]);
+        }
         menuBar.clear();
         ibNode.clear();
         board.clear();
@@ -27,7 +17,8 @@ Y.mix(practiceView, {
                 me.renderKnowDunno()
             )
         );
-        me.start();
+        me.start();        
+        me.bindEventHandlers();
     },
     start: function(){
         ibNode.clear().app(this.renderInfoBar());
@@ -255,7 +246,7 @@ Y.mix(practiceView, {
     eventHandler: function(e){
         var t = e.target,
             c = e.charCode;
-        console.log(t,c);
+
         // prev, left
         if ((t == this.prevButton || c == 37) && !this.strategy.first()) {
             this.prevCard().show();
@@ -282,7 +273,9 @@ Y.mix(practiceView, {
         }
 
         e.preventDefault();
+    },
+    cleanUp: function(){
+        ibNode.clear();
+        this.keyHandle.detach();
     }
 });
-
-practiceView.init();

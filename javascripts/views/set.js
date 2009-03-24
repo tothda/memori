@@ -4,16 +4,6 @@ Y.mix(setView, {
     init: function(){
         var me = this;
         me.initEditor();
-        controller.subscribe('newSet', function(){
-            me.set = User.owner.createSet();
-            me.render();
-        });
-        controller.subscribe('showSet', function(id) {
-            Set.getSet(id, function(set){
-                me.set = set;
-                me.render();
-            });
-        });
     },
     render: function() {
         var me = this;
@@ -79,8 +69,8 @@ Y.mix(setView, {
         });
         var emptyCardNo = Math.max(0, 3 - me.set.cards.length); // legalább 3 hely látható legyen mindig
         for (var i = emptyCardNo; i > 0; i--) {
-            prev = me.renderCard(prev);   
-        }        
+            prev = me.renderCard(prev);
+        }
         prev.next = me.end;
         me.end.prev = prev;
         me.tableWrapper = N.create('<div id="cards-table-wrapper"></div>');

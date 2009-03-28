@@ -4,7 +4,9 @@ var setListView = {};
 Y.mix(setListView, {
     render: function(){
         var me = this;
-        this.listN = N.create('<ul id="set-list"></ul>');
+        var node = div().id('set-list-wrapper').app(
+            this.listN = ul().id('set-list').cls('round10 shadow')
+        );
         board.html('');
         menuBar.html('');
         for (var i=0,l=me.sets.length; i<l; i++){
@@ -13,10 +15,10 @@ Y.mix(setListView, {
             me.renderSet(set,cls);
         }
         var bc = Y.get('#board-content');
-        bc.appendChild(this.listN);
+        bc.appendChild(node);
     },
     renderSet: function(set, cls){
-        var item = N.create('<li></li>');
+        var item = li();
         if (cls) {
             item.addClass(cls);
         }

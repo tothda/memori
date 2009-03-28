@@ -41,7 +41,8 @@ get '/faq.html' do
 end
 
 put '/users' do
-  r = db.view('db/user-by-iwiw-id', {:key => params[:iwiw_id]})
+  json = JSON.parse(params[:json])
+  r = db.view('db/user-by-iwiw-id', {:key => json["iwiw_id"]})
   if r["rows"].length != 0
     o = {"id" => r["rows"][0]["id"]}
   else

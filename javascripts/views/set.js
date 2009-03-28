@@ -38,16 +38,44 @@ Y.mix(setView, {
         return node;
     },
     renderSetHeader: function() {
-        var me = this;
-        var node = div().id('set-header').cls('written').app(
-            me.titleNode = input().id('set-title').cls('written').set('type','text').set('value', me.set.get('title')),
-            me.descriptionNode = textarea().id('set-description').set('value', me.set.get('description'))
+        var me = this,
+            titleLabel,descriptionLabel;
+
+        var node = div().id('set-header').cls('written shadow').app(
+            div().cls('overflow-wrapper').app(
+                titleLabel = label('lecke címe').cls('overflow').id('set-title-label').attr('for','set-title'),
+                me.titleNode = N.create('<input type="text" class="written" id="set-title" />').set('value', me.set.get('title'))
+            ),
+            div().cls('overflow-wrapper').app(
+                descriptionLabel = label('lecke rövid leírása').cls('overflow').id('set-description-label').attr('for','set-description'),
+                me.descriptionNode = textarea().id('set-description').set('value', me.set.get('description'))
+            )
         );
-        // var node = N.create('<div id="set-header" class="written"></div>');
-        // this.titleNode = N.create('<input type="text class="written"" id="set-title" />').set('value', me.set.get('title'));
-        // this.descriptionNode = N.create('<textarea id="set-description"></textarea>').set('value', me.set.get('description'));;
-        node.appendChild(this.titleNode);
-        node.appendChild(this.descriptionNode);
+
+        var overflowHandler = function(l,n){
+            if (n.get('value') != ''){
+                l.hide();
+            }
+
+            Y.on('focus', function(){
+                l.hide();
+                n.addClass('focus');
+            },n);
+
+            Y.on('blur', function(){
+                if (n.get('value') == ''){
+                     l.show();
+                }
+                n.removeClass('focus');
+            },n);
+            Y.on('click', function(){
+                n.focus();
+            },l);
+        };
+
+        overflowHandler(titleLabel, me.titleNode);
+        overflowHandler(descriptionLabel, me.descriptionNode);
+
         Y.on('change', function(e){
             switch (e.target) {
             case me.titleNode:
@@ -70,12 +98,12 @@ Y.mix(setView, {
     renderCardsTable: function(){
         var me = this;
         me.tableWrapper = div().id('cards-table-wrapper').app(
-            div().id('cards-table-inner-wrapper').app(
+            div().id('cards-table-inner-wrapper').cls('shadow').app(
                 table().id('cards-table').cls('written').app(
                     me.table = tbody(
                         me.lastRow = tr().cls('last').app(
-                            td().cls('flip'),
-                            td().cls('front'),
+                            td().cls('flip').html('&nbsp;'),
+                            td().cls('front').html('&nbsp;'),
                             td().cls('trash')
                         )
                     )

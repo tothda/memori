@@ -22,7 +22,8 @@ Y.mix(sideBar, {
 
         var subscribeEvent = function(eventName, itemNo) {
             controller.subscribe(eventName, function() {
-                navNode.setAttribute('class', 'position-'+itemNo);
+                navNode.removeClass('position-'+me.actualItem);
+                navNode.addClass('position-'+itemNo);
                 me.items[me.actualItem].removeClass('active');
                 me.actualItem = itemNo;
                 me.items[me.actualItem].addClass('active');

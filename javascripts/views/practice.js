@@ -37,7 +37,7 @@ Y.mix(practiceView, {
                 div().id('prev-button-wrapper').app(
                     me.prevButton = div().id('prev-button').html('&nbsp;')
                 ),
-                div().id('card-wrapper').app(
+                div().id('card-wrapper').cls('shadow round10').app(
                     me.renderCard()
                 ),
                 div().id('next-button-wrapper').app(

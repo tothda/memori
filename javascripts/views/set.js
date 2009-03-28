@@ -39,13 +39,13 @@ Y.mix(setView, {
     },
     renderSetHeader: function() {
         var me = this;
-        // var node = div().id('set-header').cls('written').app(
-        //     me.titleNode = input().id('set-title').cls('written').set('type','text').set('value', me.set.get('title')),
-        //     me.descriptionNode = textarea().id('set-description').set('value', me.set.get('description'))
-        // );
-        var node = N.create('<div id="set-header" class="written"></div>');
-        this.titleNode = N.create('<input type="text class="written"" id="set-title" />').set('value', me.set.get('title'));
-        this.descriptionNode = N.create('<textarea id="set-description"></textarea>').set('value', me.set.get('description'));;
+        var node = div().id('set-header').cls('written').app(
+            me.titleNode = input().id('set-title').cls('written').set('type','text').set('value', me.set.get('title')),
+            me.descriptionNode = textarea().id('set-description').set('value', me.set.get('description'))
+        );
+        // var node = N.create('<div id="set-header" class="written"></div>');
+        // this.titleNode = N.create('<input type="text class="written"" id="set-title" />').set('value', me.set.get('title'));
+        // this.descriptionNode = N.create('<textarea id="set-description"></textarea>').set('value', me.set.get('description'));;
         node.appendChild(this.titleNode);
         node.appendChild(this.descriptionNode);
         Y.on('change', function(e){

@@ -156,6 +156,7 @@ a.light
       #board-scroll
         :height = !board_content_height
         :overflow auto        
+        :position relative
       #board-content
         ul#set-list
           :padding 20px
@@ -257,14 +258,14 @@ a.light
 // SetView
 #board-content
   #cards-table-wrapper
-    :position relative
     :margin 20px
-    :padding-bottom 20px
-  #cards-table
+  #cards-table-inner-wrapper
+    :position relative
+    :padding 20px 
     :background-color white
+  #cards-table
     :-moz-border-radius 10px
-    :-webkit-border-radius 10px
-    :padding 20px
+    :-webkit-border-radius 10px    
     :border-collapse separate
     :font
       :size 15px
@@ -276,6 +277,7 @@ a.light
         :border-color = !brown2
         :padding 3px 6px 3px 21px
         :cursor text
+        :vertical-align top
       td.flip
         :border-right 1px solid
         :border-color = !brown2
@@ -300,8 +302,9 @@ a.light
   :background-color = !brown10
   :padding 3px 6px 3px 21px
   :border none
+  :overflow hidden
   :font
-    :size 14px
+    :size 15px
 
 #set-header
   :background-color white
@@ -317,6 +320,7 @@ a.light
     :width 460px
     :border 1px solid
     :border-color = !brown2
+    :overflow hidden
 
   #set-title
     :margin-bottom 10px

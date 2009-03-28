@@ -28,7 +28,7 @@ Y.mix(Y.DOM, {
         return node;
     },
     cls: function(node, cls){
-        node.setAttribute('class',cls);
+        Y.DOM.addClass(node, cls);
     },
     attr: function(node, attrName, attrValue){
         node.setAttribute(attrName,attrValue);
@@ -46,7 +46,7 @@ var createTagHelper = function(tagName){
     };
 };
 
-Y.each(['div','span','table','tr','td','a','button','h1','h2','h3','strong','ul','li','select','option'], function(tag){
+Y.each(['div','span','table','tbody','tr','td','a','input','textarea','button','h1','h2','h3','strong','ul','li','select','option'], function(tag){
     createTagHelper(tag);
 });
 

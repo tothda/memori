@@ -39,6 +39,10 @@ Y.mix(setView, {
     },
     renderSetHeader: function() {
         var me = this;
+        // var node = div().id('set-header').cls('written').app(
+        //     me.titleNode = input().id('set-title').cls('written').set('type','text').set('value', me.set.get('title')),
+        //     me.descriptionNode = textarea().id('set-description').set('value', me.set.get('description'))
+        // );
         var node = N.create('<div id="set-header" class="written"></div>');
         this.titleNode = N.create('<input type="text class="written"" id="set-title" />').set('value', me.set.get('title'));
         this.descriptionNode = N.create('<textarea id="set-description"></textarea>').set('value', me.set.get('description'));;
@@ -54,13 +58,31 @@ Y.mix(setView, {
                 break;
             }
         }, node);
+        Y.on('key', function(e){
+            if (e.ctrlKey || e.shiftKey) {
+                return; // CTRL+TAB-ra ne csináljon semmit
+            }
+            me.editor.positionOn(me.start.next);
+            e.preventDefault();
+        }, me.descriptionNode, 'down:9');
         return node;
     },
     renderCardsTable: function(){
         var me = this;
-        me.table = N.create('<table id="cards-table" class="written"></table>');
-        me.lastRow = N.create('<tr class="last"><td class="flip"></td><td class="front"></td><td class="trash"></td></tr>');
-        me.table.appendChild(me.lastRow);
+        me.tableWrapper = div().id('cards-table-wrapper').app(
+            div().id('cards-table-inner-wrapper').app(
+                table().id('cards-table').cls('written').app(
+                    me.table = tbody(
+                        me.lastRow = tr().cls('last').app(
+                            td().cls('flip'),
+                            td().cls('front'),
+                            td().cls('trash')
+                        )
+                    )
+                ),
+                me.editor.textArea()
+            )
+        );
         this.start = {};
         this.end = {};
         var prev = me.start;
@@ -73,9 +95,15 @@ Y.mix(setView, {
         }
         prev.next = me.end;
         me.end.prev = prev;
-        me.tableWrapper = N.create('<div id="cards-table-wrapper"></div>');
-        me.tableWrapper.appendChild(me.table);
-        me.tableWrapper.appendChild(me.editor.textArea());
+        me.table.app(
+        );
+        // utolsó sorra kattintva jelenjen meg egy új sor
+        me.lastRow.on('click', function(e){
+            var newFront = me.renderCard(me.end.prev);
+            newFront.next = me.end;
+            me.end.prev = newFront;
+            me.editor.positionOn(newFront.pair);
+        });
         return me.tableWrapper;
     },
     renderCard: function(prevElem, card){
@@ -105,8 +133,12 @@ Y.mix(setView, {
         frontElem.pair = flipElem;
 
         // mellétesszük a kukát
-        var n = N.create('<td class="trash"><a href="javascript:void(0)">&nbsp;</a></td>');
-        tr.appendChild(n);
+        var n;
+        tr.app(
+            n = td().cls('trash').app(
+                a().attr('href', '#').html('&nbsp;')
+            )
+        );
         n.on('click', function(e){
             if (flipElem.card) {
                 flipElem.card.destroy();
@@ -166,14 +198,18 @@ Y.mix(setView, {
                     return;
                 }
                 var i = e.shiftKey ? item.prev : item.next;
-                // ha sima TAB-ot nyomnak az utolsó kártyán, akkor kell egy új sor
-                if (!i.node && !e.shiftKey) {
-                    var newFront = me.renderCard(item); // a front-ot adja vissza
-                    // a strázsát a lista végére kell tenni
-                    newFront.next = i;
-                    // az új kártya flipside-jára ugorjunk
-                    i = newFront.pair;
-                    me.lastRow.scrollIntoView();
+
+                if (!i.node){
+                    if (e.shiftKey){ // ha shift + TAB-ot nyomnak az első kártyán, akkor a set description-be kell ugrani
+                        me.descriptionNode.focus();
+                    } else { // ha sima TAB-ot nyomnak az utolsó kártyán, akkor kell egy új sor
+                        var newFront = me.renderCard(item); // a front-ot adja vissza
+                        // a strázsát a lista végére kell tenni
+                        newFront.next = i;
+                        // az új kártya flipside-jára ugorjunk
+                        i = newFront.pair;
+                        me.lastRow.scrollIntoView();                        
+                    }
                 }
                 if (i.node) {
                     updateIfChanged();
@@ -202,10 +238,11 @@ Y.mix(setView, {
                     var n = listElem.node;
                     var height = parseInt(n.getComputedStyle("height").replace(/px/,''));// + 6;
                     var width = parseInt(n.getComputedStyle("width").replace(/px/,''));// + 27;
-                    //var width = n.get('offsetWidth');
+                    var p = listElem.side == 'flip' ? 29 : 27;
+                    width = n.get('offsetWidth') - p;
                     //var height = n.get('offsetHeight');
-                    var left = n.get('offsetLeft');
-                    var top = n.get('offsetTop');
+                    var left = n.get('offsetLeft') + 20;
+                    var top = n.get('offsetTop') + 20;
                     t.setStyles({
                         top: top+'px',
                         left: left+'px',

@@ -51,7 +51,9 @@ Y.mix(practiceView, {
     renderCard: function(){
         this.cardDiv = div().id('card').app(
             this.cardTxt = div().id('card-text').cls('written'),
-            this.cardInfo = div().id('card-info'),
+            div().id('card-info').app(
+                this.cardInfo = div()
+            ),
             this.practiceSummary = div().id('practice-summary').cls('written').hide()
         );
         return this.cardDiv;
@@ -81,11 +83,14 @@ Y.mix(practiceView, {
             this.cardTxt.html(this.cardText());
             var b = this.card.get('bucket') + 1;
             var t = this.card.get('time');
-            var the = b == 1 || b == 5 ? 'az ' : 'app ';
             this.cardInfo.clear().app(
-                span(b + '. dobozból').id('box-number').cls('bucket_'+(b-1)),
-                span('Legutóbb ' + DateHelper.time_ago_in_words(this.card.get('time')) + ' gyakoroltad.')
+                div(b + '. dobozból').id('box-number').cls('bucket_'+(b-1)),
+                div('Legutóbb ' + DateHelper.time_ago_in_words(this.card.get('time')) + ' gyakoroltad.')
             );
+            var n = memoriContent;
+            var e = n.appendChild(document.createTextNode(' '));
+            n.removeChild(e);
+            
         } else { // ha a lecke végére értünk
             var restart,
                 back,

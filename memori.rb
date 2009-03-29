@@ -3,7 +3,6 @@ require 'rubygems'
 require 'sinatra'
 require 'couchrest'
 require 'sprockets'
-require 'ruby-debug'
 
 set :app_file, __FILE__
 

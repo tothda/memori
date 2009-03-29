@@ -1,6 +1,5 @@
 require 'rubygems'
 require 'rack'
-require 'rack/contrib'
 require File.dirname(__FILE__) + "/memori.rb"
 
 #log = File.new("sinatra.log", "w")

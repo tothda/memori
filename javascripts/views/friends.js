@@ -31,5 +31,8 @@ Y.mix(friendsView, {
             controller.fire('allSets', friend.id);
         });
         return node;
+    },
+    cleanUp: function(){
+        board.clear();
     }
 });

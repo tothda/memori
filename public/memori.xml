@@ -20,7 +20,7 @@
     </div>
 
     <script type="text/javascript">
-      memori.baseUrl = 'http://memori.hiperkocka.hu';
+      memori.baseUrl = 'http://dev.dbx.hu:9292';
       memori.start();
     </script>
   </body>

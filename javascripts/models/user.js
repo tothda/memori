@@ -39,6 +39,9 @@ Y.mix(User.prototype, {
         if (idx != -1) {
             this.sets.splice(idx,1);
         }
+    },
+    appOwner: function(){
+        return this == User.owner;
     }
 });
 
@@ -126,7 +129,7 @@ Y.mix(User, {
                     callback.call(context, User.friends);
                 }, {
                     friends: iwiw_id_array
-                });
+                },'ismerősök letöltése');
             });
         }
     }

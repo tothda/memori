@@ -15,8 +15,10 @@ Y.mix(setView, {
         var me = this,
             node,saveButton,deleteButton,practiceButton,backLink;
 
+        var txt = me.set.ownerSet() ? '« vissza a leckékhez' : '« vissza '+ me.set.owner().name +' leckéihez'
+
         node = div(
-            backLink = a('« vissza a leckékhez').attr('href','#'),
+            backLink = a(txt).attr('href','#'),
             saveButton = button('Mentés'),
             deleteButton = button('Törlés'),
             practiceButton = button('Gyakorlás')
@@ -28,7 +30,7 @@ Y.mix(setView, {
                 me.set.save();
                 break;
             case backLink:
-                controller.fire('allSets');
+                controller.fire('allSets', me.set.owner().id);
                 break;
             case practiceButton:
                 controller.fire('practice', me.set.id());

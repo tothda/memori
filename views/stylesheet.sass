@@ -28,6 +28,13 @@
 !board_border_width = 6px
 !board_width = !board_wrapper - 2 * !board_border_width
 
+
+// html tag styles
+
+h3
+  :font-size 14px
+  :font-weight bold
+
 // padding, margins
 
 !unit = 10px
@@ -74,6 +81,31 @@ a.light
 
 .clear
   :clear both
+
+.button
+  :cursor pointer
+  :-moz-border-radius 5px
+  :-webkit-border-radius 5px
+  :text-align center
+
+.small-button
+  :font-size 11px
+  :padding 3px
+  
+
+.round5
+  :-moz-border-radius 5px
+  :-webkit-border-radius 5px
+
+strong
+  :font-weight bold
+
+.know
+  :color = !know_color
+
+.dunno
+  :color = !dunno_color
+
 
 #test-wrapper
   :width 750px
@@ -179,17 +211,18 @@ a.light
             :padding 5px
             .star
               :width 22px
-              :height 20px
+              :height 25px
               :float left
             .star.star-full
-              :background url('/images/star_full.gif') no-repeat
+              :background url('/images/star_full.gif') no-repeat 0 5px
             .star.star-empty
-              :background url('/images/star_empty.gif') no-repeat
+              :background url('/images/star_empty.gif') no-repeat 0 5px
             .descr
               :width 300px
               :float left
               :overflow hidden
               .title
+                :padding-top 5px
                 :font
                   :size 13px
                   :weight bold
@@ -220,6 +253,13 @@ a.light
                 .bar
                   :margin 0 1px
                   :width 12px
+              .word-count
+                :padding 14px 0 11px 0
+                span.button 
+                  :color white
+                  :padding-left 5px
+                  :padding-right 5px
+                  :background-color = !brown1
             .func
               :float left
               :width 68px
@@ -313,7 +353,7 @@ a.light
   :background-color white
   :-moz-border-radius 10px
   :-webkit-border-radius 10px
-  :margin 20px
+  :margin 0 20px 20px 20px
   :padding 20px
 
   #set-title, #set-description
@@ -347,8 +387,8 @@ a.light
 // practice
 
 #info-bar
-  #practice-info
-    :color = #333
+  .info
+    :color = !bucket_color_3
     :background-color #ab883f
     :padding 10px
     :margin 20px 20px 0 20px
@@ -444,25 +484,6 @@ a.light
         :background-color = !dunno_color
       #know-button
         :background-color = !know_color
-
-.button
-  :cursor pointer
-  :-moz-border-radius 5px
-  :-webkit-border-radius 5px
-  :text-align center
-
-.round5
-  :-moz-border-radius 5px
-  :-webkit-border-radius 5px
-
-strong
-  :font-weight bold
-
-.know
-  :color = !know_color
-
-.dunno
-  :color = !dunno_color
 
 // friends
 

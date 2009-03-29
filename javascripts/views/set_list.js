@@ -4,50 +4,62 @@ var setListView = {};
 Y.mix(setListView, {
     render: function(){
         var me = this;
-        var node = div().id('set-list-wrapper').app(
-            this.listN = ul().id('set-list').cls('round10 shadow')
+        board.app(
+            div().id('set-list-wrapper').app(
+                me.renderSets()
+            )
         );
-        for (var i=0,l=me.sets.length; i<l; i++){
-            var cls = (i == 0) ? 'first' : (i == l-1 ? 'last' : '');
-            var set = me.sets[i];
-            me.renderSet(set,cls);
-        }
-        var bc = Y.get('#board-content');
-        bc.appendChild(node);
+        me.renderInfo();
     },
-    renderSet: function(set, cls){
-        var item = li();
-        if (cls) {
-            item.addClass(cls);
-        }
-        var star = div().cls('star');
-        var descr = div().cls('descr');
-        var stat = div().cls('stat');
-        var func = div().cls('func');
-        star.set('innerHTML', 'star');
-        this.renderStat(stat, set);
-        func.set('innerHTML', 'func');
-        item.appendChild(this.renderStar());
-        item.appendChild(this.renderDescription(set));
-        item.appendChild(stat);
-        item.appendChild(this.renderFunc(set));
-        item.appendChild(div().cls('clear'));
-        this.listN.appendChild(item);
+    renderSets: function(){
+        var me = this,
+            l = me.sets.length;
+        var node = ul().id('set-list').cls('round10 shadow');
+        Y.each(me.sets, function(set, idx){
+            var last = idx + 1 == l;
+            node.app(
+                li().cls(last ? 'last' : '').app(
+                    me.renderSet(set)
+                )
+            );
+        });
+        return node;
+    },
+    renderSet: function(set){
+        return set.ownerSet() ? this.renderOwnSet(set) : this.renderFriendSet(set);
+    },
+    renderOwnSet: function(set){
+        return div(
+            this.renderStar(),
+            this.renderDescription(set),
+            this.renderStat(set),
+            this.renderFunc(set),
+            div().cls('clear')
+        );
+    },
+    renderFriendSet: function(set){
+        return div(
+            div().cls('star').html('&nbsp;'),
+            this.renderDescription(set),
+            this.renderFriendStat(set),
+            this.renderFriendFunc(),
+            div().cls('clear')
+        );
     },
     renderStar: function() {
         var rnd = Math.floor(Math.random() * 2);
         var cls = (rnd == 0) ? 'star star-empty' : 'star star-full';
-        var node = div().cls(cls).html('&nbsp;');
-        return node;
+        return div().cls(cls).html('&nbsp;');
     },
     renderDescription: function(set){
-        var title = set.get('title') || 'Cím nélküli lecke';
-        var description = set.get('description');
-        var node = div().cls('descr');
-        var titleNode = div().cls('title').set('innerHTML','<a href="#">'+title+'</a>');
-        node.appendChild(titleNode);
-        node.appendChild(div().cls('description').set('innerHTML',description));
-        titleNode.on('click', function(){
+        var link;
+        var node = div().cls('descr').app(
+            div().cls('title').app(
+                link = a(set.title()).attr('href','#')
+            ),
+            div(set.get('description')).cls('description')
+        );
+        link.on('click', function(){
             controller.fire('showSet', set.id());
         });
         return node;
@@ -65,13 +77,36 @@ Y.mix(setListView, {
         });
         return node;
     },
-    renderStat: function(elem, set) {
+    renderFriendFunc: function(set){
+        var func_button;
+        var node = div().cls('func').app(
+            func_button = div().cls('func-button button').html('átveszem')
+        );
+        func_button.on('click', function(){
+            controller.fire('take', set.id());
+        });
+        return node;
+    },
+    renderFriendStat: function(set){
+        var link;
+        var node = div().cls('stat').app(
+            div().cls('word-count').app(
+                link = span(set.cardCount() + ' szó').cls('round5 button small-button')
+            )
+        );
+        link.on('click', function(){
+            controller.fire('showSet', set.id());
+        });
+        return node;
+    },
+    renderStat: function(set) {
+        var elem = div().cls('stat');
         var barHeight = 30;
         var stat = set.bucket_stat;
         var sum = stat.sum;
-        if (sum == 0) {
+        if (sum == 0||!set.ownerSet()) {
             elem.html('&nbsp;');
-            return;
+            return elem;
         }
         var maxBucketCount = stat.maxBucketCount();
         for (var i=0; i<5; i++) {
@@ -94,9 +129,18 @@ Y.mix(setListView, {
             elem.appendChild(bucket);
         }
         elem.appendChild(div().cls('clear'));
+        return elem;
+    },
+    renderInfo: function(){
+        if (!this.user.appOwner()){
+            ibNode.app(
+                div().cls('info').app(h3(this.user.name + ' leckéi.'))
+            );
+        }
     },
     cleanUp: function(){
         board.clear();
         menuBar.clear();
+        ibNode.clear();
     }
 });

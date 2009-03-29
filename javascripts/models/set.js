@@ -108,6 +108,18 @@ Y.extend(Set, Y.Base, {
                 doIt();
             }, {_id:that.id(), _rev: that._rev}, 'lecke törlése');
         }
+    },
+    ownerSet: function(){
+        return this.get('user').appOwner();
+    },
+    title: function(){
+        return this.get('title') || 'Cím néküli lecke';
+    },
+    cardCount: function(){
+        return this.cards.length;
+    },
+    owner: function(){
+        return this.get('user');
     }
 }, { // static methods
     getSet: function(id, callback, context){

@@ -228,7 +228,7 @@ Y.mix(practiceView, {
                 return 'aktív kártyák gyakorlása';
             }
         };
-        return div().id('practice-info').app(
+        return div().cls('info').app(
             div().cls('info-text').app(
                 div(this.set.get('title')).cls('title'),
                 div(formatStrategy()).cls('practice-type')

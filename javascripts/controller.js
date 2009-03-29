@@ -13,6 +13,7 @@ Y.mix(controller, {
         });
         Y.each(controller.EVENTS, function(event){
             controller.subscribe(event, function(){
+                console.log(event, arguments);
                 if (controller[event]){
                     controller[event].apply(controller, arguments);
                 }
@@ -30,6 +31,7 @@ Y.mix(controller, {
         var u = User.getUser(userId) || User.owner;
         u.getSets(function(sets){
             setListView.sets = sets;
+            setListView.user = u;
             controller.render(setListView);
         });
     },

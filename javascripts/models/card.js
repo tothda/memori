@@ -29,8 +29,6 @@ Y.mix(Card, {
 Y.extend(Card, Y.Base, {
     initializer: function() {
         if (!this.get('time')) {
-            // ha ez egy új kártya, akkor az aktuális dátum lesz az utolsó gyakorlás dátuma
-            this.set('time', new Date());
             // hozzáadjuk 0-ás bucket-hez
             var s = this.get('set');
             //                    s.bucket_stat[0]++;
@@ -49,7 +47,7 @@ Y.extend(Card, Y.Base, {
         return (this.newObj() && !this.empty()) || (!this.newObj());
     },
     expired: function() {
-        return this.expiredSince() > 0;
+        return !this.get('time') || this.expiredSince() > 0;
     },
     expiredSince: function() {
         var time = this.get('time');

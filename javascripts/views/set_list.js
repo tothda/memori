@@ -7,8 +7,6 @@ Y.mix(setListView, {
         var node = div().id('set-list-wrapper').app(
             this.listN = ul().id('set-list').cls('round10 shadow')
         );
-        board.html('');
-        menuBar.html('');
         for (var i=0,l=me.sets.length; i<l; i++){
             var cls = (i == 0) ? 'first' : (i == l-1 ? 'last' : '');
             var set = me.sets[i];
@@ -99,5 +97,6 @@ Y.mix(setListView, {
     },
     cleanUp: function(){
         board.clear();
+        menuBar.clear();
     }
 });

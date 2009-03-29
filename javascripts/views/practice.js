@@ -7,9 +7,6 @@ Y.mix(practiceView, {
         if (me.strategy.length == 0) {
             me.strategy = new ShuffledPracticeStrategy([me.set]);
         }
-        menuBar.clear();
-        ibNode.clear();
-        board.clear();
         menuBar.app(me.renderMenuBar());
         board.app(
             me.box = div().id('practice-wrapper').app(
@@ -85,12 +82,12 @@ Y.mix(practiceView, {
             var t = this.card.get('time');
             this.cardInfo.clear().app(
                 div(b + '. dobozból').id('box-number').cls('bucket_'+(b-1)),
-                div('Legutóbb ' + DateHelper.time_ago_in_words(this.card.get('time')) + ' gyakoroltad.')
+                div(t ? 'Legutóbb ' + DateHelper.time_ago_in_words(t) + ' gyakoroltad.' : 'Még nem gyakoroltad.')
             );
             var n = memoriContent;
             var e = n.appendChild(document.createTextNode(' '));
             n.removeChild(e);
-            
+
         } else { // ha a lecke végére értünk
             var restart,
                 back,
@@ -280,6 +277,8 @@ Y.mix(practiceView, {
         e.preventDefault();
     },
     cleanUp: function(){
+        menuBar.clear();
+        board.clear();
         ibNode.clear();
         this.keyHandle.detach();
     }

@@ -105,7 +105,7 @@ Y.extend(Set, Y.Base, {
         } else {
             transport.DELETE("/sets/"+that.id(), function(){
                 doIt();
-            }, {_id:that.id(), _rev: that._rev});
+            }, {_id:that.id(), _rev: that._rev}, 'lecke törlése');
         }
     }
 }, { // static methods

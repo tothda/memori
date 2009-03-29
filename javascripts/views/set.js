@@ -7,34 +7,41 @@ Y.mix(setView, {
     },
     render: function() {
         var me = this;
-        menuBar.html('');
-        menuBar.appendChild(me.renderStatusBar());
-        board.html('');
+        menuBar.appendChild(me.renderMenuBar());
         board.appendChild(me.renderSetHeader());
         board.appendChild(me.renderCardsTable());
     },
-    renderStatusBar: function() {
-        var me = this;
-        var node = N.create('<div></div>');
-        var backToSetList = N.create('<a href="#">« vissza a leckékhez</a>');
-        var saveButton = N.create('<button>Mentés</button>');
-        var deleteButton = N.create('<button>Törlés</button>');
-        var practiceButton = N.create('<button>Gyakorlás</button>');
+    renderMenuBar: function() {
+        var me = this,
+            node,saveButton,deleteButton,practiceButton,backLink;
+
+        node = div(
+            backLink = a('« vissza a leckékhez').attr('href','#'),
+            saveButton = button('Mentés'),
+            deleteButton = button('Törlés'),
+            practiceButton = button('Gyakorlás')
+        );
+
         node.on('click', function(e){
             switch (e.target) {
             case saveButton:
                 me.set.save();
                 break;
-            case backToSetList:
-                me.set.save();
+            case backLink:
                 controller.fire('allSets');
+                break;
+            case practiceButton:
+                controller.fire('practice', me.set.id());
+                break;
+            case deleteButton:
+                if (confirm('Biztosan törlöd?')){
+                    me.set.destroy(function(){
+                        controller.fire('allSets');
+                    });
+                }
                 break;
             }
         });
-        node.appendChild(backToSetList);
-        node.appendChild(saveButton);
-        node.appendChild(deleteButton);
-        node.appendChild(practiceButton);
         return node;
     },
     renderSetHeader: function() {
@@ -284,6 +291,11 @@ Y.mix(setView, {
                 textArea: function(){return t;}
             };
         })();
+    },
+    cleanUp: function(){
+        this.set.save();
+        board.clear();
+        menuBar.clear();
     }
 });
 

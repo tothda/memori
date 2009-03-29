@@ -76,7 +76,7 @@ Y.extend(Set, Y.Base, {
         return o;
     },
     save: function(){
-        if (!this.dirty) {
+        if (!this.dirty || this.deleted) {
             return;
         }
         var key = this.get('id');
@@ -96,6 +96,7 @@ Y.extend(Set, Y.Base, {
     destroy: function(callback, context){
         var that = this;
         var doIt = function(){
+            that.deleted = true;
             delete Set.CACHE[that.id()];
             that.get('user').removeSet(that);
             callback.call(context);

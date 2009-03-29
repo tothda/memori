@@ -20,8 +20,8 @@
     </div>
 
     <script type="text/javascript">
-      var baseUrl = 'http://dev.dbx.hu:9292';
-      gadgets.util.registerOnLoadHandler(yuiTest);
+      memori.baseUrl = 'http://memori.hiperkocka.hu';
+      memori.start();
     </script>
   </body>
 </html>

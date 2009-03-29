@@ -1,7 +1,6 @@
         // transport
         transport = (function(){
-            //var baseUrl = iwiw ? "http://flashcard-test.appspot.com/api" : "/api";
-            var baseUrl = iwiw ? window.baseUrl : "";
+            var baseUrl = iwiw ? memori.baseUrl : "";
 
             var encodeData = function(o) {
                 var ret = [],

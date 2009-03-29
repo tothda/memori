@@ -45,7 +45,7 @@ Y.mix(setListView, {
             div().cls('star').html('&nbsp;'),
             this.renderDescription(set),
             this.renderFriendStat(set),
-            this.renderFriendFunc(),
+            this.renderFriendFunc(set),
             div().cls('clear')
         );
     },
@@ -86,7 +86,7 @@ Y.mix(setListView, {
             func_button = div().cls('func-button button').html('átveszem')
         );
         func_button.on('click', function(){
-            controller.fire('take', set.id());
+            controller.fire('takeSet', set.id());
         });
         return node;
     },

@@ -5,7 +5,8 @@ Y.mix(controller, {
         'allSets',
         'save',
         'friends',
-        'practice'
+        'practice',
+        'takeSet'
     ],
     init: function(){
         Y.each(controller.EVENTS, function(event){
@@ -36,7 +37,6 @@ Y.mix(controller, {
         });
     },
     save: function(){
-        Y.log('save', 'info', 'fc-pubsub');
         User.owner.save();
     },
     newSet: function(){
@@ -59,6 +59,16 @@ Y.mix(controller, {
         User.getFriends(function(friends){
             friendsView.friends = friends;
             controller.render(friendsView);
+        });
+    },
+    takeSet:function(setId){
+        Set.getSet(setId, function(set){
+            var newSet = set.take();
+            if (newSet) {
+                controller.fire('showSet', newSet.id());
+            } else {
+                controller.fire('allSets');
+            }
         });
     }
 });

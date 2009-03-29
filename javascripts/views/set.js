@@ -59,7 +59,7 @@ Y.mix(setView, {
         node.on('click', function(e){
             switch (e.target) {
             case takeButton:
-                controller.fire('take', me.set.id());
+                controller.fire('takeSet', me.set.id());
                 break;
             case backLink:
                 controller.fire('allSets', me.set.owner().id);
@@ -75,7 +75,7 @@ Y.mix(setView, {
         var me = this,
             titleLabel,descriptionLabel;
 
-        var node = div().id('set-header').cls('written shadow').app(
+        var node = div().id('set-header').cls('written shadow round10').app(
             div().cls('overflow-wrapper').app(
                 titleLabel = label('lecke címe').cls('overflow').id('set-title-label').attr('for','set-title'),
                 me.titleNode = N.create('<input type="text" class="written" id="set-title" />').set('value', me.set.get('title'))

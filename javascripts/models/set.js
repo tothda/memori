@@ -126,6 +126,22 @@ Y.extend(Set, Y.Base, {
     },
     owner: function(){
         return this.get('user');
+    },
+    take: function(){
+        if (this.ownerSet()){
+            return;
+        }
+        var newSet = User.owner.createSet();
+        newSet.set('title', this.get('title'));
+        newSet.set('description', this.get('description'));
+        Y.each(this.cards, function(c){
+            var card = newSet.createCard();
+            card.set('front', c.get('front'));
+            card.set('flip', c.get('flip'));
+        });
+        newSet.parent = this.id();
+        newSet.save();
+        return newSet;
     }
 }, { // static methods
     getSet: function(id, callback, context){

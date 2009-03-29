@@ -17,17 +17,23 @@ Y.mix(friendsView, {
         return node;
     },
     renderFriend: function(friend, last){
-        var node, link;
+        var node, link, button;
         node = li(
             div().cls('name').app(
                 link = a(friend.name).attr('href','#')
             ),
-            div(friend.num_sets + ' lecke')
+            div().cls('set-count').app(
+                button = span(friend.num_sets + ' lecke').cls('button round5 small-button')
+            ),
+            div().cls('clear')
         );
         if (last){
             node.addClass('last');
         }
         link.on('click', function(){
+            controller.fire('allSets', friend.id);
+        });
+        button.on('click', function(){
             controller.fire('allSets', friend.id);
         });
         return node;

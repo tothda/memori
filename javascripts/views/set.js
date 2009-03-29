@@ -12,13 +12,14 @@ Y.mix(setView, {
         board.appendChild(me.renderCardsTable());
     },
     renderMenuBar: function() {
+        return this.set.ownerSet() ? this.renderOwnMenuBar() : this.renderFriendMenuBar();
+    },
+    renderOwnMenuBar: function(){
         var me = this,
             node,saveButton,deleteButton,practiceButton,backLink;
 
-        var txt = me.set.ownerSet() ? '« vissza a leckékhez' : '« vissza '+ me.set.owner().name +' leckéihez'
-
         node = div(
-            backLink = a(txt).attr('href','#'),
+            backLink = a('« vissza a leckékhez').attr('href','#'),
             saveButton = button('Mentés'),
             deleteButton = button('Törlés'),
             practiceButton = button('Gyakorlás')
@@ -46,7 +47,31 @@ Y.mix(setView, {
         });
         return node;
     },
-    renderSetHeader: function() {
+    renderFriendMenuBar: function(){
+        var me = this,
+            node,takeButton,backLink;
+
+        node = div(
+            backLink = a('« vissza '+ me.set.owner().name +' leckéihez').attr('href','#'),
+            takeButton = button('Átveszem')
+        );
+
+        node.on('click', function(e){
+            switch (e.target) {
+            case takeButton:
+                controller.fire('take', me.set.id());
+                break;
+            case backLink:
+                controller.fire('allSets', me.set.owner().id);
+                break;
+            }
+        });
+        return node;
+    },
+    renderSetHeader: function(){
+        return this.set.ownerSet() ? this.renderOwnSetHeader() : this.renderFriendSetHeader();
+    },
+    renderOwnSetHeader: function() {
         var me = this,
             titleLabel,descriptionLabel;
 
@@ -104,6 +129,12 @@ Y.mix(setView, {
         }, me.descriptionNode, 'down:9');
         return node;
     },
+    renderFriendSetHeader: function(){
+        return div().id('set-header').cls('round10 written shadow').app(
+            h2(this.set.title()),
+            p(this.set.description())
+        );
+    },
     renderCardsTable: function(){
         var me = this;
         me.tableWrapper = div().id('cards-table-wrapper').app(
@@ -158,9 +189,11 @@ Y.mix(setView, {
             };
             prev.next = listElem;
             tr.appendChild(listElem.node);
-            listElem.node.on('click', function(){
-                me.editor.positionOn(listElem);
-            });
+            if (set.ownerSet()) { // csak akkor lehessen szerkeszteni, ha saját lecke
+                listElem.node.on('click', function(){
+                    me.editor.positionOn(listElem);
+                });                
+            }
             return listElem;
         };
         var flipElem = renderSide('flip', prevElem);
@@ -169,22 +202,24 @@ Y.mix(setView, {
         flipElem.pair = frontElem;
         frontElem.pair = flipElem;
 
-        // mellétesszük a kukát
-        var n;
-        tr.app(
-            n = td().cls('trash').app(
-                a().attr('href', '#').html('&nbsp;')
-            )
-        );
-        n.on('click', function(e){
-            if (flipElem.card) {
-                flipElem.card.destroy();
-            }
-            tr.get('parentNode').removeChild(tr);
-            // láncolt lista karbantartása
-            flipElem.prev.next = frontElem.next;
-            frontElem.next.prev = flipElem.prev;
-        });
+        // mellétesszük a kukát, de csak ha saját lecke
+        if (set.ownerSet()){
+            var n;
+            tr.app(
+                n = td().cls('trash').app(
+                    a().attr('href', '#').html('&nbsp;')
+                )
+            );
+            n.on('click', function(e){
+                if (flipElem.card) {
+                    flipElem.card.destroy();
+                }
+                tr.get('parentNode').removeChild(tr);
+                // láncolt lista karbantartása
+                flipElem.prev.next = frontElem.next;
+                frontElem.next.prev = flipElem.prev;
+            });
+        }
         me.table.insertBefore(tr, me.lastRow);
         return frontElem;
     },

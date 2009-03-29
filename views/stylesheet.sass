@@ -31,6 +31,9 @@
 
 // html tag styles
 
+h2
+  :font-size 16px
+
 h3
   :font-size 14px
   :font-weight bold
@@ -90,7 +93,7 @@ a.light
 
 .small-button
   :font-size 11px
-  :padding 3px
+  :padding 3px 5px
   
 
 .round5
@@ -351,8 +354,6 @@ strong
 
 #set-header
   :background-color white
-  :-moz-border-radius 10px
-  :-webkit-border-radius 10px
   :margin 0 20px 20px 20px
   :padding 20px
 
@@ -494,7 +495,9 @@ strong
     :padding 15px
     :border-bottom 1px solid
     :border-color = !brown1
-    .name    
+    .name
+      :float left
+      :width 430px
       a
         :font-size 14px
         :font-weight bold
@@ -502,5 +505,10 @@ strong
         :color = !txt_main
       &:hover
         :text-decoration underline
+    .set-count
+      :float left
+      span
+        :background-color = !brown1
+        :color white
   li.last
     :border none

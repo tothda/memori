@@ -9,7 +9,10 @@ Y.mix(setListView, {
                 me.renderSets()
             )
         );
-        me.renderInfo();
+        if (!me.user.appOwner()){
+            ibNode.app(me.renderInfo());
+            menuBar.app(me.renderMenuBar());            
+        }
     },
     renderSets: function(){
         var me = this,
@@ -132,11 +135,22 @@ Y.mix(setListView, {
         return elem;
     },
     renderInfo: function(){
-        if (!this.user.appOwner()){
-            ibNode.app(
-                div().cls('info').app(h3(this.user.name + ' leckéi.'))
-            );
-        }
+        return div().cls('info').app(
+            h3(this.user.name + ' leckéi.')
+        );
+    },
+    renderMenuBar: function(){
+        var me = this,
+            node,backLink;
+
+        node = div(
+            backLink = a('« vissza az ismerősökhöz').attr('href','#')
+        );
+        backLink.on('click', function(){
+            controller.fire('friends');
+        });
+        return node;
+        
     },
     cleanUp: function(){
         board.clear();

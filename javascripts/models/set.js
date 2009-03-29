@@ -76,7 +76,7 @@ Y.extend(Set, Y.Base, {
         return o;
     },
     save: function(){
-        if (!this.dirty || this.deleted) {
+        if (!this.dirty || this.deleted || !this.ownerSet()) {
             return;
         }
         var key = this.get('id');
@@ -94,6 +94,9 @@ Y.extend(Set, Y.Base, {
         }, o, 'lecke mentése');
     },
     destroy: function(callback, context){
+        if (!this.ownerSet()){
+            return;
+        }
         var that = this;
         var doIt = function(){
             that.deleted = true;
@@ -114,6 +117,9 @@ Y.extend(Set, Y.Base, {
     },
     title: function(){
         return this.get('title') || 'Cím néküli lecke';
+    },
+    description: function(){
+        return this.get('description');
     },
     cardCount: function(){
         return this.cards.length;

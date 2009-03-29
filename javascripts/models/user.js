@@ -102,6 +102,7 @@ Y.mix(User, {
                 User.friendsById = {};
                 var friends = resp.get('friends').getData();
                 var iwiw_id_array = [];
+                var tmp_cache = {};
                 friends.each(function(f){
                     var u = new User();
                     u.iwiw_id = f.getId();
@@ -110,15 +111,22 @@ Y.mix(User, {
                     //u.thumbnail_url = f.
                     console.log(f);
                     User.friends.push(u);
-                    User.CACHE[u.iwiw_id] = u;
+                    tmp_cache[u.iwiw_id] = u;
                 });
                 // lekérdezzük a barátokat, hogy mi az id-juk + hány leckéjük van
                 transport.POST('/users/', function(resp){
+                    Y.each(resp.data, function(u){
+                        var user = tmp_cache[u.iwiw_id];
+                        console.log(user);
+                        user.id = u.id;
+                        user.num_sets = u.num_sets;
+                        User.CACHE[user.id] = user;
+                    });
                     console.log(resp);
+                    callback.call(context, User.friends);
                 }, {
                     friends: iwiw_id_array
                 });
-                callback.call(context, User.friends);
             });
         }
     }

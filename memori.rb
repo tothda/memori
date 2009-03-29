@@ -57,9 +57,26 @@ put '/users' do
   JSON.dump o
 end
 
-post '/users' do
+post '/users/' do
   json = JSON.parse(params[:json])
-  iwiw_id_array = json["friends"]  
+  # iwiw_id-k tömbje
+  iwiw_id_array = json["friends"]
+  r = db.view 'db/user-by-iwiw-id', :keys => iwiw_id_array
+  # id => objektum mappalés
+  h = {}
+  r["rows"].each do |row|
+    id = row["id"]
+    iwiw_id = row["value"]["iwiw_id"]
+    h[id] = {"id" => id, "iwiw_id" => iwiw_id, "num_sets" => 0 }
+  end
+  user_id_array = r["rows"].map{|e| e["id"]}
+  r2 = db.view 'db/num-sets-by-user', :keys => user_id_array, :group => true
+  r2["rows"].each do |row|
+    key = row["key"]
+    value = row["value"]
+    h[key]["num_sets"] = value
+  end
+  JSON.dump h.values
 end
 
 get '/javascripts/sprocket.js' do

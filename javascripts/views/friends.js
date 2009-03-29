@@ -21,12 +21,14 @@ Y.mix(friendsView, {
         node = li(
             div().cls('name').app(
                 link = a(friend.name).attr('href','#')
-            )
+            ),
+            div(friend.num_sets + ' lecke')
         );
         if (last){
             node.addClass('last');
         }
         link.on('click', function(){
+            controller.fire('allSets', friend.id);
         });
         return node;
     }

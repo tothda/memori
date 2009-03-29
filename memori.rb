@@ -21,7 +21,7 @@ end
 
 require 'ruby/sprocket_app'
 
-db = CouchRest.database!("http://couch.dbx.hu:5984/memori")
+db = CouchRest.database!("http://couch.hiperkocka.hu/memori")
 
 get '/' do
   "Memori - version: #{Memori.version.join(".")}"

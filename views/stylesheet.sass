@@ -173,8 +173,6 @@ a.light
         :padding 20px
         ul#set-list
           :background-color white
-          li.last
-            :border-bottom none
           li
             :border-bottom 1px solid
             :border-color = !brown1
@@ -231,6 +229,8 @@ a.light
                 :background-color = !blue1
                 :font-size 11px
                 :padding 3px
+          li.last
+            :border-bottom none
 
 .bucket_0
   :background-color = !bucket_color_0
@@ -463,3 +463,23 @@ strong
 
 .dunno
   :color = !dunno_color
+
+// friends
+
+#friends-list-wrapper
+  :background-color white
+
+  li
+    :padding 15px
+    :border-bottom 1px solid
+    :border-color = !brown1
+    .name    
+      a
+        :font-size 14px
+        :font-weight bold
+        :text-decoration none
+        :color = !txt_main
+      &:hover
+        :text-decoration underline
+  li.last
+    :border none

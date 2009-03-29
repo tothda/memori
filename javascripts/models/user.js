@@ -88,8 +88,8 @@ Y.mix(User, {
         } else {
             var req = opensocial.newDataRequest();
             var friends_params = {};
-            //legfeljebb 5 ismerőst kérünk
-            friends_params[opensocial.DataRequest.PeopleRequestFields.MAX] = 5;
+            //legfeljebb 50 ismerőst kérünk
+            friends_params[opensocial.DataRequest.PeopleRequestFields.MAX] = 50;
             //név szerint rendezve
             friends_params[opensocial.DataRequest.PeopleRequestFields.SORT_ORDER] = opensocial.DataRequest.SortOrder.NAME;
             //csak azokat, akiknek telepítve van az alkalmazás
@@ -101,12 +101,22 @@ Y.mix(User, {
                 User.friends = [];
                 User.friendsById = {};
                 var friends = resp.get('friends').getData();
+                var iwiw_id_array = [];
                 friends.each(function(f){
                     var u = new User();
                     u.iwiw_id = f.getId();
+                    iwiw_id_array.push(u.iwiw_id);
                     u.name = f.getDisplayName();
+                    //u.thumbnail_url = f.
+                    console.log(f);
                     User.friends.push(u);
                     User.CACHE[u.iwiw_id] = u;
+                });
+                // lekérdezzük a barátokat, hogy mi az id-juk + hány leckéjük van
+                transport.POST('/users/', function(resp){
+                    console.log(resp);
+                }, {
+                    friends: iwiw_id_array
                 });
                 callback.call(context, User.friends);
             });

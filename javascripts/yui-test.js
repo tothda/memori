@@ -37,15 +37,15 @@ var DateHelper = {
         date.setTime(Date.parse(from));
         return this.time_ago_in_words(date);
     },
-  
+
     time_ago_in_words: function(from) {
         return this.distance_of_time_in_words(new Date, from);
     },
- 
+
     distance_of_time_in_words: function(to, from) {
         var distance_in_seconds = ((to - from) / 1000);
         var distance_in_minutes = Math.floor((distance_in_seconds / 60));
- 
+
         if (distance_in_minutes == 0) { return 'kevesebb, mint egy perce'; }
         if (distance_in_minutes == 1) { return 'egy perce'; }
         if (distance_in_minutes < 45) { return distance_in_minutes + ' perce'; }
@@ -56,7 +56,7 @@ var DateHelper = {
         if (distance_in_minutes < 86400) { return 'kb. 1 hónapja'; }
         if (distance_in_minutes < 525960) { return Math.floor(distance_in_minutes / 43200) + ' hónapja'; }
         if (distance_in_minutes < 1051199) { return 'kb. 1 éve'; }
- 
+
         return 'több, mint ' + Math.floor(distance_in_minutes / 525960) + ' 1 éve';
     }
 };
@@ -120,7 +120,7 @@ function yuiTest() {
         //= require "views/set_list"
         //= require "views/practice"
         //= require "views/statusbar_widget.js"
-        //= require "views/friends_widget.js"
+        //= require "views/friends.js"
 
         //= require "views/sidebar"
         //= require "views/set"

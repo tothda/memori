@@ -57,6 +57,11 @@ put '/users' do
   JSON.dump o
 end
 
+post '/users' do
+  json = JSON.parse(params[:json])
+  iwiw_id_array = json["friends"]  
+end
+
 get '/javascripts/sprocket.js' do
   SprocketsApplication.source
 end

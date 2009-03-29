@@ -96,5 +96,8 @@ Y.mix(setListView, {
             elem.appendChild(bucket);
         }
         elem.appendChild(div().cls('clear'));
+    },
+    cleanUp: function(){
+        board.clear();
     }
 });

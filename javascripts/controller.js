@@ -11,28 +11,18 @@ Y.mix(controller, {
         Y.each(controller.EVENTS, function(event){
             controller.publish(event);
         });
-        Y.each(controller.EVENTS, function(event){     
+        Y.each(controller.EVENTS, function(event){
             controller.subscribe(event, function(){
-                controller[event].apply(controller, arguments);
+                if (controller[event]){
+                    controller[event].apply(controller, arguments);
+                }
             });
-        });
-
-        controller.subscribe('friends', function(){
-            // Y.log('friends', 'info', 'fc-pubsub');
-            // User.getFriends(function(friends){
-            //     friendsWidget.set('friends', friends);
-            //     setWidget.hide();
-            //     setListWidget.hide();
-            //     setPracticeWidget.hide();
-            //     friendsWidget.render();
-            //     friendsWidget.show();
-            // });
         });
     },
     render: function(newView){
         if (this.view && this.view.cleanUp) {
             this.view.cleanUp();
-        }       
+        }
         newView.render();
         this.view = newView;
     },
@@ -61,7 +51,13 @@ Y.mix(controller, {
         Set.getSet(setId, function(set){
             practiceView.set = set;
             controller.render(practiceView);
-        });        
+        });
+    },
+    friends: function(){
+        User.getFriends(function(friends){
+            friendsView.friends = friends;
+            controller.render(friendsView);
+        });
     }
 });
 

@@ -112,8 +112,6 @@ Y.mix(User, {
                     iwiw_id_array.push(u.iwiw_id);
                     u.name = f.getDisplayName();
                     //u.thumbnail_url = f.
-                    console.log(f);
-                    User.friends.push(u);
                     tmp_cache[u.iwiw_id] = u;
                 });
                 // lekérdezzük a barátokat, hogy mi az id-juk + hány leckéjük van
@@ -124,6 +122,7 @@ Y.mix(User, {
                         user.id = u.id;
                         user.num_sets = u.num_sets;
                         User.CACHE[user.id] = user;
+                        User.friends.push(user);
                     });
                     console.log(resp);
                     callback.call(context, User.friends);

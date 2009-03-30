@@ -2,7 +2,7 @@ var practiceView = {};
 
 Y.mix(practiceView, {
     init: function(){
-        Y.on('key', this.eventHandler, window, 'down:37,39,32,73,78', this);
+        Y.on('key', this.eventHandler, window, 'down:37,39,32,73,84', this);
     },
     render: function(){
         var me = this;
@@ -223,8 +223,8 @@ Y.mix(practiceView, {
         });
 
         me.saveButton.set('disabled', !me.dirty);
-        controller.subscribe('dirty', me.dirtyHandler, me);        
-        
+        controller.subscribe('dirty', me.dirtyHandler, me);
+
         return node;
     },
     dirtyHandler: function(dirty){
@@ -288,8 +288,8 @@ Y.mix(practiceView, {
                 this.card.practice(true);
                 this.nextCard().show();
             }
-            // dunno, N
-            if (this.card && (t == this.dunnoButton || c == 78)) {
+            // dunno, T
+            if (this.card && (t == this.dunnoButton || c == 84)) {
                 this.dunno++;
                 this.card.practice(false);
                 this.nextCard().show();
@@ -299,14 +299,24 @@ Y.mix(practiceView, {
         e.preventDefault();
     },
     renderHelpNode: function(){
+        var help = div().id('help-content').cls('round10-bottom');
+        if (this.expiredStrategy()){
+            help.app(
+                div(div('tudom').cls('help-shortcut')).id('help-know').cls('help-shortcut-wrapper'),
+                div(div('nem tudom').cls('help-shortcut')).id('help-dunno').cls('help-shortcut-wrapper'),
+                div(div('másik oldal').cls('help-shortcut')).id('help-turn')
+            );
+        } else {
+            help.app(
+                div(div('következő').cls('help-shortcut')).id('help-next').cls('help-shortcut-wrapper'),
+                div(div('előző').cls('help-shortcut')).id('help-prev').cls('help-shortcut-wrapper'),
+                div(div('másik oldal').cls('help-shortcut')).id('help-turn')
+            );
+        }
         var node = div().app(
-            div().id('help-header').cls('round10-top').html('segítség'),
-            div().id('help-content').cls('round10-bottom').app(
-                div('következő'),
-                div('előző'),
-                div('másik oldal')
-            )
-        );        
+            div().id('help-header').cls('round10-top').html('TIPP'),
+            help
+        );
         return node;
     },
     cleanUp: function(){

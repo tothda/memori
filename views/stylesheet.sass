@@ -4,7 +4,8 @@
 !brown2 = #c59d49
 !brown3 = #FFD784
 !brown10 = #F3F0EA
-!blue1 = #6ba2de
+//!blue1 = #6ba2de
+!blue1 = #6666CC
 !txt_main = #333333
 !txt_light = #6F6F6F
 !dunno_color = red
@@ -192,7 +193,7 @@ strong
 
 
     #navigation-wrapper > ul#navigation
-      :background url(/images/aktivmenu.png) no-repeat
+      :background url(/images/aktiv-menu.png) no-repeat
 
     #board
       :height = !board_height
@@ -525,6 +526,11 @@ strong
   li.last
     :border none
 
+!help_color1 = #333399
+!help_color2 = !help_color1 + #333333
+!help_color3 = !help_color2 + #333333
+!help_color4 = !help_color3 + #333333
+
 #help-wrapper
   :position absolute
   :top 276px
@@ -532,10 +538,29 @@ strong
   :font-size 11px
   :width 130px
   #help-header
-    :background-color #6666cc
-    :color lightblue
-    :padding 3px 8px
+    :background url(/images/felkjel.png) no-repeat 8px 4px
+    :background-color = !help_color2
+    :color = !help_color4
+    :padding 3px 8px 3px 26px
   #help-content
-    :background-color #9999ff
+    :background-color = !help_color3
     :padding 3px 8px 15px 8px
-    :color #6666cc
+    :color = !help_color1
+    .help-shortcut
+      :padding 8px 0 6px 0
+    .help-shortcut-wrapper
+      :border-bottom 1px solid 
+      :border-color = !help_color4
+      :padding-bottom 5px
+    #help-next
+      :background url(/images/nyil_jobb.png) no-repeat 85px 0
+    #help-prev
+      :background url(/images/nyil_bal.png) no-repeat 85px 0
+    #help-know
+      :background url(/images/tudom.png) no-repeat 89px 3px
+    #help-dunno
+      :background url(/images/nem_tudom.png) no-repeat 89px 4px
+    #help-turn
+      :background url(/images/space2.png) no-repeat 77px 5px
+
+      

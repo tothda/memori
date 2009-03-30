@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Module>
-<ModulePrefs title="memori dev" author="Tóth Dávid" author_email="tothda@gmail.com">
+<ModulePrefs title="memori" author="Tóth Dávid" author_email="tothda@gmail.com">
   <Require feature="opensocial-0.8"/>
   <Require feature="dynamic-height"/>
 </ModulePrefs>

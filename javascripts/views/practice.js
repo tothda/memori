@@ -2,7 +2,7 @@ var practiceView = {};
 
 Y.mix(practiceView, {
     init: function(){
-        Y.on('key', this.eventHandler, window, 'down:37,39,32,73,84', this);
+        Y.on('key', this.eventHandler, window, 'down:37,39,32,78,84', this);
     },
     render: function(){
         var me = this;
@@ -282,14 +282,14 @@ Y.mix(practiceView, {
         }
 
         if (this.expiredStrategy()){
-            // know, I
-            if (this.card && (t == this.knowButton|| c == 73)) {
+            // know, T
+            if (this.card && (t == this.knowButton|| c == 84)) {
                 this.know++;
                 this.card.practice(true);
                 this.nextCard().show();
             }
-            // dunno, T
-            if (this.card && (t == this.dunnoButton || c == 84)) {
+            // dunno, N
+            if (this.card && (t == this.dunnoButton || c == 78)) {
                 this.dunno++;
                 this.card.practice(false);
                 this.nextCard().show();

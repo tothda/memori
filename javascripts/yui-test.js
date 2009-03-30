@@ -1,4 +1,4 @@
- 
+
 if (!window.console) {
     window.console = {
         log: function(){}
@@ -46,7 +46,8 @@ var memori = {
                             this.board = div().id('board-content')
                         ),
                         this.sbNode = div().id('status-bar').html('&nbsp;')
-                    )
+                    ),
+                    this.helpNode = div().id('help-wrapper')
                 )
             );
 

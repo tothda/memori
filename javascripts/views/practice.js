@@ -23,6 +23,7 @@ Y.mix(practiceView, {
     },
     start: function(){
         ibNode.clear().app(this.renderInfoBar());
+        helpNode.clear().app(this.renderHelpNode());
         this.practiceSummary.clear().hide();
         this.cardTxt.show();
         this.cardInfo.show();
@@ -297,10 +298,22 @@ Y.mix(practiceView, {
 
         e.preventDefault();
     },
+    renderHelpNode: function(){
+        var node = div().app(
+            div().id('help-header').cls('round10-top').html('segítség'),
+            div().id('help-content').cls('round10-bottom').app(
+                div('következő'),
+                div('előző'),
+                div('másik oldal')
+            )
+        );        
+        return node;
+    },
     cleanUp: function(){
         menuBar.clear();
         board.clear();
         ibNode.clear();
+        helpNode.clear();
         this.handleKeys = false;
         this.set.save();
         controller.unsubscribe('dirty', me.dirtyHandler);

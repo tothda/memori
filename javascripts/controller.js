@@ -15,7 +15,7 @@ Y.mix(controller, {
         });
         Y.each(controller.EVENTS, function(event){
             controller.subscribe(event, function(){
-                console.log(event, arguments);
+                //console.log(event, arguments);
                 if (controller[event]){
                     controller[event].apply(controller, arguments);
                 }

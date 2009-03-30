@@ -1,8 +1,12 @@
 var practiceView = {};
 
 Y.mix(practiceView, {
+    init: function(){
+        Y.on('key', this.eventHandler, window, 'down:37,39,32,73,78', this);
+    },
     render: function(){
         var me = this;
+        me.handleKeys = true; // az event detach mintha bugos lenne, ezért kell így
         me.strategy = new ExpiredPracticeStrategy([me.set]);
         if (me.strategy.length == 0) {
             me.strategy = new ShuffledPracticeStrategy([me.set]);
@@ -155,6 +159,9 @@ Y.mix(practiceView, {
         );
         return node;
     },
+    expiredStrategy: function(){
+        return this.strategyIndex() == 0;
+    },
     strategyIndex: function() {
         var me = this,
             n;
@@ -173,12 +180,11 @@ Y.mix(practiceView, {
     },
     renderMenuBar: function() {
         var me = this,
-            back, save,
-            node, sel;
+            back, node, sel;
 
         node = div().app(
             back = a('« vissza a leckékhez').attr('href','#'),
-            save = button('Mentés').cls('left-mar'),
+            me.saveButton = button('Mentés').cls('left-mar'),
             span('amit gyakorolni szeretnék:').cls('left-mar'),
             sel = select(
                 option('csak az aktív kártyákat').attr('value','0'),
@@ -209,12 +215,20 @@ Y.mix(practiceView, {
                 me.set.save();
                 controller.fire('allSets');
                 break;
-            case save:
+            case me.saveButton:
                 me.set.save();
                 break;
             }
         });
+
+        me.saveButton.set('disabled', !me.dirty);
+        controller.subscribe('dirty', me.dirtyHandler, me);        
+        
         return node;
+    },
+    dirtyHandler: function(dirty){
+        this.saveButton.set('disabled', !dirty);
+        this.saveButton.blur(); // ha disabled lesz és rajtmarad a focus, akkor a key event-ek nem működnek
     },
     renderInfoBar: function(){
         var me = this;
@@ -242,36 +256,43 @@ Y.mix(practiceView, {
         );
     },
     bindEventHandlers: function(){
-        this.keyHandle = Y.on('key', this.eventHandler, window.document, 'down:37,38,39,40', this);
         this.box.on('click', this.eventHandler, this);
     },
     eventHandler: function(e){
+        if (!this.handleKeys){
+            return;
+        }
         var t = e.target,
             c = e.charCode;
 
-        // prev, left
-        if ((t == this.prevButton || c == 37) && !this.strategy.first()) {
-            this.prevCard().show();
-        }
-        // next, right
-        if ((t == this.nextButton || c == 39) && !this.strategy.last()) {
-            this.nextCard().show();
+        if (!this.expiredStrategy()){
+            // prev, left
+            if ((t == this.prevButton || c == 37) && !this.strategy.first()) {
+                this.prevCard().show();
+            }
+            // next, right
+            if ((t == this.nextButton || c == 39) && !this.strategy.last()) {
+                this.nextCard().show();
+            }
         }
         // flip, up, down
-        if (t == this.cardTxt || c == 38 || c == 40) {
+        if (t == this.cardTxt || c == 32) {
             this.flip().show();
         }
-        // know
-        if (t == this.knowButton) {
-            this.know++;
-            this.card.practice(true);
-            this.nextCard().show();
-        }
-        // dunno
-        if (t == this.dunnoButton) {
-            this.dunno++;
-            this.card.practice(false);
-            this.nextCard().show();
+
+        if (this.expiredStrategy()){
+            // know, I
+            if (this.card && (t == this.knowButton|| c == 73)) {
+                this.know++;
+                this.card.practice(true);
+                this.nextCard().show();
+            }
+            // dunno, N
+            if (this.card && (t == this.dunnoButton || c == 78)) {
+                this.dunno++;
+                this.card.practice(false);
+                this.nextCard().show();
+            }
         }
 
         e.preventDefault();
@@ -280,6 +301,10 @@ Y.mix(practiceView, {
         menuBar.clear();
         board.clear();
         ibNode.clear();
-        this.keyHandle.detach();
+        this.handleKeys = false;
+        this.set.save();
+        controller.unsubscribe('dirty', me.dirtyHandler);
     }
 });
+
+practiceView.init();

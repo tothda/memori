@@ -31,8 +31,13 @@ Y.extend(Card, Y.Base, {
         if (!this.get('time')) {
             // hozzáadjuk 0-ás bucket-hez
             var s = this.get('set');
-            //                    s.bucket_stat[0]++;
         }
+        var cf = ['front','flip'];
+        Y.each(cf, function(f){
+            this.on(f+'Change', function(){
+                this.get('set').setDirty();
+            }, this);
+        }, this);
     },
     newObj: function(){
         return typeof this.get('id') === "undefined";
@@ -67,7 +72,7 @@ Y.extend(Card, Y.Base, {
     },
     destroy: function(){
         this.deleted = true;
-        this.get('set').dirty = true;
+        this.get('set').setDirty();
     },
     practice: function(result){
         var set = this.get('set');
@@ -75,7 +80,7 @@ Y.extend(Card, Y.Base, {
         this.set('time', new Date());
         this.set('bucket', newBucket);
         this.set('result', result);
-        this.get('set').dirty = true;
+        this.get('set').setDirty();
     }
 }, {
     fromObj: function(o){

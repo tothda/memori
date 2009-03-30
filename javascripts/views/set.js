@@ -16,18 +16,18 @@ Y.mix(setView, {
     },
     renderOwnMenuBar: function(){
         var me = this,
-            node,saveButton,deleteButton,practiceButton,backLink;
+            node,deleteButton,practiceButton,backLink;
 
         node = div(
             backLink = a('« vissza a leckékhez').attr('href','#'),
-            saveButton = button('Mentés'),
+            me.saveButton = button('Mentés'),
             deleteButton = button('Törlés'),
             practiceButton = button('Gyakorlás')
         );
 
         node.on('click', function(e){
             switch (e.target) {
-            case saveButton:
+            case me.saveButton:
                 me.set.save();
                 break;
             case backLink:
@@ -45,6 +45,9 @@ Y.mix(setView, {
                 break;
             }
         });
+
+        me.saveButton.set('disabled', !me.dirty);
+        controller.subscribe('dirty', me.dirtyHandler, me);
         return node;
     },
     renderFriendMenuBar: function(){
@@ -192,7 +195,7 @@ Y.mix(setView, {
             if (set.ownerSet()) { // csak akkor lehessen szerkeszteni, ha saját lecke
                 listElem.node.on('click', function(){
                     me.editor.positionOn(listElem);
-                });                
+                });
             }
             return listElem;
         };
@@ -222,6 +225,9 @@ Y.mix(setView, {
         }
         me.table.insertBefore(tr, me.lastRow);
         return frontElem;
+    },
+    dirtyHandler: function(dirty){
+        this.saveButton.set('disabled', !dirty);
     },
     initEditor: function(){
         var me = this;
@@ -280,7 +286,7 @@ Y.mix(setView, {
                         newFront.next = i;
                         // az új kártya flipside-jára ugorjunk
                         i = newFront.pair;
-                        me.lastRow.scrollIntoView();                        
+                        me.lastRow.scrollIntoView();
                     }
                 }
                 if (i.node) {
@@ -288,7 +294,12 @@ Y.mix(setView, {
                     me.editor.positionOn(i);
                 }
                 e.preventDefault();
-            }, t, 'down:9');
+            }, t, 'down:9,27');
+            // ESC handler
+            Y.on('key', function(e){
+                t.setStyle('top','-2000px');
+            }, t, 'down:27');
+
             // blur handler
             Y.on('blur', function(){
                 updateIfChanged();
@@ -333,6 +344,7 @@ Y.mix(setView, {
         this.set.save();
         board.clear();
         menuBar.clear();
+        controller.unsubscribe('dirty', me.dirtyHandler);
     }
 });
 

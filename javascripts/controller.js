@@ -6,7 +6,8 @@ Y.mix(controller, {
         'save',
         'friends',
         'practice',
-        'takeSet'
+        'takeSet',
+        'dirty'
     ],
     init: function(){
         Y.each(controller.EVENTS, function(event){

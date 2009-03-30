@@ -24,8 +24,8 @@ Y.extend(Set, Y.Base, {
         this.bucket_stat = new BucketStat(this);
         var cf = ['description', 'title'];
         Y.each(cf, function(f){
-            this.on(f+'Change', function(){
-                this.dirty = true;
+            this.on(f+'Change', function(){        
+                this.setDirty();
             }, this);
         }, this);
         Set.CACHE[this.id()] = this;
@@ -48,13 +48,19 @@ Y.extend(Set, Y.Base, {
         }
         return ret;
     },
+    setDirty: function(){
+        if (!this.dirty){
+            this.dirty = true;
+            controller.fire('dirty', true, this.id());
+        }
+    },
     createCard: function(){
         var c = new Card({
             set: this
         });
         this.cards.push(c);
         this.bucket_stat.createCard();
-        this.dirty = true;
+        this.setDirty();
         return c;
     },
     toObj: function(){
@@ -91,6 +97,7 @@ Y.extend(Set, Y.Base, {
             // elmentjük a set új mvcc revision-jét
             that._rev = resp.data.rev;
             that.dirty = false;
+            controller.fire('dirty', false, that.id());
         }, o, 'lecke mentése');
     },
     destroy: function(callback, context){

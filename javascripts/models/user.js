@@ -71,13 +71,12 @@ Y.mix(User, {
                     User.owner.id = resp.data.id;
                     callback.call(context);
                 }, {
-                    iwiw_id: User.owner.iwiw_id,
-                    name: User.owner.name
+                    iwiw_id: User.owner.iwiw_id
                 });
             });
         } else {
             User.owner = new User();
-            User.owner.name = "Tóth Dávid";
+            User.owner.name = "Tesz Elek";
             User.owner.id = "aaaaaa";
             callback.call(context);
         }

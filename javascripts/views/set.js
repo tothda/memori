@@ -341,7 +341,11 @@ Y.mix(setView, {
         })();
     },
     cleanUp: function(){
-        this.set.save();
+        if (this.set.empty()){
+            this.set.destroy(function(){});
+        } else {
+            this.set.save();        
+        }
         board.clear();
         menuBar.clear();
         controller.unsubscribe('dirty', me.dirtyHandler);

@@ -81,8 +81,11 @@ Y.extend(Set, Y.Base, {
         }, this);
         return o;
     },
+    empty: function(){
+        return !this.get('title') && !this.get('desciption') && this.cards.length == 0;
+    },
     save: function(){
-        if (!this.dirty || this.deleted || !this.ownerSet()) {
+        if (!this.dirty || this.deleted || !this.ownerSet() || this.empty()) {
             return;
         }
         var key = this.get('id');

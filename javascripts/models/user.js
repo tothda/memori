@@ -1,3 +1,8 @@
+[].indexOf || (Array.prototype.indexOf = function(v){    
+    for(var i = this.length; i-- && this[i] !== v;);
+    return i;
+});
+
 // User model
 function User() {
     this.sets = Y.Array([]);

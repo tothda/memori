@@ -58,5 +58,5 @@ var DateHelper = {
         if (distance_in_minutes < 1051199) { return 'kb. 1 éve'; }
 
         return 'több, mint ' + Math.floor(distance_in_minutes / 525960) + ' 1 éve';
-    },
+    }
 };

@@ -45,8 +45,7 @@ Y.mix(setView, {
                 break;
             }
         });
-
-        me.saveButton.set('disabled', !me.dirty);
+        me.saveButton.set('disabled', !me.set.dirty);
         controller.subscribe('dirty', me.dirtyHandler, me);
         return node;
     },

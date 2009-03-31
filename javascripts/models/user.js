@@ -8,7 +8,6 @@ Y.mix(User.prototype, {
         var s = new Set({});
         s.created_at = new Date();
         s.loaded = true;
-        s.dirty = true;
         s.set('user', this);
         this.sets.push(s);
         return s;

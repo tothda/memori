@@ -96,8 +96,10 @@ Y.mix(setListView, {
     renderFriendStat: function(set){
         var link;
         var node = div().cls('stat').app(
-            div().cls('word-count').app(
-                link = span(set.cardCount() + ' szó').cls('round5 button small-button')
+            div().cls('word-count-wrapper').app(
+                link = div().cls('word-count round5 button small-button').app(
+                    set.cardCount() + ' szó'
+                )
             )
         );
         link.on('click', function(){
@@ -125,12 +127,10 @@ Y.mix(setListView, {
         );
 
         var maxBucketCount = stat.maxBucketCount();
-        console.log(set.title());
         for (var i = 0; i < 5; i++){
             var height = Math.round(barHeight * (stat.count(i) - stat.expired(i)) / maxBucketCount);
             var expiredHeight = Math.round(barHeight * stat.expired(i) / maxBucketCount);
             var bar, expiredBar;
-            console.log(i,height,expiredHeight);
             tr1.app(
                 expiredHeight == 0 ?
                     td(
@@ -162,7 +162,7 @@ Y.mix(setListView, {
     },
     renderInfo: function(){
         return div().cls('info').app(
-            h3(this.user.name + ' leckéi.')
+            h3(this.user.name + ' leckéi')
         );
     },
     renderMenuBar: function(){
@@ -170,7 +170,7 @@ Y.mix(setListView, {
             node,backLink;
 
         node = div(
-            backLink = a('« vissza az ismerősökhöz').attr('href','#')
+            backLink = a('« vissza az ismerősökhöz').attr('href','#').cls('top-pad')
         );
         backLink.on('click', function(){
             controller.fire('friends');

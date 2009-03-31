@@ -121,13 +121,11 @@ Y.mix(User, {
                 transport.POST('/users/', function(resp){
                     Y.each(resp.data, function(u){
                         var user = tmp_cache[u.iwiw_id];
-                        console.log(user);
                         user.id = u.id;
                         user.num_sets = u.num_sets;
                         User.CACHE[user.id] = user;
                         User.friends.push(user);
                     });
-                    console.log(resp);
                     callback.call(context, User.friends);
                 }, {
                     friends: iwiw_id_array

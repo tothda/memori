@@ -56,7 +56,7 @@ Y.mix(practiceView, {
             div().id('card-info').app(
                 this.cardInfo = div()
             ),
-            this.practiceSummary = div().id('practice-summary').cls('written').hide()
+            this.practiceSummary = div().id('practice-summary').hide()
         );
         return this.cardDiv;
     },
@@ -100,14 +100,16 @@ Y.mix(practiceView, {
                 n = this.strategy.expiredCount();
 
             this.practiceSummary.app(
-                h3('A gyakorlás végére értél.'),
+                h3('A gyakorlás végére értél.').cls('bottom-pad'),
                 table(
-                    tr(td('tudtál:').cls('right-pad'),td(strong(this.know +' db').cls('know'), ' kártyát')),
-                    tr(td('nem tudtál:').cls('right-pad'),td(strong(this.dunno + ' db').cls('dunno'), ' kártyát'))
-                ),
+                    tbody(
+                        tr(td('sikeres ismételések:').cls('right-pad bottom-pad top-pad'),td(strong(this.know +' db').cls('know'))),
+                        tr(td('sikertelen ismétlések:').cls('right-pad'),td(strong(this.dunno + ' db').cls('dunno')))
+                    )
+                ).cls('bottom-pad'),
                 n == 0 ?
-                    div(strong('Ügyes voltál,'), ' nem maradt aktív kártya.').cls('top-pad bottom-pad') :
-                    div('Folytatod a gyakorlást az aktívan maradt ',strong(n+' db '),'kártyával?').cls('top-pad bottom-pad'),
+                    p(strong('Ügyes voltál,'), ' nem maradt aktív kártya.').cls('top-pad bottom-pad') :
+                    p('Folytatod a gyakorlást az aktívan maradt kártyákkal?').cls('top-pad bottom-pad'),
                 n == 0 ?
                     div(
                         back = a('vissza a leckékhez').attr('href','#').cls('nav-link dark')

@@ -164,7 +164,7 @@ strong
       ul#navigation
         :margin-left -15px
         :width 170px
-        :height 130px
+        :height 122px
         :padding 18px 0
         li
           :padding-bottom 10px
@@ -194,11 +194,11 @@ strong
       ul#navigation.position-0
         :background-position 11px 11px
       ul#navigation.position-1
-        :background-position 11px 46px
+        :background-position 11px 43px
       ul#navigation.position-2
-        :background-position 11px 81px
+        :background-position 11px 77px
       ul#navigation.position-3
-        :background-position 11px 116px
+        :background-position 11px 109px
 
 
     #navigation-wrapper > ul#navigation
@@ -267,6 +267,11 @@ ul#set-list
       :height 50px
       :float left
       :padding 3px 10px 0 20px
+      .word-count-wrapper
+        :padding 12px 10px 10px 10px
+        .word-count
+          :background-color = !brown1
+          :color white
       table
         tr.bars
           td
@@ -414,6 +419,7 @@ ul#set-list
     :margin 20px 20px 0 20px
     :-moz-border-radius 10px
     :-webkit-border-radius 10px
+    :line-height 1.4
     .info-text
       :float left
       :padding-left 20px
@@ -465,17 +471,23 @@ ul#set-list
         :height = 120px
         :cursor pointer
       #practice-summary
-        :padding 20px
+        :padding 0 20px 20px 20px
         :font-size 14px
         :text-align left
         h3
           :font-size 16px
         table
+          :font-size 13px
           :margin 10px 0
-          td
-            :width 100
-          td
-            :text-align right
+          tr
+            td    
+              :width 150px
+              strong
+                :font-size 15px
+        p
+          :font-size 13px
+          :font-weight bold
+
       #card-info
         :height 20px
         :font-size 10px
@@ -512,7 +524,10 @@ ul#set-list
   :background-color white
 
   li
+    :display inline-block
+    :position relative
     :padding 15px
+    :height 20px
     :border-bottom 1px solid
     :border-color = !brown1
     .name
@@ -527,11 +542,13 @@ ul#set-list
         :text-decoration underline
     .set-count
       :float left
+      :background-color = !brown1
       span
-        :background-color = !brown1
         :color white
   li.last
     :border none
+  li
+    :display block
 
 !help_color1 = #333399
 !help_color2 = !help_color1 + #333333

@@ -16,7 +16,7 @@ var helpView = {
             ),
             h2('De hogyan akadályozza meg a felejtést?'),
             p('A dolog kulcsa a szavak optimális időközönkénti ismétlése. Vannak könnyebb szavak, ezek szinte azonnal megragadnak az agyunkban, míg vannak nehezebbek, amiket sokszori ismétlés után is képesek vagyunk elfelejteni. A ',strong('Leitner módszer segítségével'),', amelyet kitalálójáról Sebastian Leitnerről neveztek el, a könnyebb szavakat ritkábban, míg a nehezebbek sűrűbben kell ismételnünk. Lássuk hát, hogy is műkdik.'),
-            div(div(img().attr('src', '/images/leitner.png')).cls('w400')).cls('center'),
+            div().id('leitner-pic').html('&nbsp'),
             p('Képzeljük el, hogy a szavakat szókártyákra írjuk, amiket dobozokba rakunk. Öt dobozunk van, és minden új kártyát az első dobozba rakunk. Egy szó ismétlésekor, ha emlékszünk rá, akkor egyel nagyobb számú dobozba tesszük, ha nem, akkor mindig az elsőbe kerül vissza. A fenti képen zöld nyíl jelzi a sikeres, piros a sikertelen ismétléseket.'),
             p('Az első doboz kártyáit kell leggyakrabban, az ötödikben lévőket legritkábban ismételnünk. A Memori, hogy megfeleljen ezen elvnek a következő szabályt alkalmaza: Az első dobozból bármelyik szót kérdezheti, hisz ezek azért vannak ott mert újak, vagy mert nem az előző ismétlésnél nem tudtuk őket. A másik négy dobozban lévő kártyákra pedig az igaz, hogy sikeres ismétlés után az alábbi táblázatban meghatározott ideig nem kérdezi őket a program.'),
             table(

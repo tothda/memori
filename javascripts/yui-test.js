@@ -36,7 +36,7 @@ var memori = {
                             li(a('leckéim').attr('href','#').attr('rel','allSets')).id('nav-lessons').cls('active'),
                             li(a('új lekce').attr('href','#').attr('rel','newSet')).id('nav-new-lesson'),
                             li(a('ismerőseim').attr('href','#').attr('rel','friends')).id('nav-friends'),
-                            li(a('tudnivalók').attr('href','#').attr('rel','help')).id('nav-help')
+                            li(a('tudnivalók').attr('href','#').attr('rel','about')).id('nav-help')
                         )
                     ),
                     div().id('board').app(

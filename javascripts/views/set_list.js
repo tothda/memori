@@ -160,11 +160,12 @@ Y.mix(setListView, {
         var node = div().id('welcome-page').cls('round10 shadow').app(
             div(
                 h1('Kedves ', strong(User.owner.name), ', a Memori üdvözöl téged!'),
-                img().attr('src','/images/tanulo.jpg'),
-                ul().id('welcome-list').app(
-                    li('vidd fel leckéidet'),
-                    li('oszd meg másokkal tudásod'),
-                    li('fejleszd szókincsedet')
+                div().id('welcome-list-wrapper').app(
+                    ul().id('welcome-list').app(
+                        li('vidd fel leckéidet'),
+                        li('oszd meg másokkal tudásod'),
+                        li('fejleszd szókincsedet')
+                    )
                 ),
                 div().cls('clear'),
                 p(

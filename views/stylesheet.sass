@@ -611,9 +611,11 @@ ul#set-list
     :font-size 18px
     :font-weight normal
     :margin-bottom 20px
-  ul#welcome-list
+  #welcome-list-wrapper
+    :background url(/images/tanulo.jpg) no-repeat left    
+    :padding 20px 0
+  ul#welcome-list  
     :margin-left 230px
-    :margin-top 50px
     li
       :border none
       :margin 11px 0
@@ -626,4 +628,7 @@ ul#set-list
     :font-size 16px
     a
       :font-weight bold
+      :color = !txt_main
+    :&visited
+      :color = !txt_main
 

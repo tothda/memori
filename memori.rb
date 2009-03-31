@@ -16,12 +16,16 @@ module Memori
     def version
       [0,1]
     end
+
+    def config
+      @config ||= YAML.load(IO.read(File.join(Memori.root, "config", "memori.yml"))) || {}
+    end
   end
 end
 
 require 'ruby/sprocket_app'
 
-db = CouchRest.database!("http://dev.dbx.hu:5984/memori")
+db = CouchRest.database!(Memori.config["database_url"])
 
 get '/' do
   "Memori - version: #{Memori.version.join(".")}"
@@ -38,6 +42,10 @@ end
 
 get '/faq.html' do
   haml :faq
+end
+
+get '/memori.xml' do
+  erb :gadget_xml, :locals => { :memori_url => Memori.config["memori_url"]}
 end
 
 put '/users' do

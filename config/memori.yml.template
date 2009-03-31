@@ -1,0 +1,2 @@
+database_url: http://dev.dbx.hu:5984/memori
+memori_url: http://dev.dbx.hu:9292

@@ -20,15 +20,24 @@ var memori = {
 
             var N = Y.Node;
             var iwiw = (typeof gadgets === 'undefined') ? false : true;
+            var globalView = 'canvas';
 
             if (iwiw) {
                 gadgets.window.adjustHeight(542);
+                globalView = gadgets.views.getCurrentView().getName();
             }
+
+            console.log(globalView);
 
             //= require "utils/transport"
             //= require "utils/dom_helpers"
 
             var memoriContent = Y.get('#memori-content');
+
+            if (globalView == 'canvas') {
+                memoriContent.show();
+            }
+
             memoriContent.app(
                 div().id('board-wrapper').app(
                     div().id('navigation-wrapper').app(
@@ -46,11 +55,10 @@ var memori = {
                             this.board = div().id('board-content')
                         ),
                         this.sbNode = div().id('status-bar').html('&nbsp;')
-                    ),
+                        ),
                     this.helpNode = div().id('help-wrapper')
                 )
             );
-
 
             var controller = {};
             Y.augment(controller, Y.Event.Target);
@@ -68,18 +76,20 @@ var memori = {
             //= require "views/statusbar_widget.js"
             //= require "views/friends"
             //= require "views/help"
-
             //= require "views/sidebar"
             //= require "views/set"
+            //= require "views/profile"
+            
             //= require "controller"
 
-            var onOwnerLoaded = function(owner) {
-                User.owner = owner;
-                controller.fire('allSets', User.owner.get('id'));
-            };
+            
 
             User.login(function(){
-                controller.fire('allSets', User.owner.id);
+                if (globalView == 'canvas') {
+                    controller.fire('allSets', User.owner.id);
+                } else if (globalView == 'profile'){
+                    controller.fire('profile');
+                }
             });
         });
     }

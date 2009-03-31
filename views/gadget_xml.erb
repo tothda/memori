@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Module>
-<ModulePrefs title="memori" author="Tóth Dávid" author_email="tothda@gmail.com">
+<ModulePrefs title="Memori" author="Tóth Dávid" author_email="tothda@gmail.com">
   <Require feature="opensocial-0.8"/>
   <Require feature="dynamic-height"/>
+  <Require feature="views" />
 </ModulePrefs>
-<Content type="html"><![CDATA[
+<Content type="html" view="profile,canvas"><![CDATA[
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
   <head>
@@ -16,7 +17,7 @@
       <title>Teszt page</title>
   </head>
   <body>
-    <div id="memori-content">
+    <div id="memori-content" style="display:none;">
     </div>
 
     <script type="text/javascript">

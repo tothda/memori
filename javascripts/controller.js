@@ -8,7 +8,8 @@ Y.mix(controller, {
         'practice',
         'takeSet',
         'dirty',
-        'about'
+        'about',
+        'profile'
     ],
     init: function(){
         Y.each(controller.EVENTS, function(event){
@@ -75,6 +76,12 @@ Y.mix(controller, {
     },
     about: function(){
         controller.render(helpView);
+    },
+    profile: function(){
+        User.owner.getSets(function(sets){
+            profileView.sets = sets;
+            controller.render(profileView);
+        });
     }
 });
 

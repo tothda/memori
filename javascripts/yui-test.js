@@ -36,7 +36,7 @@ var memori = {
                             li(a('leckéim').attr('href','#').attr('rel','allSets')).id('nav-lessons').cls('active'),
                             li(a('új lekce').attr('href','#').attr('rel','newSet')).id('nav-new-lesson'),
                             li(a('ismerőseim').attr('href','#').attr('rel','friends')).id('nav-friends'),
-                            li(a('segítség').attr('href','#').attr('rel','help')).id('nav-help')
+                            li(a('tudnivalók').attr('href','#').attr('rel','help')).id('nav-help')
                         )
                     ),
                     div().id('board').app(
@@ -66,7 +66,8 @@ var memori = {
             //= require "views/set_list"
             //= require "views/practice"
             //= require "views/statusbar_widget.js"
-            //= require "views/friends.js"
+            //= require "views/friends"
+            //= require "views/help"
 
             //= require "views/sidebar"
             //= require "views/set"

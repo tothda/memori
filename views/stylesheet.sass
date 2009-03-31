@@ -32,12 +32,21 @@
 
 // html tag styles
 
+h1
+  :font-size 16px
+  :font-weight bold
+  :padding-bottom 10px
+
 h2
   :font-size 16px
 
 h3
   :font-size 14px
   :font-weight bold
+
+p
+  :padding 10px 0
+  :font-size 11px
 
 // padding, margins
 
@@ -266,6 +275,7 @@ strong
                   :border-top 1px solid
                   :text-align center
                   :width 14px
+                  :letter-spacing -2px
                 .bar
                   :margin 0 1px
                   :width 12px
@@ -564,4 +574,28 @@ strong
     #help-turn
       :background url(/images/space2.png) no-repeat 77px 5px
 
+#about-wrapper
+  :background-color white
+  :padding 20px
       
+  h2
+    :font-size 15px
+    :font-weight bold
+    :padding-top 10px
+  p
+    :padding-bottom 5px
+  img
+    :padding 10px 0 10px 38px
+  ul
+    :margin 5px 0 5px 30px
+    li
+      :margin 2px 0
+      :list-style-type square
+  table
+    :font-size 11px
+    :margin 10px 50px
+    td
+      :border 1px solid
+      :border-color = !txt_main
+      :font-weight bold
+      :padding 3px 15px

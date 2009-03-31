@@ -46,7 +46,7 @@ var createTagHelper = function(tagName){
     };
 };
 
-Y.each(['div','p', 'span','table','tbody','tr','td','a','label','input','textarea','button','h1','h2','h3','strong','ul','li','select','option'], function(tag){
+Y.each(['div','p', 'span','table','tbody','tr','td','a','label','input','textarea','button','h1','h2','h3','strong','ul','li','select','option','img'], function(tag){
     createTagHelper(tag);
 });
 

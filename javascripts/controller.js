@@ -7,7 +7,8 @@ Y.mix(controller, {
         'friends',
         'practice',
         'takeSet',
-        'dirty'
+        'dirty',
+        'help'
     ],
     init: function(){
         Y.each(controller.EVENTS, function(event){
@@ -71,6 +72,9 @@ Y.mix(controller, {
                 controller.fire('allSets');
             }
         });
+    },
+    help: function(){
+        controller.render(helpView);
     }
 });
 

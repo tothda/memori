@@ -17,6 +17,9 @@ Y.mix(setListView, {
     renderSets: function(){
         var me = this,
             l = me.sets.length;
+        if (l == 0){
+            return me.renderWelcomePage();
+        }
         var node = ul().id('set-list').cls('round10 shadow');
         Y.each(me.sets, function(set, idx){
             var last = idx + 1 == l;
@@ -151,6 +154,30 @@ Y.mix(setListView, {
         });
         return node;
         
+    },
+    renderWelcomePage: function(){
+        var firstSet, about;
+        var node = div().id('welcome-page').cls('round10 shadow').app(
+            div(
+                h1('Kedves ', strong(User.owner.name), ', a Memori üdvözöl téged!'),
+                img().attr('src','/images/tanulo.jpg'),
+                ul().id('welcome-list').app(
+                    li('vidd fel leckéidet'),
+                    li('oszd meg másokkal tudásod'),
+                    li('fejleszd szókincsedet')
+                ),
+                div().cls('clear'),
+                p(
+                    'Csapj bele a közepébe és ',
+                    firstSet = a('vidd fel').attr('href','#'),
+                    ' első leckédet, vagy ',
+                    about = a('tudj meg többet').attr('href', '#'),
+                    ' arról, hogy működik a Memori!')
+            )
+        );
+        firstSet.on('click', function(){ controller.fire('newSet');});
+        about.on('click', function(){ controller.fire('about');});
+        return node;
     },
     cleanUp: function(){
         board.clear();

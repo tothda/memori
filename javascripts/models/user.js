@@ -78,7 +78,7 @@ Y.mix(User, {
         } else {
             User.owner = new User();
             User.owner.name = "Tóth Dávid";
-            User.owner.id = "a35541a54b9a2bccf1f53cc0a68bc2de";
+            User.owner.id = "aaaaaa";
             callback.call(context);
         }
     },

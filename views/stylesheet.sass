@@ -228,75 +228,75 @@ strong
       #board-content
         #set-list-wrapper
         :padding 20px
-        ul#set-list
-          :background-color white
-          li
-            :border-bottom 1px solid
-            :border-color = !brown1
-            :padding 5px
-            .star
-              :width 12px
-              :height 25px
-              :float left
-            .star.star-full
-              /:background url('/images/star_full.gif') no-repeat 0 5px
-            .star.star-empty
-              /:background url('/images/star_empty.gif') no-repeat 0 5px
-            .descr
-              :width 315px
-              :float left
-              :overflow hidden
-              .title
-                :padding-top 5px
-                :font
-                  :size 13px
-                  :weight bold
-                a
-                  :color = !txt_main
-                  :text-decoration none
-                  &:hover
-                    :text-decoration underline
-              .description
-                :font
-                  :size 11px
-                  :style italic
-                  :color = !txt_light
-            .stat
-              :width 75px
-              :float left
-              :padding 3px 10px 0 20px
-              .bucket
-                :float left
-                :width 14px
-                :height 45px
-                .count
-                  :font-size 10px
-                  :color gray
-                  :border-top 1px solid
-                  :text-align center
-                  :width 14px
-                  :letter-spacing -2px
-                .bar
-                  :margin 0 1px
-                  :width 12px
-              .word-count
-                :padding 14px 0 11px 0
-                span.button 
-                  :color white
-                  :padding-left 5px
-                  :padding-right 5px
-                  :background-color = !brown1
-            .func
-              :float left
-              :width 68px
-              :padding 15px 5px 5px 5px
-              .func-button
-                :color white
-                :background-color = !blue1
-                :font-size 11px
-                :padding 3px
-          li.last
-            :border-bottom none
+ul#set-list
+  :background-color white
+  li
+    :border-bottom 1px solid
+    :border-color = !brown1
+    :padding 5px
+    .star
+      :width 12px
+      :height 25px
+      :float left
+    .star.star-full
+      /:background url('/images/star_full.gif') no-repeat 0 5px
+    .star.star-empty
+      /:background url('/images/star_empty.gif') no-repeat 0 5px
+    .descr
+      :width 315px
+      :float left
+      :overflow hidden
+      .title
+        :padding-top 5px
+        :font
+          :size 13px
+          :weight bold
+        a
+          :color = !txt_main
+          :text-decoration none
+          &:hover
+            :text-decoration underline
+      .description
+        :font
+          :size 11px
+          :style italic
+          :color = !txt_light
+    .stat
+      :width 75px
+      :float left
+      :padding 3px 10px 0 20px
+      .bucket
+        :float left
+        :width 14px
+        :height 45px
+        .count
+          :font-size 10px
+          :color gray
+          :border-top 1px solid
+          :text-align center
+          :width 14px
+          :letter-spacing -2px
+        .bar
+          :margin 0 1px
+          :width 12px
+      .word-count
+        :padding 14px 0 11px 0
+        span.button 
+          :color white
+          :padding-left 5px
+          :padding-right 5px
+          :background-color = !brown1
+    .func
+      :float left
+      :width 68px
+      :padding 15px 5px 5px 5px
+      .func-button
+        :color white
+        :background-color = !blue1
+        :font-size 11px
+        :padding 3px
+  li.last
+    :border-bottom none
 
 .bucket_0
   :background-color = !bucket_color_0
@@ -599,3 +599,31 @@ strong
       :border-color = !txt_main
       :font-weight bold
       :padding 3px 15px
+
+#welcome-page
+  :background-color white
+  :padding 40px
+  :color #666666
+  img
+    :float left
+    :height 140px
+  h1
+    :font-size 18px
+    :font-weight normal
+    :margin-bottom 20px
+  ul#welcome-list
+    :margin-left 230px
+    :margin-top 50px
+    li
+      :border none
+      :margin 11px 0
+      :list-style-image url(/images/star_full.gif)
+      :font-size 14px
+      :font-weight bold
+  p
+    :margin-top 20px
+    :line-height 2
+    :font-size 16px
+    a
+      :font-weight bold
+

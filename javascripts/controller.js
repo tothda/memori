@@ -8,7 +8,7 @@ Y.mix(controller, {
         'practice',
         'takeSet',
         'dirty',
-        'help'
+        'about'
     ],
     init: function(){
         Y.each(controller.EVENTS, function(event){
@@ -73,7 +73,7 @@ Y.mix(controller, {
             }
         });
     },
-    help: function(){
+    about: function(){
         controller.render(helpView);
     }
 });

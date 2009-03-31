@@ -33,7 +33,7 @@ Y.mix(sideBar, {
         subscribeEvent('allSets', 0);
         subscribeEvent('newSet', 1);
         subscribeEvent('friends', 2);
-        subscribeEvent('help', 3);
+        subscribeEvent('about', 3);
     }
 });
 

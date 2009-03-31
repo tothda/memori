@@ -230,6 +230,7 @@ strong
         :padding 20px
 ul#set-list
   :background-color white
+  :position relative
   li
     :border-bottom 1px solid
     :border-color = !brown1
@@ -263,29 +264,24 @@ ul#set-list
           :color = !txt_light
     .stat
       :width 75px
+      :height 50px
       :float left
       :padding 3px 10px 0 20px
-      .bucket
-        :float left
-        :width 14px
-        :height 45px
-        .count
+      table
+        tr.bars
+          td
+            :padding 0 2px
+            :vertical-align bottom
+
+        tr.counts
           :font-size 10px
-          :color gray
-          :border-top 1px solid
-          :text-align center
-          :width 14px
           :letter-spacing -2px
-        .bar
-          :margin 0 1px
-          :width 12px
-      .word-count
-        :padding 14px 0 11px 0
-        span.button 
-          :color white
-          :padding-left 5px
-          :padding-right 5px
-          :background-color = !brown1
+
+          td
+            :width 14px
+            :text-align center
+            :border-top 1px solid
+            :border-color = !brown1
     .func
       :float left
       :width 68px

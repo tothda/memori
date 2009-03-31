@@ -21,7 +21,7 @@ end
 
 require 'ruby/sprocket_app'
 
-db = CouchRest.database!("http://localhost:5984/memori")
+db = CouchRest.database!("http://dev.dbx.hu:5984/memori")
 
 get '/' do
   "Memori - version: #{Memori.version.join(".")}"
@@ -43,7 +43,6 @@ end
 put '/users' do
   json = JSON.parse(params[:json])
   r = db.view('db/user-by-iwiw-id', {:key => json["iwiw_id"]})
-  debugger
   if r["rows"].length != 0
     o = {"id" => r["rows"][0]["id"]}
   else

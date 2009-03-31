@@ -114,27 +114,50 @@ Y.mix(setListView, {
             elem.html('&nbsp;');
             return elem;
         }
+        var tr1,tr2;
+        elem.app(
+            table(
+                tbody(
+                    tr1 = tr().cls('bars'),
+                    tr2 = tr().cls('counts')
+                )
+            )
+        );
+
         var maxBucketCount = stat.maxBucketCount();
-        for (var i=0; i<5; i++) {
+        console.log(set.title());
+        for (var i = 0; i < 5; i++){
             var height = Math.round(barHeight * (stat.count(i) - stat.expired(i)) / maxBucketCount);
             var expiredHeight = Math.round(barHeight * stat.expired(i) / maxBucketCount);
-            var bucket = N.create('<div class="bucket"></div');
-            var expiredBar = N.create('<div class="bar expired">&nbsp;</div>');
-            var bar = N.create('<div class="bar bucket_'+i+'">&nbsp;</div>');
+            var bar, expiredBar;
+            console.log(i,height,expiredHeight);
+            tr1.app(
+                expiredHeight == 0 ?
+                    td(
+                        bar = div().cls('bar bucket_'+i).html('&nbsp;')
+                    ) :
+                    td(
+                        bar = div().cls('bar bucket_'+i).html('&nbsp;'),
+                        expiredBar = div().cls('bar expired').html('&nbsp;')
+                    )
+            );
+
             bar.setStyles({
                 height: height+'px',
                 marginTop: (barHeight-height-expiredHeight) +'px'
             });
-            expiredBar.setStyles({
-                height: expiredHeight+'px'
-            });
-            var count = N.create('<div class="count">'+stat.count(i)+'</div>');
-            bucket.appendChild(bar);
-            bucket.appendChild(expiredBar);
-            bucket.appendChild(count);
-            elem.appendChild(bucket);
+            if (expiredHeight != 0) {
+                expiredBar.setStyles({
+                    height: expiredHeight+'px'
+                });
+            }
+
         }
-        elem.appendChild(div().cls('clear'));
+        for (var i = 0; i < 5; i++){
+            tr2.app(
+                td(''+stat.count(i))
+            );
+        }
         return elem;
     },
     renderInfo: function(){

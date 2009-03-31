@@ -111,17 +111,25 @@ Y.mix(setView, {
 
         overflowHandler(titleLabel, me.titleNode);
         overflowHandler(descriptionLabel, me.descriptionNode);
+        
+        Y.on('change', function(){
+            me.set.set('title', me.titleNode.get('value'));            
+        },me.titleNode);
 
-        Y.on('change', function(e){
-            switch (e.target) {
-            case me.titleNode:
-                me.set.set('title', me.titleNode.get('value'));
-                break;
-            case me.descriptionNode:
-                me.set.set('description', me.descriptionNode.get('value'));
-                break;
-            }
-        }, node);
+        Y.on('change', function(){
+            me.set.set('description', me.descriptionNode.get('value'));
+        },me.descriptionNode);
+
+        // Y.on('change', function(e){
+        //     switch (e.target) {
+        //     case me.titleNode:
+        //         me.set.set('title', me.titleNode.get('value'));
+        //         break;
+        //     case me.descriptionNode:
+        //         me.set.set('description', me.descriptionNode.get('value'));
+        //         break;
+        //     }
+        // }, node);
         Y.on('key', function(e){
             if (e.ctrlKey || e.shiftKey) {
                 return; // CTRL+TAB-ra ne csináljon semmit

@@ -2,7 +2,7 @@ var practiceView = {};
 
 Y.mix(practiceView, {
     init: function(){
-        Y.on('key', this.eventHandler, window, 'down:37,39,32,78,84', this);
+        Y.on('key', this.eventHandler, window.document, 'down:37,39,32,78,84', this);
     },
     render: function(){
         var me = this;

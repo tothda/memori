@@ -82,7 +82,7 @@ Y.extend(Set, Y.Base, {
         return o;
     },
     empty: function(){
-        return !this.get('title') && !this.get('desciption') && this.cards.length == 0;
+        return !this.get('title') && !this.get('description') && this.cards.length == 0;
     },
     save: function(){
         if (!this.dirty || this.deleted || !this.ownerSet() || this.empty()) {

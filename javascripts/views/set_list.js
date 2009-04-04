@@ -11,7 +11,7 @@ Y.mix(setListView, {
         );
         if (!me.user.appOwner()){
             ibNode.app(me.renderInfo());
-            menuBar.app(me.renderMenuBar());            
+            menuBar.app(me.renderMenuBar());
         }
     },
     renderSets: function(){
@@ -35,7 +35,7 @@ Y.mix(setListView, {
         return set.ownerSet() ? this.renderOwnSet(set) : this.renderFriendSet(set);
     },
     renderOwnSet: function(set){
-        return div(
+        return div().cls('set-wrapper').app(
             this.renderStar(),
             this.renderDescription(set),
             this.renderStat(set),
@@ -131,27 +131,20 @@ Y.mix(setListView, {
             var height = Math.round(barHeight * (stat.count(i) - stat.expired(i)) / maxBucketCount);
             var expiredHeight = Math.round(barHeight * stat.expired(i) / maxBucketCount);
             var bar, expiredBar;
-            tr1.app(
-                expiredHeight == 0 ?
-                    td(
-                        bar = div().cls('bar bucket_'+i).html('&nbsp;')
-                    ) :
-                    td(
-                        bar = div().cls('bar bucket_'+i).html('&nbsp;'),
-                        expiredBar = div().cls('bar expired').html('&nbsp;')
-                    )
+          var x = td();
+          if (height != 0) {
+            x.app(
+              bar = div().cls('bar bucket_'+i).html('').setStyle('height', height+'px')
             );
+          }
 
-            bar.setStyles({
-                height: height+'px',
-                marginTop: (barHeight-height-expiredHeight) +'px'
-            });
-            if (expiredHeight != 0) {
-                expiredBar.setStyles({
-                    height: expiredHeight+'px'
-                });
-            }
-
+          if (expiredHeight != 0){
+            x.app(
+              div().cls('bar expired').html('').setStyle('height', expiredHeight+'px')
+            );
+          }
+          x.setStyle('padding-top', (barHeight-height-expiredHeight) +'px');
+          tr1.app(x);
         }
         for (var i = 0; i < 5; i++){
             tr2.app(
@@ -176,7 +169,7 @@ Y.mix(setListView, {
             controller.fire('friends');
         });
         return node;
-        
+
     },
     renderWelcomePage: function(){
         var firstSet, about;

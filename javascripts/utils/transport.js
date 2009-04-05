@@ -19,7 +19,7 @@ transport =
        transportParams[gadgets.io.RequestParameters.METHOD] = method;
 
        if (method == 'GET' && params) {
-           path = path + "?json=" + Y.JSON.stringify(params);
+         path = path + "?json=" + escape(Y.JSON.stringify(params));
        }
        if (method != 'GET') {
          params = params || {};

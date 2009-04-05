@@ -25,9 +25,9 @@ Y.mix(Paginator.prototype, {
         p.endkey = me.endkey;
         p.descending = me.descending;
         p.limit = me.limit + 1;
-        transport.GET(me.url, function(resp){
+        transport.GET(me.url, function(resp){            
             if (!me.total_rows) {me.total_rows = resp.data.total_rows;}
-            if (resp.data.offset + me.limit < resp.data.total_rows) {
+            if (resp.data.rows.length == p.limit) {
                 var last = resp.data.rows.pop();
                 me.last_startkey = last.key;
                 me.last_doc_id = last.id;

@@ -44,7 +44,7 @@ Y.mix(setListView, {
         );
     },
     renderFriendSet: function(set){
-        return div(
+      return div().cls('set-wrapper').app(
             div().cls('star').html('&nbsp;'),
             this.renderDescription(set),
             this.renderFriendStat(set),

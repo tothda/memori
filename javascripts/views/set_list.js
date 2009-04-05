@@ -3,33 +3,35 @@ var setListView = {};
 // instance methods
 Y.mix(setListView, {
     render: function(){
-        var me = this;
+        var set_count = this.sets.length;
         board.app(
             div().id('set-list-wrapper').app(
-                me.renderSets()
-            )
+                set_count == 0 ?
+                    this.renderWelcomePage() :
+                    this.ul = ul().id('set-list').cls('round10 shadow')
+            ),
+            this.renderNextPageButton()
         );
-        if (!me.user.appOwner()){
-            ibNode.app(me.renderInfo());
-            menuBar.app(me.renderMenuBar());
+
+        this.renderSets(this.ul, this.sets);
+
+        if (!this.user.appOwner()){
+            ibNode.app(this.renderInfo());
+            menuBar.app(this.renderMenuBar());
         }
     },
-    renderSets: function(){
+    renderSets: function(ul, sets){
         var me = this,
-            l = me.sets.length;
-        if (l == 0){
-            return me.renderWelcomePage();
-        }
-        var node = ul().id('set-list').cls('round10 shadow');
-        Y.each(me.sets, function(set, idx){
+            l = sets.length;
+
+        Y.each(sets, function(set, idx){
             var last = idx + 1 == l;
-            node.app(
+            ul.app(
                 li().cls(last ? 'last' : '').app(
                     me.renderSet(set)
                 )
             );
         });
-        return node;
     },
     renderSet: function(set){
         return set.ownerSet() ? this.renderOwnSet(set) : this.renderFriendSet(set);
@@ -194,6 +196,30 @@ Y.mix(setListView, {
         );
         firstSet.on('click', function(){ controller.fire('newSet');});
         about.on('click', function(){ controller.fire('about');});
+        return node;
+    },
+    renderNextPageButton: function(){
+        var me = this,
+            but;
+
+        // ha már lejött az összes lecke, akkor nem kell a gombot renderelni
+        if (!User.owner.setPaginator.hasMore){
+            return div();
+        }       
+
+        var node = div().id('more-wrapper').app(
+            but = div().id('more-button').html('régebbi leckék letöltése').cls('button small-button round5')
+        );
+        but.on('click', function(){
+            User.owner.nextSets(function(sets){
+                me.ul.queryAll('.last').removeClass('last');
+                me.renderSets(me.ul, sets);
+                console.log(User.owner);
+                if (!User.owner.setPaginator.hasMore){
+                    node.hide();
+                }
+            });
+        });
         return node;
     },
     cleanUp: function(){

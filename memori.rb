@@ -103,8 +103,8 @@ post '/sets/' do
 end
 
 get '/sets/' do
-  user_id = params[:user_id]
-  resp = db.view('db/sets-by-user-and-date', {:endkey => [user_id], :startkey => [user_id, "9999"], :descending => "true"})
+  json = JSON.parse(params[:json])
+  resp = db.view('db/sets-by-user-and-date', json)
   JSON.dump resp
 end
 

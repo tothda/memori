@@ -1,7 +1,10 @@
-[].indexOf || (Array.prototype.indexOf = function(v){    
+// TODO: ez miért is kell? mintha a yui3-ban is lenne indexOf
+[].indexOf || (Array.prototype.indexOf = function(v){
     for(var i = this.length; i-- && this[i] !== v;);
     return i;
 });
+
+//= require "paginator"
 
 // User model
 function User() {
@@ -9,6 +12,16 @@ function User() {
 }
 
 Y.mix(User.prototype, {
+    _createPaginator: function(){
+        if (this.setPaginator) { return; }
+        this.setPaginator = new Paginator({
+            url: '/sets/',
+            msg: 'leckék letöltése',
+            startkey: [this.id, "9999"],
+            endkey: [this.id],
+            descending: true
+        });        
+    },
     createSet: function() {
         var s = new Set({});
         s.created_at = new Date();
@@ -17,20 +30,27 @@ Y.mix(User.prototype, {
         this.sets.push(s);
         return s;
     },
+    // ha local = true, és már van letöltve lecke, akkor nem kéredez a szervertől, egyébként lekéri  a következő oldalt
+    nextSets: function(callback, context){
+        var me = this;
+        this._createPaginator();
+        this.setPaginator.nextPage(function(resp){
+            var newSets = [];
+            Y.each(resp.data.rows, function(s) {
+                var set = Set.fromObj(s);
+                set.set('user', me);
+                me.sets.push(set);
+                newSets.push(set);
+            });
+            me.loaded = true;
+            callback.call(context, newSets);
+        });
+    },
     getSets: function(callback, context){
-        if (this.loaded) {
+        if (this.loaded){
             callback.call(context, this.sets);
         } else {
-            var that = this;
-            transport.GET("/sets/", function(resp){
-                Y.each(resp.data.rows, function(s) {
-                    var set = Set.fromObj(s);
-                    set.set('user', that);
-                    that.sets.push(set);
-                });
-                that.loaded = true;
-                callback.call(context, that.sets);
-            }, {'user_id': that.id}, 'leckék letöltése');
+            this.nextSets(callback, context);
         }
     },
     save: function(){

@@ -48,8 +48,7 @@ Y.mix(controller, {
     },
     showSet: function(setId){
         Set.getSet(setId, function(set){
-            setView.set = set;
-            controller.render(setView);
+            controller.render(setView, {set:set});
         });
     },
     practice: function(setId){

@@ -41,7 +41,7 @@ Y.extend(Set, Y.Base, {
     },
     getCards: function(){
         var ret = [];
-        for (var i=0;i<this.cards.length;i++){
+        for (var i=0,l=this.cards.length;i<l;i++){
             if (!this.cards[i].deleted) {
                 ret.push(this.cards[i]);
             }

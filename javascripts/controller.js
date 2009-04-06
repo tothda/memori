@@ -24,11 +24,11 @@ Y.mix(controller, {
             });
         });
     },
-    render: function(newView){
+    render: function(newView, model){
         if (this.view && this.view.cleanUp) {
             this.view.cleanUp();
         }
-        newView.render();
+        newView.render(model);
         this.view = newView;
     },
     allSets: function(userId){
@@ -43,8 +43,8 @@ Y.mix(controller, {
         User.owner.save();
     },
     newSet: function(){
-        setView.set = User.owner.createSet();
-        controller.render(setView);
+        var set = User.owner.createSet();
+        controller.render(setView, {set:set});
     },
     showSet: function(setId){
         Set.getSet(setId, function(set){

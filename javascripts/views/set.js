@@ -5,11 +5,11 @@ Y.mix(setView, {
         var me = this;
         me.initEditor();
     },
-    render: function() {
-        var me = this;
-        menuBar.appendChild(me.renderMenuBar());
-        board.appendChild(me.renderSetHeader());
-        board.appendChild(me.renderCardsTable());
+    render: function(model) {
+        this.set = model.set;
+        menuBar.appendChild(this.renderMenuBar());
+        board.appendChild(this.renderSetHeader());
+        board.appendChild(this.renderCardsTable());
     },
     renderMenuBar: function() {
         return this.set.ownerSet() ? this.renderOwnMenuBar() : this.renderFriendMenuBar();

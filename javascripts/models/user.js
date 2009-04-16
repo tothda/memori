@@ -85,6 +85,7 @@ Y.mix(User, {
             };
             User.owner = extractUser('owner',resp);
             User.viewer = extractUser('viewer',resp);
+            controller.fire('owner-viewer');
             callback.call(context);
         });
     },
@@ -152,5 +153,8 @@ Y.mix(User, {
                 },'ismerősök letöltése');
             });
         }
+    },
+    guest: function(){
+        return User.viewer.iwiw_id !== User.owner.iwiw_id;
     }
 });

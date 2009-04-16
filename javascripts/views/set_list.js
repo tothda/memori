@@ -34,7 +34,7 @@ Y.mix(setListView, {
         });
     },
     renderSet: function(set){
-        return set.ownerSet() ? this.renderOwnSet(set) : this.renderFriendSet(set);
+        return User.guest() ? this.renderFriendSetWithoutTake(set) : (set.ownerSet() ? this.renderOwnSet(set) : this.renderFriendSet(set));
     },
     renderOwnSet: function(set){
         return div().cls('set-wrapper').app(
@@ -53,6 +53,15 @@ Y.mix(setListView, {
             this.renderFriendFunc(set),
             div().cls('clear')
         );
+    },
+    renderFriendSetWithoutTake: function(set){
+      return div().cls('set-wrapper').app(
+            div().cls('star').html('&nbsp;'),
+            this.renderDescription(set),
+            this.renderFriendStat(set),
+            div().cls('func').html('&nbsp;'),
+            div().cls('clear')
+        );        
     },
     renderStar: function() {
         var rnd = Math.floor(Math.random() * 2);

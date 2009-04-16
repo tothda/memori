@@ -41,12 +41,7 @@ var memori = {
             memoriContent.app(
                 div().id('board-wrapper').app(
                     div().id('navigation-wrapper').app(
-                        this.navNode = ul().id('navigation').cls('position-0').app(
-                            li(a('leckéim').attr('href','#').attr('rel','allSets')).id('nav-lessons').cls('active'),
-                            li(a('új lekce').attr('href','#').attr('rel','newSet')).id('nav-new-lesson'),
-                            li(a('ismerőseim').attr('href','#').attr('rel','friends')).id('nav-friends'),
-                            li(a('tudnivalók').attr('href','#').attr('rel','about')).id('nav-help')
-                        )
+                        this.navNode = ul().id('navigation').cls('position-0')
                     ),
                     div().id('board').app(
                         this.menuBar = div().id('menu-bar').html('&nbsp;'),
@@ -79,10 +74,10 @@ var memori = {
             //= require "views/sidebar"
             //= require "views/set"
             //= require "views/profile"
-            
+
             //= require "controller"
 
-            
+
 
             User.login(function(){
                 if (globalView == 'canvas') {

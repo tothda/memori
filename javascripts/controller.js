@@ -9,7 +9,8 @@ Y.mix(controller, {
         'takeSet',
         'dirty',
         'about',
-        'profile'
+        'profile',
+        'owner-view'
     ],
     init: function(){
         Y.each(controller.EVENTS, function(event){

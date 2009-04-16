@@ -12,7 +12,7 @@ Y.mix(setView, {
         board.appendChild(this.renderCardsTable());
     },
     renderMenuBar: function() {
-        return this.set.ownerSet() ? this.renderOwnMenuBar() : this.renderFriendMenuBar();
+        return (this.set.ownerSet() && !User.guest()) ? this.renderOwnMenuBar() : this.renderFriendMenuBar();
     },
     renderOwnMenuBar: function(){
         var me = this,
@@ -54,9 +54,14 @@ Y.mix(setView, {
             node,takeButton,backLink;
 
         node = div(
-            backLink = a('« vissza '+ me.set.owner().name +' leckéihez').attr('href','#'),
-            takeButton = button('Átveszem')
+            backLink = a('« vissza '+ me.set.owner().name +' leckéihez').attr('href','#')
         );
+
+        if (!User.guest()) {
+            node.app(
+                takeButton = button('Átveszem')
+            );
+        }
 
         node.on('click', function(e){
             switch (e.target) {
@@ -71,7 +76,7 @@ Y.mix(setView, {
         return node;
     },
     renderSetHeader: function(){
-        return this.set.ownerSet() ? this.renderOwnSetHeader() : this.renderFriendSetHeader();
+        return this.set.ownerSet() && !User.guest() ? this.renderOwnSetHeader() : this.renderFriendSetHeader();
     },
     renderOwnSetHeader: function() {
         var me = this,
@@ -199,7 +204,7 @@ Y.mix(setView, {
             };
             prev.next = listElem;
             tr.appendChild(listElem.node);
-            if (set.ownerSet()) { // csak akkor lehessen szerkeszteni, ha saját lecke
+            if (set.ownerSet() && !User.guest()) { // csak akkor lehessen szerkeszteni, ha saját lecke
                 listElem.node.on('click', function(){
                     me.editor.positionOn(listElem);
                 });
@@ -213,7 +218,7 @@ Y.mix(setView, {
         frontElem.pair = flipElem;
 
         // mellétesszük a kukát, de csak ha saját lecke
-        if (set.ownerSet()){
+        if (set.ownerSet() && !User.guest()){
             var n;
             tr.app(
                 n = td().cls('trash').app(

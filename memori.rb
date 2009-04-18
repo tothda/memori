@@ -45,7 +45,7 @@ get '/faq.html' do
 end
 
 get '/memori.xml' do
-  erb :gadget_xml, :locals => { :memori_url => Memori.config["memori_url"]}
+  erb :gadget_xml
 end
 
 put '/users' do
@@ -57,7 +57,8 @@ put '/users' do
     user = {
       :name => json["name"],
       :iwiw_id => json["iwiw_id"],
-      :type => "user"
+      :type => "user",
+      :created_at => Time.new
     }
     r = db.save_doc(user)
     o = {"id" => r["id"]}
@@ -126,3 +127,13 @@ delete '/sets/:key' do
   JSON.dump resp  
 end
 
+get '/remove' do
+  iwiw_id = params[:id]
+  r = db.view('db/user-by-iwiw-id', {:key => iwiw_id})
+  if r["rows"].length == 1
+    user = r["rows"][0]["value"]
+    user["iwiw_id"] = nil
+    db.save_doc(user)
+  end
+  "OK"
+end

@@ -8,10 +8,12 @@
     author_photo="http://en.gravatar.com/userimage/871012/196197f7289b84b09737ff925714839d.jpeg"
     screenshot="http://memori.hiperkocka.hu/images/memori-screenshot.png"
     thumbnail=""
+    description="A Memori idegen nyelvű szavak, vagy más memorizálandó fogalmak tanulását elősegíteni hivatott alkalmazás. Létrehozhatod, gyakorolhatod saját leckéidet. Ha nincs kedved begépelni az ismeretlen szavakat, átveheted ismerőseid leckéit is."
     title_url="">
   <Require feature="opensocial-0.8"/>
   <Require feature="dynamic-height"/>
   <Require feature="views" />
+  <Link rel="event.removeapp" href="<%= Memori.config["memori_url"] %>/remove" />
 </ModulePrefs>
 <Content type="html" view="profile,canvas"><![CDATA[
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
@@ -22,14 +24,14 @@
       <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.0.0pr2/build/cssreset/reset-min.css" />
       <link rel="stylesheet" type="text/css" href="/memori.css"/>
       <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-      <title>Teszt page</title>
+      <title>Memori</title>
   </head>
   <body>
     <div id="memori-content" style="display:none;">
     </div>
 
     <script type="text/javascript">
-      memori.baseUrl = '<%= memori_url %>';
+      memori.baseUrl = '<%= Memori.config["memori_url"] %>';
       memori.start();
     </script>
   </body>

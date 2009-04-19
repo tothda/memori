@@ -20,7 +20,7 @@ Y.mix(User.prototype, {
             startkey: [this.id, "9999"],
             endkey: [this.id],
             descending: true
-        });        
+        });
     },
     createSet: function() {
         var s = new Set({});
@@ -116,7 +116,7 @@ Y.mix(User, {
             var req = opensocial.newDataRequest();
             var friends_params = {};
             //legfeljebb 50 ismerőst kérünk
-            friends_params[opensocial.DataRequest.PeopleRequestFields.MAX] = 50;
+            friends_params[opensocial.DataRequest.PeopleRequestFields.MAX] = 10000;
             //név szerint rendezve
             friends_params[opensocial.DataRequest.PeopleRequestFields.SORT_ORDER] = opensocial.DataRequest.SortOrder.NAME;
             //csak azokat, akiknek telepítve van az alkalmazás

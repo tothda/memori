@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+ENV['TZ'] = 'Europe/Budapest'
+
 require 'rubygems'
 require 'sinatra'
 require 'couchrest'
@@ -26,6 +28,12 @@ end
 require 'ruby/sprocket_app'
 
 db = CouchRest.database!(Memori.config["database_url"])
+
+helpers do
+  def time_to_a(time)
+    [time.year, time.month, time.day, time.hour, time.min, time.sec]
+  end
+end
 
 get '/' do
   "Memori - version: #{Memori.version.join(".")}"
@@ -58,7 +66,7 @@ put '/users' do
       :name => json["name"],
       :iwiw_id => json["iwiw_id"],
       :type => "user",
-      :created_at => Time.new
+      :created_at => time_to_a(Time.new)
     }
     r = db.save_doc(user)
     o = {"id" => r["id"]}
@@ -133,6 +141,7 @@ get '/remove' do
   if r["rows"].length == 1
     user = r["rows"][0]["value"]
     user["iwiw_id"] = nil
+    user["deleted_at"] = time_to_a(Time.new)
     db.save_doc(user)
   end
   "OK"

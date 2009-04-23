@@ -181,12 +181,14 @@ Y.mix(setView, {
         me.table.app(
         );
         // utolsó sorra kattintva jelenjen meg egy új sor
-        me.lastRow.on('click', function(e){
-            var newFront = me.renderCard(me.end.prev);
-            newFront.next = me.end;
-            me.end.prev = newFront;
-            me.editor.positionOn(newFront.pair);
-        });
+        if (this.set.ownerSet() && !User.guest()) {
+            me.lastRow.on('click', function(e){
+                var newFront = me.renderCard(me.end.prev);
+                newFront.next = me.end;
+                me.end.prev = newFront;
+                me.editor.positionOn(newFront.pair);
+            });
+        }
         return me.tableWrapper;
     },
     renderCard: function(prevElem, card){

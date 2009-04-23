@@ -18,8 +18,9 @@ var helpView = {
             p('A dolog kulcsa a szavak optimális időközönkénti ismétlése. Vannak könnyebb szavak, ezek szinte azonnal megragadnak az agyunkban, míg vannak nehezebbek, amiket sokszori ismétlés után is képesek vagyunk elfelejteni. A ',strong('Leitner módszer segítségével'),', amelyet kitalálójáról Sebastian Leitnerről neveztek el, a könnyebb szavakat ritkábban, míg a nehezebbek sűrűbben kell ismételnünk. Lássuk hát, hogy is műkdik.'),
             div().id('leitner-pic').html('&nbsp'),
             p('Képzeljük el, hogy a szavakat szókártyákra írjuk, amiket dobozokba rakunk. Öt dobozunk van, és minden új kártyát az első dobozba rakunk. Egy szó ismétlésekor, ha emlékszünk rá, akkor egyel nagyobb számú dobozba tesszük, ha nem, akkor mindig az elsőbe kerül vissza. A fenti képen zöld nyíl jelzi a sikeres, piros a sikertelen ismétléseket.'),
-            p('Az első doboz kártyáit kell leggyakrabban, az ötödikben lévőket legritkábban ismételnünk. A Memori, hogy megfeleljen ezen elvnek a következő szabályt alkalmazza: Az első dobozból bármelyik szót kérdezheti, hisz ezek azért vannak ott mert vagy újak, vagy az előző ismétlésnél nem tudtuk őket. A másik négy dobozban lévő kártyákra pedig az igaz, hogy sikeres ismétlés után az alábbi táblázatban meghatározott ideig nem kérdezi őket a program.'),
+            p('Az első doboz kártyáit kell leggyakrabban, az ötödikben lévőket legritkábban ismételnünk. A Memori, hogy megfeleljen ezen elvnek a következő szabályt alkalmazza: Az első dobozból bármelyik szót kérdezheti, hisz ezek azért vannak ott mert vagy újak, vagy az előző ismétlésnél nem tudtuk őket. A másik négy dobozban lévő kártyákra pedig az igaz, hogy sikeres ismétlés után az alábbi táblázatban meghatározott pihentetési ideig nem kérdezi őket a program.'),
             table(
+                tr(th('doboz száma'),th('pihentetési idő')),
                 tr(td('2. doboz'),td('1 nap')),
                 tr(td('3. doboz'),td('3 nap')),
                 tr(td('4. doboz'),td('7 nap')),
@@ -33,7 +34,7 @@ var helpView = {
             h2('Mit mutat a grafikon a leckéimnél?'),
             p('A grafikon megmutatja, hogy hány darab szó van az egyes dobozokban. A halvány pirossal színezett rész mutaja az aktív kártyákat, melyeket gyakorolnunk kell!'),
             h2('Meg tudom osztani leckéimet másokkal?'),
-            p('A válasz igen. A Memoriban jelenleg minden lecke publikus, azaz a felhasználó összes ismerőse láthatja az ő leckéit. Ha tehát tudjuk, hogy az egyik ismerősünk leckéjét jó lenne, ha mi is megtanulnánk, akkor nincs más dolgunk, mint az Ismerőseim menüpontra kattintani, ott a listából kiválasztani a megfelelő személyt, majd a minket érdeklő lecke mellett megnyomni az átveszem gombot.')          
+            p('A válasz igen. A Memoriban jelenleg minden lecke publikus, azaz a felhasználó összes ismerőse láthatja az ő leckéit. Ha tehát tudjuk, hogy az egyik ismerősünknek van egy leckéje, amit jó lenne megtanulni, akkor nincs más dolgunk, mint az Ismerőseim menüpontra kattintani, ott a listából kiválasztani a megfelelő személyt, majd a minket érdeklő lecke mellett megnyomni az átveszem gombot.')
             // h2('Milyen sűrűn nyomjuk a mentés gombot?'),
             // p('Lecke szerkesztésekor, és gyakorlásakor keletkezik olyan információ, amit a Memorinak el kell mentenie, és ha aktív a mentés gomb, az azt jelzi, hogy van olyan információ, amit még nem mentett el.')
         );

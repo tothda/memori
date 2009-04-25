@@ -26,7 +26,7 @@ transport =
          if (method != 'POST') {
            jsonParams['_method'] = method;
          }
-         jsonParams['json'] = Y.JSON.stringify(params);
+         jsonParams['json'] = escape(Y.JSON.stringify(params));
          var post_data = gadgets.io.encodeValues(jsonParams);
          transportParams[gadgets.io.RequestParameters.POST_DATA] = post_data;
        }

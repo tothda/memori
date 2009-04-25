@@ -2,12 +2,16 @@
 ENV['TZ'] = 'Europe/Budapest'
 
 require 'rubygems'
+require 'activesupport' # ezt itt, különben összeakad a json gem-mel
 require 'sinatra'
 require 'couchrest'
 require 'sprockets'
 require 'ruby-debug'
 
 set :app_file, __FILE__
+
+require 'gadgeteer'
+require 'sinatra/gadgeteer'
 
 module Memori
   class << self
@@ -57,6 +61,8 @@ get '/memori.xml' do
 end
 
 put '/users' do
+  debugger
+  verify_signature
   json = JSON.parse(params[:json])
   r = db.view('db/user-by-iwiw-id', {:key => json["iwiw_id"]})
   if r["rows"].length != 0

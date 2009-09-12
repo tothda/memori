@@ -77,7 +77,13 @@ Y.mix(practiceView, {
     // -1 : magyar - front
     //  1 : idegen - flip
     cardText: function(){
-        return this.side < 0 ? this.card.get('front') : this.card.get('flip');
+        var s;
+        if (this.reverse) {
+            s = this.side * -1;
+        } else {
+            s = this.side;
+        }
+        return s < 0 ? this.card.get('front') : this.card.get('flip');
     },
     show: function(){
         if (this.card) {
@@ -234,7 +240,9 @@ Y.mix(practiceView, {
         this.saveButton.blur(); // ha disabled lesz és rajtmarad a focus, akkor a key event-ek nem működnek
     },
     renderInfoBar: function(){
-        var me = this;
+        var me = this,
+            reverseLink,
+            ibNode;
         var formatStrategy = function() {
             switch (me.strategy.constructor) {
             case LinearPracticeStrategy:
@@ -245,10 +253,17 @@ Y.mix(practiceView, {
                 return 'aktív kártyák gyakorlása';
             }
         };
-        return div().cls('info').app(
+        ibNode = div().cls('info').app(
             div().cls('info-text').app(
                 div(this.set.get('title')).cls('title'),
-                div(formatStrategy()).cls('practice-type')
+                div().cls('practice-type').app(
+                    formatStrategy(),
+                    span(
+                        ' [',
+                        reverseLink = a('fordítva').attr('href', '#'),
+                        ']'
+                    ).cls('reverse-link')
+                )
             ),
             span(
                 this.actCardNo = span('1'),
@@ -257,6 +272,12 @@ Y.mix(practiceView, {
             ).cls('counter'),
             div().cls('clear')
         );
+        reverseLink.on('click', function(){
+            me.reverse = !!!me.reverse;
+            me.strategy.restart();
+            me.start();
+        });
+        return ibNode;
     },
     bindEventHandlers: function(){
         this.box.on('click', this.eventHandler, this);

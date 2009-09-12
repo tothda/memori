@@ -9,9 +9,7 @@ function LinearPracticeStrategy(sets){
     if (me.length < 1) {
         throw 'no cards!';
     }
-    me.idx = -1;
-    me.sort();
-    me.length = me.cards.length;
+    me.restart();
 }
 
 Y.mix(LinearPracticeStrategy.prototype, {
@@ -39,6 +37,11 @@ Y.mix(LinearPracticeStrategy.prototype, {
             }
         }
         return n;
+    },
+    restart: function(){
+        this.idx = -1;
+        this.sort();
+        this.length = this.cards.length;
     }
 });
 

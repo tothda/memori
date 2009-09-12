@@ -30,6 +30,7 @@ Y.mix(controller, {
             this.view.cleanUp();
         }
         newView.render(model);
+        controller.webAudit(newView);
         this.view = newView;
     },
     allSets: function(userId){
@@ -82,6 +83,19 @@ Y.mix(controller, {
             profileView.sets = sets;
             controller.render(profileView);
         });
+    },
+    webAudit: function(view){
+        var measure = function(code){
+            WebAudit.measure(12433215865666); // iWiW globál kódja
+            WebAudit.measure(code);
+        }
+        switch (view){
+        case setListView: measure(12435028154111); break; // leckék listája - főoldal
+        case setView: measure(12435028364701); break; // lecke megtekintés, szerkesztés oldal
+        case practiceView: measure(12435028523937); break; // lecke gyakorlás oldal
+        case friendsView: measure(12435028698153); break; // ismerősök oldal
+        case helpView: measure(12435028922306); break; // tudnivalók oldal
+        }
     }
 });
 

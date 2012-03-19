@@ -42,7 +42,7 @@ transport =
        params = params || {};
 
        if (method == 'GET' && params) {
-         path = path + "?json=" + Y.JSON.stringify(params);
+         path = path + "?json=" + encodeURIComponent(Y.JSON.stringify(params));
        }
 
        if (method != 'GET') {

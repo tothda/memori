@@ -103,6 +103,8 @@ Y.mix(User, {
             User.owner = new User();
             User.owner.name = "Tesz Elek";
             User.owner.id = "aaaaaa";
+            User.viewer = User.owner;
+            controller.fire('owner-viewer');
             callback.call(context);
         }
     },

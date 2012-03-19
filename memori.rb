@@ -5,7 +5,6 @@ require 'rubygems'
 require 'sinatra'
 require 'couchrest'
 require 'sprockets'
-require 'ruby-debug'
 
 set :app_file, __FILE__
 
@@ -25,7 +24,7 @@ module Memori
   end
 end
 
-require 'ruby/sprocket_app'
+require "#{Memori.root}/ruby/sprocket_app"
 
 db = CouchRest.database!(Memori.config["database_url"])
 

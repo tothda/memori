@@ -85,6 +85,9 @@ Y.mix(controller, {
         });
     },
     webAudit: function(view){
+        // don't have Webaudit in local dev environment
+        if (typeof(WebAudit) === "undefined") return;
+
         var measure = function(code){
             WebAudit.measure(12433215865666); // iWiW globál kódja
             WebAudit.measure(code);

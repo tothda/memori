@@ -1,10 +1,9 @@
 require 'rubygems'
-require 'rack'
-require File.dirname(__FILE__) + "/memori.rb"
+require 'bundler'
 
-#log = File.new("sinatra.log", "w")
-#STDOUT.reopen(log)
-#STDERR.reopen(log)
+Bundler.require
+
+require './memori.rb'
 
 set :run, false
 set :environment, :development

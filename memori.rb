@@ -8,22 +8,7 @@ require 'sprockets'
 
 set :app_file, __FILE__
 
-module Memori
-  class << self
-    def root
-      File.dirname(__FILE__)
-    end
-
-    def version
-      [0,1]
-    end
-
-    def config
-      @config ||= YAML.load(IO.read(File.join(Memori.root, "config", "memori.yml"))) || {}
-    end
-  end
-end
-
+require "#{Memori.root}/ruby/memori"
 require "#{Memori.root}/ruby/sprocket_app"
 
 db = CouchRest.database!(Memori.config["database_url"])

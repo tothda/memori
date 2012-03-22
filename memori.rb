@@ -8,7 +8,7 @@ require 'sprockets'
 
 set :app_file, __FILE__
 
-require "#{Memori.root}/ruby/memori"
+require File.join(File.dirname(__FILE__), "ruby", "memori")
 require "#{Memori.root}/ruby/sprocket_app"
 
 db = CouchRest.database!(Memori.config["database_url"])
@@ -25,7 +25,7 @@ end
 
 get '/memori.css' do
   content_type 'text/css', :charset => 'utf-8'
-  sass :stylesheet  
+  sass :stylesheet
 end
 
 get '/faq' do
@@ -116,7 +116,7 @@ end
 delete '/sets/:key' do
   json = JSON.parse(params[:json])
   resp = db.delete_doc(json)
-  JSON.dump resp  
+  JSON.dump resp
 end
 
 get '/remove' do

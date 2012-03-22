@@ -102,7 +102,8 @@ Y.mix(User, {
         } else {
             User.owner = new User();
             User.owner.name = "Tesz Elek";
-            User.owner.id = "aaaaaa";
+            // iwiw_id: iwiw.hu/P9h4V8oSyx, azaz iwiw.hu%3AP9h4V8oSyx
+            User.owner.id = "2b3f677944723cfcbb3d825a730755b3";
             User.viewer = User.owner;
             controller.fire('owner-viewer');
             callback.call(context);

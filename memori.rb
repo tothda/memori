@@ -11,7 +11,12 @@ set :app_file, __FILE__
 require File.join(File.dirname(__FILE__), "ruby", "memori")
 require "#{Memori.root}/ruby/sprocket_app"
 
-db = CouchRest.database!(Memori.config["database_url"])
+def return_db_connection
+  url = ENV["MEMORI_DB_URL"] || Memori.config["database_url"]
+  CouchRest.database!(url)
+end
+
+db = return_db_connection()
 
 helpers do
   def time_to_a(time)
@@ -164,3 +169,4 @@ def map_set_from_v2(set)
   # the modified set should be returned
   set
 end
+

@@ -1,0 +1,2 @@
+database_url: http://localhost:5984/memori2
+memori_url: http://memori.heroku.com/ 

@@ -9,7 +9,8 @@ module Memori
     end
 
     def config
-      @config ||= YAML.load(IO.read(File.join(Memori.root, "config", "memori.yml"))) || {}
+      config_file = ENV["MEMORI_CONFIG"] || "memori.yml"
+      @config ||= YAML.load(IO.read(File.join(Memori.root, "config", config_file))) || {}
     end
   end
 end

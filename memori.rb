@@ -149,7 +149,6 @@ def map_set_from_v2(set)
   
   # transform it's cards collection
   cards = set["cards"]
-  puts cards
   unless cards.nil?
     cards_v2 = set["cards"].map {|card|
       {"front" => card[0],

@@ -98,12 +98,12 @@ end
 get '/sets/' do
   json = JSON.parse(params[:json])
   resp = db.view('db/sets-by-user-and-date', json)
-  JSON.dump resp
+  JSON.dump map_sets_from_v2(resp)
 end
 
 get '/sets/:key' do
   resp = db.get params[:key]
-  JSON.dump resp
+  JSON.dump map_set_from_v2(resp)
 end
 
 put '/sets/:key' do
@@ -129,4 +129,39 @@ get '/remove' do
     db.save_doc(user)
   end
   "OK"
+end
+
+def map_sets_from_v2(resp)
+  # resp is a query response from couchdb
+  rows = resp["rows"]
+
+  rows.each do |row|
+    row["value"] = map_set_from_v2(row["value"])
+  end
+
+  resp
+end
+
+def map_set_from_v2(set)
+  # set version's is 2, we modify it in place to version 1
+  # version 1 does not have the version field
+  set.delete("version")
+  
+  # transform it's cards collection
+  cards = set["cards"]
+  puts cards
+  unless cards.nil?
+    cards_v2 = set["cards"].map {|card|
+      {"front" => card[0],
+      "flip" => card[1],
+      "bucket" => card[2],
+      "result" => card[3],
+      "time" => card[4]
+      }
+    }
+    # and replace the old "cards" with the new entirely
+    set["cards"] = cards_v2
+  end
+  # the modified set should be returned
+  set
 end

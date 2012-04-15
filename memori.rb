@@ -96,7 +96,7 @@ end
 post '/sets/' do
   json = JSON.parse(params[:json])
   json.delete("_method")
-  resp = db.save_doc(json)
+  resp = db.save_doc(map_set_to_v2(json))
   JSON.dump resp
 end
 
@@ -114,7 +114,7 @@ end
 put '/sets/:key' do
   json = JSON.parse(params[:json])
   json.delete("_method")
-  resp = db.save_doc(json)
+  resp = db.save_doc(map_set_to_v2(json))
   JSON.dump resp
 end
 
@@ -155,7 +155,7 @@ def map_set_from_v2(set)
   # transform it's cards collection
   cards = set["cards"]
   unless cards.nil?
-    cards_v2 = set["cards"].map {|card|
+    cards_v1 = cards.map {|card|
       {"front" => card[0],
       "flip" => card[1],
       "bucket" => card[2],
@@ -164,9 +164,29 @@ def map_set_from_v2(set)
       }
     }
     # and replace the old "cards" with the new entirely
-    set["cards"] = cards_v2
+    set["cards"] = cards_v1
   end
   # the modified set should be returned
+  set
+end
+
+def map_set_to_v2(set)
+  set["version"] = 2
+
+  # transform it's cards collection
+  cards = set["cards"]
+  unless cards.nil?
+    cards_v2 = cards.map {|card|
+      [card["front"],
+       card["flip"],
+       card["bucket"],
+       card["result"],
+       card["time"]]
+    }
+    # and replace the old "cards" with the new entirely
+    set["cards"] = cards_v2
+  end
+  
   set
 end
 
